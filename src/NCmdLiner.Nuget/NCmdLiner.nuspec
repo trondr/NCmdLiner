@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NCmdLiner</id>
+    <version>0.0.0.0</version>
+    <title>NCmdLiner</title>
+    <authors>github.com/trondr</authors>
+    <owners>github.com/trondr</owners>
+    <licenseUrl>http://www.opensource.org/licenses/BSD-3-Clause</licenseUrl>
+    <projectUrl>https://github.com/trondr</projectUrl>
+    <iconUrl>https://github.com/trondr/NCmdLiner.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NCmdLiner</description>
+    <copyright>NCmdLiner</copyright>
+    <tags>Self Documenting Command Line Parser</tags>
+    <references>
+      <reference file="NCmdLiner.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="net20\NCmdLiner.dll" target="lib\net20" />
+    <file src="net20\NCmdLiner.pdb" target="lib\net20" />
+
+    <file src="net35\NCmdLiner.dll" target="lib\net35" />
+    <file src="net35\NCmdLiner.pdb" target="lib\net35" />
+
+    <file src="net35client\NCmdLiner.dll" target="lib\net35client" />
+    <file src="net35client\NCmdLiner.pdb" target="lib\net35client" />
+
+    <file src="net40\NCmdLiner.dll" target="lib\net40" />
+    <file src="net40\NCmdLiner.pdb" target="lib\net40" />
+
+    <file src="net40client\NCmdLiner.dll" target="lib\net40client" />
+    <file src="net40client\NCmdLiner.pdb" target="lib\net40client" />
+
+    <file src="net403\NCmdLiner.dll" target="lib\net403" />
+    <file src="net403\NCmdLiner.pdb" target="lib\net403" />
+
+    <file src="net403client\NCmdLiner.dll" target="lib\net403client" />
+    <file src="net403client\NCmdLiner.pdb" target="lib\net403client" />
+
+    <file src="net40mono\NCmdLiner.dll" target="lib\net40mono" />
+    <file src="net40mono\NCmdLiner.pdb" target="lib\net40mono" />
+    
+    <file src="Install.ps1" target="tools" />
+  </files>
+</package>

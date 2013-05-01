@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+    Include MSBuild Community Tasks.
+  -->
+  <Choose>
+    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>true</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>false</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
+
+  <!--
+    Include MSBuild Mercurial Tasks.
+  -->
+  <Choose>
+    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks')">
+      <PropertyGroup>
+        <MSBuildMercurialTasksAvailable>true</MSBuildMercurialTasksAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildMercurialTasksAvailable>false</MSBuildMercurialTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks" Condition=" '$(MSBuildMercurialTasksAvailable)' == 'true' "/>
+
+  <PropertyGroup>
+    <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
+    <BuildOutputDirectory>$(MSBuildProjectDirectory)\bld</BuildOutputDirectory>
+    <NuGetPackagesDirectory>$(MSBuildProjectDirectory)\..\NugetPackages</NuGetPackagesDirectory>
+	
+    <ProductName>NCmdLiner</ProductName>
+    <ProductCompany>github.com/trondr</ProductCompany>
+    <ProductDescription>NCmdLiner is a self documenting command line parser</ProductDescription>
+    <ProductCopyright>Copyright &#169; &lt;github.com/trondr&gt; $([System.DateTime]::Now.Year)</ProductCopyright>
+    <ProductProjectName>$(ProductName)</ProductProjectName>
+    
+	<ProductProjectSrcDirectory>$(SrcDirectory)\$(ProductProjectName)</ProductProjectSrcDirectory>
+    <ProductProjectBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName)</ProductProjectBuildOutputDirectory>
+	
+	<ProductProjectNugetSrcDirectory>$(SrcDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetSrcDirectory>
+	<ProductProjectNugetBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetBuildOutputDirectory>
+    
+	<ShortYear>$([System.DateTime]::Now.ToString(`yy`))</ShortYear>
+    <DayOfYear>$([System.DateTime]::Now.DayOfYear)</DayOfYear>
+    <Major>1</Major>
+    <Minor>0</Minor>
+    <Build>$(ShortYear)$(DayOfYear)</Build>
+    <Revision>0</Revision>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <NetFrameWorkName Include="NET20">
+      <Version>v2.0</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET35">
+      <Version>v3.5</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET35CLIENT">
+      <Version>v3.5</Version>
+      <Profile>Client</Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET40">
+      <Version>v4.0</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET40CLIENT">
+      <Version>v4.0</Version>
+      <Profile>Client</Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET403">
+      <Version>v4.0.3</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET403CLIENT">
+      <Version>v4.0.3</Version>
+      <Profile>Client</Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET40MONO">
+      <Version>v4.0</Version>
+      <Profile>Mono</Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+  </ItemGroup>
+
+  <ItemGroup>
+    <DefaultExclude Include="$(SrcDirectory)\**\.hg\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\.git\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\.svn\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\bin\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\obj\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Release\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Debug\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Test\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\TestResults\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\doc\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\www\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.user" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.suo" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.zip" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceFiles Include="$(SrcDirectory)\**\*.*" Exclude="@(DefaultExclude)" />
+  </ItemGroup>
+
+  <Target Name="Version">
+    <GitVersion LocalPath="$(MSBuildProjectDirectory)" Timeout="5000">
+      <Output TaskParameter="CommitHash" PropertyName="RevisionHash" />
+    </GitVersion>
+	<XmlRead XPath="/root/property[@name='revision']/@value" XmlFileName="revision.xml">
+      <Output TaskParameter="Value" PropertyName="Revision" />
+    </XmlRead>
+	<Math.Add Numbers="$(Revision);1">
+		<Output TaskParameter="Result" PropertyName="Revision" />
+    </Math.Add>
+	<XmlUpdate XPath="/root/property[@name='revision']/@value" XmlFileName="revision.xml" Value="$(Revision)"/>
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
+    <AssemblyInfo CodeLanguage="CS"
+     OutputFile="$(ProductProjectSrcDirectory)\Properties\AssemblyInfo_Build.cs"
+     AssemblyDescription="$(ProductDescription)"
+     AssemblyCompany="$(ProductCompany)"
+     AssemblyProduct="$(ProductName)"
+     AssemblyCopyright="$(ProductCopyright)"
+     CLSCompliant="true"
+	 AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(RevisionHash)"
+     AssemblyVersion="$(AssemblyVersion)"
+     AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+  </Target>
+
+  <!--Compile class library for all defined NetFrameWorkNames-->
+  
+  <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">        
+    <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />    
+    <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).csproj" 
+             Properties="Configuration=Release;TargetFramework=%(NetFrameWorkName.Identity);TargetFrameworkVersion=%(NetFrameWorkName.Version);TargetFrameworkProfile=%(NetFrameWorkName.Profile);TargetFrameworkIdentifier=%(NetFrameWorkName.Identifier);SilverlightVersion=%(NetFrameWorkName.SilverlightVersion)" 
+    />
+	  <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
+	  <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\Release\$(ProductName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductName).dll"/>
+    <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\Release\$(ProductName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductName).pdb"/>
+  </Target>
+
+  <Target Name="CompileTests" DependsOnTargets="Compile">
+    <MSBuild Projects="$(ProductProjectSrcDirectory).Tests\$(ProductProjectName).Tests.csproj" Properties="Configuration=Release"/>
+  </Target>
+
+   <!-- Run Unit tests -->
+
+  <Target Name="Tests" DependsOnTargets="CompileTests">
+    <CreateItem Include="src\$(ProductName).Tests\bin\Release\$(ProductName).Tests.dll">
+      <Output TaskParameter="Include" ItemName="TestAssembly" />
+    </CreateItem>
+
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.1\bin"/>
+  </Target>
+  
+  <Target Name="ZipSource" DependsOnTargets="Version">
+    <Zip Files="@(SourceFiles)"
+         WorkingDirectory="$(SrcDirectory)"
+         ZipFileName="$(BuildOutputDirectory)\$(ProductProjectName)\bin\$(ProductProjectName).Source.$(AssemblyVersion).zip"
+         ZipLevel="9"
+         />
+    <Message Text="$(ProductName) zip complete" Importance="normal" />
+  </Target>
+
+  <Target Name="NugetPack" >
+    <MakeDir Directories="$(NuGetPackagesDirectory)"/>
+	
+    <!-- Create NCmdLiner nuget package-->
+    <Copy SourceFiles="$(ProductProjectNugetSrcDirectory)\Tools\Install.ps1" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\Install.ps1" />
+	  <Exec Command="&quot;$(MSBuildProjectDirectory)\Tls\NMultiTool.Console.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET20\$(ProductName).dll&quot;" />
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\Tls\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
+</Target>
+  
+  <Target Name="Deploy" DependsOnTargets="Tests;ZipSource;NugetPack">
+
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="Deploy">
+    <Message Text="$(ProductProjectName) build complete" Importance="normal" />
+  </Target>
+</Project>

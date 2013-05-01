@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CreditInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProductName>NConsoler</ProductName>
+  <ProductHome>http://nconsoler.csharpus.com</ProductHome>
+  <CreditText>NCmdLine is derived from NConsoler which elegantly introduces self documenting commands using attribute on methods and method parameters.</CreditText>
+</CreditInfo>
