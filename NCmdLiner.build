@@ -177,7 +177,7 @@
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
 
-    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.1\bin"/>
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.2\bin"/>
   </Target>
   
   <Target Name="ZipSource" DependsOnTargets="Version">
