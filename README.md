@@ -187,7 +187,7 @@ namespace NCmdLiner.Example
 
 ```
 
-## Example output
+## Example help output
 
 ```
 NCmdLiner Example 1.0.0.0 for .NET - Example of how to use NCmdLiner
