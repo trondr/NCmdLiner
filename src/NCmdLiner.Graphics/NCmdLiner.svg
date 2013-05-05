@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="NCmdLinerIcon.svg"
+   inkscape:export-filename="C:\MyData\Dev\NCmdLiner\src\NCmdLiner.Graphics\NCmdLinerIcon.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="54.22315"
+     inkscape:cy="133.46297"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1003"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Background"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-796.36218)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="GreaterThan"
+     style="display:inline">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3037"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print"
+       transform="matrix(4.52911,0,0,5.9305083,-74.68588,-262.45311)"><flowRegion
+         id="flowRegion3039"><rect
+           id="rect3041"
+           width="151.07143"
+           height="133.21428"
+           x="44.285713"
+           y="39.214287"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print" /></flowRegion><flowPara
+         id="flowPara3043">&gt;</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="N"
+     style="display:inline">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3029"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print"
+       transform="matrix(4.3858139,0,0,4.3858139,-189.81393,-202.53868)"><flowRegion
+         id="flowRegion3031"><rect
+           id="rect3033"
+           width="101.42857"
+           height="115.71429"
+           x="47.142857"
+           y="49.571426"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print" /></flowRegion><flowPara
+         id="flowPara3035">N</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="SemiColon"
+     style="display:inline">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3013"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print"
+       transform="matrix(4.4786568,0,0,4.4786568,-240.68256,-302.37084)"><flowRegion
+         id="flowRegion3015"><rect
+           id="rect3017"
+           width="78.928574"
+           height="78.571426"
+           x="63.92857"
+           y="66.714287"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print" /></flowRegion><flowPara
+         id="flowPara3019">:</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Hash"
+     style="display:none">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3021"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       transform="translate(79,54.428572)"><flowRegion
+         id="flowRegion3023"><rect
+           id="rect3025"
+           width="108.92857"
+           height="125"
+           x="58.57143"
+           y="40.285713" /></flowRegion><flowPara
+         id="flowPara3027"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:SketchFlow Print;-inkscape-font-specification:SketchFlow Print">#</flowPara></flowRoot>  </g>
+</svg>
