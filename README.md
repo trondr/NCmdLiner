@@ -186,3 +186,68 @@ namespace NCmdLiner.Example
 }
 
 ```
+
+## Example output
+
+```
+NCmdLiner Example 1.0.0.0 for .NET - Example of how to use NCmdLiner
+Copyright © examplecompany 2013
+Authors: example@example.com, example2@example.com
+Usage: NCmdLiner.Example.exe <command> [parameters]
+
+Commands:
+---------
+Help              Display this help text
+License           Display license
+Credits           Display credits
+ExampleCommand1   ExampleCommand1 will only echo value of the input
+                  parameteres.
+ExampleCommand2   ExampleCommand2 will do the same as ExampleCommand1 only
+                  echo value of the input parameteres.
+
+Commands and parameters:
+------------------------
+ExampleCommand1   ExampleCommand1 will only echo value of the input
+                  parameteres.
+   /parameter1    [Required] parameter1 is a required string paramter and
+                  must be specified. Alternative parameter name: /p1
+   /parameter2    [Required] parameter2 is required string paramter and must
+                  be specified. Alternative parameter name: /p2
+   /parameter3    [Required] Parameter3 is required integer paramter and must
+                  be specified. Alternative parameter name: /p3
+   /parameter4    [Optional] Parameter4 is an optional string paramter and
+                  will have the default value set if not specified.
+                  Alternative parameter name: /p4. Default value: Some
+                  default value for parameter4
+   /parameter5    [Optional] Parameter5 is an optional boolean parameter and
+                  will have the default value set if not specified.
+                  Alternative parameter name: /p5. Default value: False
+
+   Example: NCmdLiner.Example.exe ExampleCommand1 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="10" /parameter4="Some example value for parameter4" /parameter5="True" 
+   Example (alternative): NCmdLiner.Example.exe ExampleCommand1 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="10" /p4="Some example value for parameter4" /p5="True" 
+
+
+ExampleCommand2   ExampleCommand2 will do the same as ExampleCommand1 only
+                  echo value of the input parameteres.
+   /parameter1    [Required] parameter1 is a required string paramter and
+                  must be specified. Alternative parameter name: /p1
+   /parameter2    [Required] parameter2 is required string paramter and must
+                  be specified. Alternative parameter name: /p2
+   /parameter3    [Required] Parameter3 is required integer paramter and must
+                  be specified. Alternative parameter name: /p3
+   /parameter4    [Optional] Parameter4 is an optional string paramter and
+                  will have the default value set if not specified.
+                  Alternative parameter name: /p4. Default value: Some
+                  default value for parameter4
+   /parameter5    [Optional] Parameter5 is an optional boolean parameter and
+                  will have the default value set if not specified.
+                  Alternative parameter name: /p5. Default value: False
+
+   Example: NCmdLiner.Example.exe ExampleCommand2 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="10" /parameter4="Some example value for parameter4" /parameter5="True" 
+   Example (alternative): NCmdLiner.Example.exe ExampleCommand2 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="10" /p4="Some example value for parameter4" /p5="True"
+
+```
+
+
+
+
