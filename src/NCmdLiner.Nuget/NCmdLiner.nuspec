@@ -24,23 +24,26 @@
     <file src="net35\NCmdLiner.dll" target="lib\net35" />
     <file src="net35\NCmdLiner.pdb" target="lib\net35" />
 
-    <file src="net35client\NCmdLiner.dll" target="lib\net35client" />
-    <file src="net35client\NCmdLiner.pdb" target="lib\net35client" />
+    <file src="net35client\NCmdLiner.dll" target="lib\net35-client" />
+    <file src="net35client\NCmdLiner.pdb" target="lib\net35-client" />
 
     <file src="net40\NCmdLiner.dll" target="lib\net40" />
     <file src="net40\NCmdLiner.pdb" target="lib\net40" />
 
-    <file src="net40client\NCmdLiner.dll" target="lib\net40client" />
-    <file src="net40client\NCmdLiner.pdb" target="lib\net40client" />
+    <file src="net40client\NCmdLiner.dll" target="lib\net40-client" />
+    <file src="net40client\NCmdLiner.pdb" target="lib\net40-client" />
 
     <file src="net403\NCmdLiner.dll" target="lib\net403" />
     <file src="net403\NCmdLiner.pdb" target="lib\net403" />
 
-    <file src="net403client\NCmdLiner.dll" target="lib\net403client" />
-    <file src="net403client\NCmdLiner.pdb" target="lib\net403client" />
+    <file src="net403client\NCmdLiner.dll" target="lib\net403-client" />
+    <file src="net403client\NCmdLiner.pdb" target="lib\net403-client" />
 
-    <file src="net40mono\NCmdLiner.dll" target="lib\net40mono" />
-    <file src="net40mono\NCmdLiner.pdb" target="lib\net40mono" />
+    <file src="net40mono\NCmdLiner.dll" target="lib\net40-mono" />
+    <file src="net40mono\NCmdLiner.pdb" target="lib\net40-mono" />
+
+    <file src="net45\NCmdLiner.dll" target="lib\net45" />
+    <file src="net45\NCmdLiner.pdb" target="lib\net45" />
     
     <file src="Install.ps1" target="tools" />
   </files>

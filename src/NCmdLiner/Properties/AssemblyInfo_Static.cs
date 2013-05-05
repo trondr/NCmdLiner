@@ -25,9 +25,11 @@ using System.Runtime.CompilerServices;
 #elif NET403CLIENT
    [assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.0.3 Client Profile")]
 #elif NET40MONO
-   [assembly: AssemblyTitle("NCmdLiner for .NET Framework 4 Mono")]
+   [assembly: AssemblyTitle("NCmdLiner for Mono 4.0")]
 #elif MONO20
    [assembly: AssemblyTitle("NCmdLiner for Mono 2.0")]
+#elif NET45
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif

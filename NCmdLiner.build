@@ -102,6 +102,11 @@
       <Profile>Mono</Profile>
       <Identifier>.NETFramework</Identifier>
     </NetFrameWorkName>
+	<NetFrameWorkName Include="NET45">
+      <Version>v4.5</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
   </ItemGroup>
 
   <ItemGroup>
