@@ -15,11 +15,28 @@ namespace NCmdLiner
 {
     public class CmdLinery
     {
+        public static void Run(Type targetType, string[] args)
+        {
+            Run(targetType,args,new ApplicationInfo(), new ConsoleMessenger());
+        }
+
         public static void Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
         {
+            Run(targetType, args, applicationInfo, new ConsoleMessenger());
+        }
+
+        public static void Run(Type targetType, string[] args, IMessenger messenger)
+        {
+            Run(targetType, args, new ApplicationInfo(), messenger);
+        }
+
+        public static void Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (messenger == null) throw new ArgumentNullException("messenger");
             CommandRuleProvider commandRuleProvider = new CommandRuleProvider();
             List<CommandRule> commandRules = commandRuleProvider.GetCommandRules(targetType);
-            HelpProvider helpProvider = new HelpProvider();
+            HelpProvider helpProvider = new HelpProvider(messenger);
             if (args.Length == 0)
             {
                 helpProvider.ShowHelp(commandRules, null, applicationInfo);
@@ -34,17 +51,17 @@ namespace NCmdLiner
                     string helpForCommandName = args[1];
                     helpForCommandRule = commandRules.Find(rule => rule.Command.Name == helpForCommandName);
                 }
-                helpProvider.ShowHelp(commandRules, helpForCommandRule, applicationInfo);
+                helpProvider.ShowHelp(commandRules, helpForCommandRule, applicationInfo);                
                 return;
             }
             if (helpProvider.IsLicenseRequested(commandName))
             {
-                helpProvider.ShowLicense(applicationInfo);
+                helpProvider.ShowLicense(applicationInfo);                
                 return;
             }
             if (helpProvider.IsCreditsRequested(commandName))
             {
-                helpProvider.ShowCredits(applicationInfo);
+                helpProvider.ShowCredits(applicationInfo);                
                 return;
             }
 

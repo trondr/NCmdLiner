@@ -18,7 +18,15 @@ namespace NCmdLiner
 {
     public class HelpProvider
     {
+        private readonly IMessenger _messenger;
         private int _commandColumnWidth;
+        private HelpProvider(){}
+        public HelpProvider(IMessenger messenger)
+        {
+            if (messenger == null) throw new ArgumentNullException("messenger");
+            _messenger = messenger;
+        }
+
         private const int MaxWidth = 79;
 
         /// <summary>   Query if help is requested./ </summary>
@@ -96,13 +104,22 @@ namespace NCmdLiner
         public void ShowHelp(List<CommandRule> commandRules, CommandRule helpForCommandRule,
                              IApplicationInfo applicationInfo)
         {
-            Console.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
+            _messenger.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
                               applicationInfo.Description);
-            Console.WriteLine("{0}", applicationInfo.Copyright);
-            if (!string.IsNullOrEmpty(applicationInfo.ProgrammedBy))
-                Console.WriteLine("Programmed by {0}", applicationInfo.ProgrammedBy);
-            Console.WriteLine("Usage: {0} <command> [parameters]", applicationInfo.ExeFileName);
-            Console.WriteLine();
+            _messenger.WriteLine("{0}", applicationInfo.Copyright);
+            if (!string.IsNullOrEmpty(applicationInfo.Authors))
+            {
+                if (applicationInfo.Authors.Contains(","))
+                {
+                    _messenger.WriteLine("Authors: {0}", applicationInfo.Authors);
+                }
+                else
+                {
+                    _messenger.WriteLine("Author: {0}", applicationInfo.Authors);
+                }
+            }
+            _messenger.WriteLine("Usage: {0} <command> [parameters]", applicationInfo.ExeFileName);
+            _messenger.WriteLine(string.Empty);
             _commandColumnWidth = CalculateCommandColumnWitdth(commandRules);
             if (helpForCommandRule != null)
             {
@@ -110,8 +127,8 @@ namespace NCmdLiner
             }
             else
             {
-                Console.WriteLine("Commands:");
-                Console.WriteLine("---------");
+                _messenger.WriteLine("Commands:");
+                _messenger.WriteLine("---------");
 
                 ShowCommandRuleHelp(
                     new CommandRule {Command = new Command {Description = "Display this help text", Name = "Help"}},
@@ -127,15 +144,16 @@ namespace NCmdLiner
                 {
                     ShowCommandRuleHelp(commandRule, false, applicationInfo);
                 }
-                Console.WriteLine();
-                Console.WriteLine("Commands and parameters:");
-                Console.WriteLine("------------------------");
+                _messenger.WriteLine(string.Empty);
+                _messenger.WriteLine("Commands and parameters:");
+                _messenger.WriteLine("------------------------");
                 foreach (CommandRule commandRule in commandRules)
                 {
                     ShowCommandRuleHelp(commandRule, true, applicationInfo);
                 }
-                //Console.WriteLine();
+                //_messenger.WriteLine();
             }
+            _messenger.Show();
         }
 
         /// <summary>   Shows credits. </summary>
@@ -145,12 +163,13 @@ namespace NCmdLiner
         /// <param name="applicationInfo">  Information describing the application. </param>
         public void ShowCredits(IApplicationInfo applicationInfo)
         {
-            Console.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
+            _messenger.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
                               applicationInfo.Description);
-            Console.WriteLine("{0}", applicationInfo.Copyright);
-            Console.WriteLine("-------------------------------------------------------------------------------");
-            Console.WriteLine(BuildCreditsText());
-            Console.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.WriteLine("{0}", applicationInfo.Copyright);
+            _messenger.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.WriteLine(BuildCreditsText());
+            _messenger.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.Show();
         }
 
         /// <summary>   Shows license. </summary>
@@ -160,15 +179,16 @@ namespace NCmdLiner
         /// <param name="applicationInfo">  Information describing the application. </param>
         public void ShowLicense(IApplicationInfo applicationInfo)
         {
-            Console.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
+            _messenger.WriteLine("{0} {1} - {2}", applicationInfo.Name, applicationInfo.Version,
                               applicationInfo.Description);
-            Console.WriteLine("{0}", applicationInfo.Copyright);
+            _messenger.WriteLine("{0}", applicationInfo.Copyright);
 
-            Console.WriteLine("-------------------------------------------------------------------------------");
-            Console.WriteLine(BuildCreditsText());
-            Console.WriteLine("-------------------------------------------------------------------------------");
-            Console.WriteLine(BuildLicenseText());
-            Console.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.WriteLine(BuildCreditsText());
+            _messenger.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.WriteLine(BuildLicenseText());
+            _messenger.WriteLine("-------------------------------------------------------------------------------");
+            _messenger.Show();
         }
 
         #region Private methods
@@ -210,10 +230,10 @@ namespace NCmdLiner
         /// <remarks>   trond, 2013-05-01. </remarks>
         ///
         /// <returns>   . </returns>
-        private static string BuildLicenseText()
+        private string BuildLicenseText()
         {
             StringBuilder licenseText = new StringBuilder();
-            Console.WriteLine("License summary:");
+            _messenger.WriteLine("License summary:");
             licenseText.Append(
                 string.Format("-------------------------------------------------------------------------------") +
                 Environment.NewLine);
@@ -382,7 +402,7 @@ namespace NCmdLiner
                 helpString.Append(Environment.NewLine);
                 helpString.Append(Environment.NewLine);
             }
-            Console.Write(helpString.ToString());
+            _messenger.Write(helpString.ToString());
         }
 
         /// <summary>   Format command parameter. </summary>

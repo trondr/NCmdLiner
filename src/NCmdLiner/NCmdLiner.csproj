@@ -55,6 +55,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ApplicationInfoHelper.cs" />
     <Compile Include="ArrayParser.cs" />
     <Compile Include="Attributes\CommandAttibute.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="CommandLineParameter.cs" />
     <Compile Include="CommandParameter.cs" />
     <Compile Include="CommandRule.cs" />
+    <Compile Include="ConsoleMessenger.cs" />
     <Compile Include="Credit\ICreditInfo.cs" />
     <Compile Include="Credit\ICreditProvider.cs" />
     <Compile Include="Credit\CreditInfo.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="HelpProvider.cs" />
     <Compile Include="IApplicationInfo.cs" />
     <Compile Include="IArrayParser.cs" />
+    <Compile Include="IMessenger.cs" />
     <Compile Include="License\ILicenseInfo.cs" />
     <Compile Include="License\ILicenseProvider.cs" />
     <Compile Include="License\LicenseInfo.cs" />

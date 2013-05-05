@@ -6,6 +6,7 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -13,6 +14,7 @@ namespace NCmdLiner
 {
     public static class ApplicationInfoHelper
     {
+        private static string _applicationName;
         /// <summary>
         /// Get exe file path
         /// </summary>
@@ -31,8 +33,7 @@ namespace NCmdLiner
             }
         }
 
-        private static string _applicationName;
-
+        private static string _applicationVersion;
         /// <summary>
         /// Get application version
         /// </summary>
@@ -47,14 +48,17 @@ namespace NCmdLiner
                     {
                         assembly = Assembly.GetExecutingAssembly();
                     }
-                    _applicationVersion = assembly.GetName().Version.ToString();
+                    _applicationVersion = ((AssemblyInformationalVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute), false)).InformationalVersion;
+                    if (string.IsNullOrEmpty(_applicationVersion))
+                    {
+                        _applicationVersion = ((AssemblyVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyVersionAttribute), false)).Version;
+                    }
                 }
                 return _applicationVersion;
             }
         }
-
-        private static string _applicationVersion;
-
+        
+        private static string _exeFileName;
         /// <summary>
         /// Get exe file path
         /// </summary>
@@ -70,8 +74,8 @@ namespace NCmdLiner
             }
         }
 
-        private static string _exeFileName;
-
+        private static string _exeFilePath;
+        
         /// <summary>
         /// Get exe file path
         /// </summary>
@@ -97,6 +101,41 @@ namespace NCmdLiner
             }
         }
 
-        private static string _exeFilePath;
+        public static string ApplicationCopyright
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_applicationCopyright))
+                {
+                    Assembly assembly = Assembly.GetEntryAssembly();
+                    if (assembly == null)
+                    {
+                        assembly = Assembly.GetExecutingAssembly();                        
+                    }                    
+                    _applicationCopyright = ((AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCopyrightAttribute), false)).Copyright;
+                }
+                return _applicationCopyright;
+            }
+            
+        }
+        private static string _applicationCopyright;
+
+        public static string ApplicationDescription
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_applicationDescription))
+                {
+                    Assembly assembly = Assembly.GetEntryAssembly();
+                    if (assembly == null)
+                    {
+                        assembly = Assembly.GetExecutingAssembly();
+                    }
+                    _applicationDescription = ((AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute), false)).Description;
+                }
+                return _applicationDescription;
+            }            
+        }
+        private static string _applicationDescription;
     }
 }

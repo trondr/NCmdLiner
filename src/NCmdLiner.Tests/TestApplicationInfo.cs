@@ -13,7 +13,7 @@ namespace NCmdLiner.Tests
         private string _name = "Test Application";
         private string _version = "1.0.0.0";
         private string _copyright = "Copyright \u00a9 2012";
-        private string _programmedBy = "mail@somedomain.com";
+        private string _authors = "mail@somedomain.com";
         private string _description = "Test Application Description";
         private string _exeFileName = "TestApplication.exe";
 
@@ -35,10 +35,10 @@ namespace NCmdLiner.Tests
             set { _copyright = value; }
         }
 
-        public string ProgrammedBy
+        public string Authors
         {
-            get { return _programmedBy; }
-            set { _programmedBy = value; }
+            get { return _authors; }
+            set { _authors = value; }
         }
 
         public string Description

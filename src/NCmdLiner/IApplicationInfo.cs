@@ -13,7 +13,7 @@ namespace NCmdLiner
         string Name { get; set; }
         string Version { get; set; }
         string Copyright { get; set; }
-        string ProgrammedBy { get; set; }
+        string Authors { get; set; }
         string Description { get; set; }
         string ExeFileName { get; set; }
     }

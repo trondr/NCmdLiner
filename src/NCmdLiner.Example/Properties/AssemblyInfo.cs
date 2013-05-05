@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("NCmdLiner.Example")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Example of how to use NCmdLiner")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("<github.com/trondr>")]
 [assembly: AssemblyProduct("NCmdLiner.Example")]
@@ -44,5 +44,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
+[assembly: AssemblyInformationalVersion("1.0.0.0 for .NET")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
