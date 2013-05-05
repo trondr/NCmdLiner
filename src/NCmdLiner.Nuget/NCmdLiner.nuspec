@@ -6,9 +6,9 @@
     <title>NCmdLiner</title>
     <authors>github.com/trondr</authors>
     <owners>github.com/trondr</owners>
-    <licenseUrl>http://www.opensource.org/licenses/BSD-3-Clause</licenseUrl>
-    <projectUrl>https://github.com/trondr</projectUrl>
-    <iconUrl>https://github.com/trondr/NCmdLiner.ico</iconUrl>
+    <licenseUrl>https://github.com/trondr/NCmdLiner/blob/master/License.md</licenseUrl>
+    <projectUrl>https://github.com/trondr/NCmdLiner/blob/master/README.md</projectUrl>
+    <iconUrl>https://github.com/trondr/NCmdLiner/blob/master/src/NCmdLiner.Graphics/NCmdLiner.ico?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NCmdLiner</description>
     <copyright>NCmdLiner</copyright>

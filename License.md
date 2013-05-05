@@ -1,5 +1,5 @@
-NCmdLiner License
------------------
+NCmdLiner License (BSD New)
+---------------------------
 
 Copyright &#169; 2013, &lt;github.com/trondr&gt;
 
