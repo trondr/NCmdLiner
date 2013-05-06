@@ -45,6 +45,8 @@
     <file src="net45\NCmdLiner.dll" target="lib\net45" />
     <file src="net45\NCmdLiner.pdb" target="lib\net45" />
     
+	<file src="**\*.cs" target="src" />
+	
     <file src="Install.ps1" target="tools" />
   </files>
 </package>
