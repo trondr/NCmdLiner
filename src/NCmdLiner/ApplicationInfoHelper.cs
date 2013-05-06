@@ -43,15 +43,15 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_applicationVersion))
                 {
-                    Assembly assembly = Assembly.GetEntryAssembly();
-                    if (assembly == null)
+                    Assembly assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+                    AssemblyInformationalVersionAttribute informationalVersionAttribute = Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute), false) as AssemblyInformationalVersionAttribute;
+                    if (informationalVersionAttribute != null)
                     {
-                        assembly = Assembly.GetExecutingAssembly();
+                        _applicationVersion = informationalVersionAttribute.InformationalVersion;    
                     }
-                    _applicationVersion = ((AssemblyInformationalVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute), false)).InformationalVersion;
                     if (string.IsNullOrEmpty(_applicationVersion))
                     {
-                        _applicationVersion = ((AssemblyVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyVersionAttribute), false)).Version;
+                        _applicationVersion = assembly.GetName().Version.ToString();
                     }
                 }
                 return _applicationVersion;
