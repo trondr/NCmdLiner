@@ -40,9 +40,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyDialogMessenger.cs" />
+    <Compile Include="MessengerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessengerForm.Designer.cs">
+      <DependentUpon>MessengerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,6 +69,9 @@
     <Content Include="Debug.txt" />
     <EmbeddedResource Include="License\1.NCmdLiner License.xml" />
     <EmbeddedResource Include="License\0.NCmdLiner.Example License.xml" />
+    <EmbeddedResource Include="MessengerForm.resx">
+      <DependentUpon>MessengerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

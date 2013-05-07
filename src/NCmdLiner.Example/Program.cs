@@ -7,10 +7,6 @@
 // All rights reserved.
 
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Threading;
 using NCmdLiner.Attributes;
 
 namespace NCmdLiner.Example
@@ -21,16 +17,18 @@ namespace NCmdLiner.Example
         {
             try
             {
-                //Override some application info to modify the header of the auto documentation
+                //Optional: Override some application info to modify the header of the auto documentation
                 IApplicationInfo exampleApplicationInfo = new ApplicationInfo();
-                exampleApplicationInfo.Authors = "example@example.com, example2@example.com"; //Set the optional authors property
-                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013"; //Override the assembly info copyright property
-                
-                //Extend the default console messenger to show the help text in Notepad.exe as well as the default console:
-                IMessenger notepadMessenger = new NotepadMessenger(new ConsoleMessenger());
+                //Set the optional authors property
+                exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
+                //Override the assembly info copyright property
+                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013";
+
+                //Optional: Extend the default console messenger to show the help text in a form as well as the default console
+                IMessenger messenger = new MyDialogMessenger(new ConsoleMessenger());
 
                 //Now parse and run the command line
-                CmdLinery.Run(typeof(ExampleCommands), args, exampleApplicationInfo, notepadMessenger);
+                CmdLinery.Run(typeof(ExampleCommands), args, exampleApplicationInfo, messenger);
                 
                 //By default he application info will be exctracted from the executing assembly meta data (assembly info)
                 //and the help text will be output using the default ConsoleMessenger. If the default behaviour
@@ -192,44 +190,5 @@ namespace NCmdLiner.Example
             Console.WriteLine("Finished echoing the input parameters.");
         }
 
-    }
-
-    public class NotepadMessenger: IMessenger
-    {
-        private readonly StringBuilder _message = new StringBuilder();
-        private readonly IMessenger _defaultMessenger;
-
-        public NotepadMessenger(IMessenger defaultMessenger)
-        {            
-            _defaultMessenger = defaultMessenger;
-        }
-
-        public void Write(string formatMessage, params object[] args)
-        {
-            _message.Append(string.Format(formatMessage,args));
-            _defaultMessenger.Write(formatMessage,args);
-        }
-
-        public void WriteLine(string formatMessage, params object[] args)
-        {
-            _message.Append(string.Format(formatMessage, args) + Environment.NewLine);
-            _defaultMessenger.WriteLine(formatMessage, args);
-        }
-
-        public void Show()
-        {
-            string tempFileName = Path.GetTempFileName();
-            using (StreamWriter sw = new StreamWriter(tempFileName))
-            {
-                sw.Write(_message.ToString());
-            }
-            Process.Start("Notepad.exe", tempFileName);
-            Thread.Sleep(2000); //Wait until Notepad has started before deleting the temporary file
-            if (File.Exists(tempFileName))
-            {
-                File.Delete(tempFileName);
-            }
-            _defaultMessenger.Show();
-        }
     }
 }
