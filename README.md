@@ -28,7 +28,7 @@ NCmdLiner is derived from the NConsoler project http://nconsoler.csharpus.com
 
 ## Installation
 
-NCmdLiner will soon be available via Nuget Package Manager.
+NCmdLiner is installed into your project by Nuget Package Manager
 
 ## Example
 
