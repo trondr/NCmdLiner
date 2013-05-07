@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NCmdLiner</description>
     <copyright>NCmdLiner</copyright>
-    <tags>Self Documenting Command Line Parser</tags>
+    <tags>command line parser parser automatic help syntax example commands switch options console application shell</tags>
     <references>
       <reference file="NCmdLiner.dll" />
     </references>

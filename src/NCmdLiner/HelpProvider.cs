@@ -20,7 +20,7 @@ namespace NCmdLiner
     {
         private readonly IMessenger _messenger;
         private int _commandColumnWidth;
-        private HelpProvider(){}
+        private HelpProvider() { }
         public HelpProvider(IMessenger messenger)
         {
             if (messenger == null) throw new ArgumentNullException("messenger");
@@ -131,13 +131,13 @@ namespace NCmdLiner
                 _messenger.WriteLine("---------");
 
                 ShowCommandRuleHelp(
-                    new CommandRule {Command = new Command {Description = "Display this help text", Name = "Help"}},
+                    new CommandRule { Command = new Command { Description = "Display this help text", Name = "Help" } },
                     false, applicationInfo);
                 ShowCommandRuleHelp(
-                    new CommandRule {Command = new Command {Description = "Display license", Name = "License"}}, false,
+                    new CommandRule { Command = new Command { Description = "Display license", Name = "License" } }, false,
                     applicationInfo);
                 ShowCommandRuleHelp(
-                    new CommandRule {Command = new Command {Description = "Display credits", Name = "Credits"}}, false,
+                    new CommandRule { Command = new Command { Description = "Display credits", Name = "Credits" } }, false,
                     applicationInfo);
 
                 foreach (CommandRule commandRule in commandRules)
@@ -358,18 +358,15 @@ namespace NCmdLiner
                             string.Format("[Required] {0}  Alternative parameter name: /{1}",
                                           requiredCommandParameter.Description, requiredCommandParameter.AlternativeName),
                             _commandColumnWidth, MaxWidth - _commandColumnWidth));
-                    exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name,
-                                                       requiredCommandParameter.ExampleValue));
+                    exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(requiredCommandParameter.AlternativeName))
                     {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ",
-                                                                      requiredCommandParameter.AlternativeName,
-                                                                      requiredCommandParameter.ExampleValue));
+                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.AlternativeName, ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     }
                     else
                     {
                         alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name,
-                                                                      requiredCommandParameter.ExampleValue));
+                                                                      ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     }
                 }
                 foreach (OptionalCommandParameter optionalCommandParameter in commandRule.Command.OptionalParameters)
@@ -379,20 +376,20 @@ namespace NCmdLiner
                         FormatCommandDescription(
                             string.Format("[Optional] {0}  Alternative parameter name: /{1}. Default value: {2} ",
                                           optionalCommandParameter.Description, optionalCommandParameter.AlternativeName,
-                                          optionalCommandParameter.DefaultValue), _commandColumnWidth,
+                                          ObjectValue2String(optionalCommandParameter.DefaultValue)), _commandColumnWidth,
                             MaxWidth - _commandColumnWidth));
                     exampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name,
-                                                       optionalCommandParameter.ExampleValue));
+                                                       ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(optionalCommandParameter.AlternativeName))
                     {
                         alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ",
                                                                       optionalCommandParameter.AlternativeName,
-                                                                      optionalCommandParameter.ExampleValue));
+                                                                      ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     }
                     else
                     {
                         alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name,
-                                                                      optionalCommandParameter.ExampleValue));
+                                                                      ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     }
                 }
                 helpString.Append(Environment.NewLine);
@@ -403,6 +400,30 @@ namespace NCmdLiner
                 helpString.Append(Environment.NewLine);
             }
             _messenger.Write(helpString.ToString());
+        }
+
+        private static string ObjectValue2String(object objectValue)
+        {
+            if (objectValue is Array)
+            {
+                StringBuilder arrayString = new StringBuilder();
+                Array array = (Array)objectValue;
+                arrayString.Append("[");
+                for (int i = 0; i < array.Length; i++)
+                {
+                    object value = array.GetValue(i);
+                    if (value is string || value is char)
+                        arrayString.Append("'");
+                    arrayString.Append(array.GetValue(i));
+                    if (value is string || value is char)
+                        arrayString.Append("'");
+                    if (i < array.Length - 1)
+                        arrayString.Append(";");
+                }
+                arrayString.Append("]");
+                return arrayString.ToString().TrimEnd(';');
+            }
+            return objectValue as string;
         }
 
         /// <summary>   Format command parameter. </summary>

@@ -27,7 +27,7 @@ namespace NCmdLiner
                     string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(ExeFilePath);
                     if (fileNameWithoutExtension != null)
                         _applicationName =
-                            fileNameWithoutExtension.Replace('.', ' ').Replace("Gui", "").Replace("Console", "");
+                            fileNameWithoutExtension.Replace(".Gui", "").Replace(".Console", "").Replace('.', ' ');
                 }
                 return _applicationName;
             }

@@ -18,4 +18,3 @@ IF NOT %BuildErrorLevel% == 0 Set BuildMessage=Failed to build %ProductName%
 
 :End
 Echo %BuildMessage%
-pause
