@@ -21,7 +21,6 @@ namespace NCmdLiner
     internal class ArrayParser : IArrayParser
     {
         #region Implementation of IArrayParser
-
         /// <summary>
         /// Parse array of values
         /// </summary>

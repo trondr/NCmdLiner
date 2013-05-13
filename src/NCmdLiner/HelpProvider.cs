@@ -334,15 +334,14 @@ namespace NCmdLiner
         /// <param name="commandRule">          The command rule. </param>
         /// <param name="includeParameters">    true to include, false to exclude the parameters. </param>
         /// <param name="applicationInfo">      Information describing the application. </param>
-        private void ShowCommandRuleHelp(CommandRule commandRule, bool includeParameters,
-                                         IApplicationInfo applicationInfo)
+        private void ShowCommandRuleHelp(CommandRule commandRule, bool includeParameters, IApplicationInfo applicationInfo)
         {
+            IValueConverter valueConverter = new ValueConverter();
             StringBuilder helpString = new StringBuilder();
             StringBuilder exampleString = new StringBuilder();
             StringBuilder alternativeExampleString = new StringBuilder();
             helpString.Append(FormatCommand(commandRule.Command.Name));
-            helpString.Append(FormatCommandDescription(commandRule.Command.Description, _commandColumnWidth,
-                                                       MaxWidth - _commandColumnWidth));
+            helpString.Append(FormatCommandDescription(commandRule.Command.Description, _commandColumnWidth, MaxWidth - _commandColumnWidth));
             if (includeParameters)
             {
                 if (Type.GetType("Mono.Runtime") != null)
@@ -353,20 +352,15 @@ namespace NCmdLiner
                 foreach (RequiredCommandParameter requiredCommandParameter in commandRule.Command.RequiredParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + requiredCommandParameter.Name));
-                    helpString.Append(
-                        FormatCommandDescription(
-                            string.Format("[Required] {0}  Alternative parameter name: /{1}",
-                                          requiredCommandParameter.Description, requiredCommandParameter.AlternativeName),
-                            _commandColumnWidth, MaxWidth - _commandColumnWidth));
-                    exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, ObjectValue2String(requiredCommandParameter.ExampleValue)));
+                    helpString.Append(FormatCommandDescription(string.Format("[Required] {0}  Alternative parameter name: /{1}", requiredCommandParameter.Description, requiredCommandParameter.AlternativeName), _commandColumnWidth, MaxWidth - _commandColumnWidth));
+                    exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(requiredCommandParameter.AlternativeName))
                     {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.AlternativeName, ObjectValue2String(requiredCommandParameter.ExampleValue)));
+                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.AlternativeName, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     }
                     else
                     {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name,
-                                                                      ObjectValue2String(requiredCommandParameter.ExampleValue)));
+                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     }
                 }
                 foreach (OptionalCommandParameter optionalCommandParameter in commandRule.Command.OptionalParameters)
@@ -375,21 +369,17 @@ namespace NCmdLiner
                     helpString.Append(
                         FormatCommandDescription(
                             string.Format("[Optional] {0}  Alternative parameter name: /{1}. Default value: {2} ",
-                                          optionalCommandParameter.Description, optionalCommandParameter.AlternativeName,
-                                          ObjectValue2String(optionalCommandParameter.DefaultValue)), _commandColumnWidth,
+                                          optionalCommandParameter.Description, optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.DefaultValue)), _commandColumnWidth,
                             MaxWidth - _commandColumnWidth));
-                    exampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name,
-                                                       ObjectValue2String(optionalCommandParameter.ExampleValue)));
+                    exampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(optionalCommandParameter.AlternativeName))
                     {
                         alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ",
-                                                                      optionalCommandParameter.AlternativeName,
-                                                                      ObjectValue2String(optionalCommandParameter.ExampleValue)));
+                                                                      optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     }
                     else
                     {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name,
-                                                                      ObjectValue2String(optionalCommandParameter.ExampleValue)));
+                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     }
                 }
                 helpString.Append(Environment.NewLine);
@@ -401,31 +391,7 @@ namespace NCmdLiner
             }
             _messenger.Write(helpString.ToString());
         }
-
-        private static string ObjectValue2String(object objectValue)
-        {
-            if (objectValue is Array)
-            {
-                StringBuilder arrayString = new StringBuilder();
-                Array array = (Array)objectValue;
-                arrayString.Append("[");
-                for (int i = 0; i < array.Length; i++)
-                {
-                    object value = array.GetValue(i);
-                    if (value is string || value is char)
-                        arrayString.Append("'");
-                    arrayString.Append(array.GetValue(i));
-                    if (value is string || value is char)
-                        arrayString.Append("'");
-                    if (i < array.Length - 1)
-                        arrayString.Append(";");
-                }
-                arrayString.Append("]");
-                return arrayString.ToString().TrimEnd(';');
-            }
-            return objectValue as string;
-        }
-
+        
         /// <summary>   Format command parameter. </summary>
         ///
         /// <remarks>   trond, 2013-05-01. </remarks>

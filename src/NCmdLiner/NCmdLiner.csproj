@@ -96,6 +96,7 @@
     <Compile Include="IApplicationInfo.cs" />
     <Compile Include="IArrayParser.cs" />
     <Compile Include="IMessenger.cs" />
+    <Compile Include="IValueConverter.cs" />
     <Compile Include="License\ILicenseInfo.cs" />
     <Compile Include="License\ILicenseProvider.cs" />
     <Compile Include="License\LicenseInfo.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Resources\IEmbeddedResource.cs" />
     <Compile Include="StringToObject.cs" />
     <Compile Include="TextFormater.cs" />
+    <Compile Include="ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NCmdLiner.pfx" />
