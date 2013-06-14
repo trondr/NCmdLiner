@@ -8,7 +8,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
+using System.Runtime.Serialization.Formatters.Binary;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -74,10 +78,17 @@ namespace NCmdLiner
                 commandRule.Method.Invoke(null, parameterArrray);
             }
             catch (TargetInvocationException ex)
-            {
+            {   
+             
                 if (ex.InnerException != null)
-                {
-                    throw ex.InnerException;
+                {                    
+                    MethodInfo prepForRemoting = typeof(Exception).GetMethod("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (prepForRemoting != null)
+                    {
+                        //Preserve stack trace before re-throwing inner exception
+                        prepForRemoting.Invoke(ex.InnerException, new object[0]);
+                        throw ex.InnerException;
+                    }
                 }
                 throw;
             }
