@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CommandRuleProviderUnitTests.cs" />
     <Compile Include="CommandRuleUnitTests.cs" />
+    <Compile Include="TestCommands4.cs" />
     <Compile Include="ValueConverterTests.cs" />
     <Compile Include="ParseArrayTests.cs" />
     <Compile Include="TestCommands0.cs" />

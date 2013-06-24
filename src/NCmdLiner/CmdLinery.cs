@@ -8,33 +8,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization.Formatters.Binary;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
     public class CmdLinery
     {
-        public static void Run(Type targetType, string[] args)
+        public static int Run(Type targetType, string[] args)
         {
-            Run(targetType,args,new ApplicationInfo(), new ConsoleMessenger());
+            return Run(targetType,args,new ApplicationInfo(), new ConsoleMessenger());
         }
 
-        public static void Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
         {
-            Run(targetType, args, applicationInfo, new ConsoleMessenger());
+            return Run(targetType, args, applicationInfo, new ConsoleMessenger());
         }
 
-        public static void Run(Type targetType, string[] args, IMessenger messenger)
+        public static int Run(Type targetType, string[] args, IMessenger messenger)
         {
-            Run(targetType, args, new ApplicationInfo(), messenger);
+            return Run(targetType, args, new ApplicationInfo(), messenger);
         }
 
-        public static void Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
@@ -56,17 +52,17 @@ namespace NCmdLiner
                     helpForCommandRule = commandRules.Find(rule => rule.Command.Name == helpForCommandName);
                 }
                 helpProvider.ShowHelp(commandRules, helpForCommandRule, applicationInfo);                
-                return;
+                return 0;
             }
             if (helpProvider.IsLicenseRequested(commandName))
             {
                 helpProvider.ShowLicense(applicationInfo);                
-                return;
+                return 0;
             }
             if (helpProvider.IsCreditsRequested(commandName))
             {
                 helpProvider.ShowCredits(applicationInfo);                
-                return;
+                return 0;
             }
 
             CommandRule commandRule = commandRules.Find(rule => rule.Command.Name == commandName);
@@ -75,7 +71,12 @@ namespace NCmdLiner
             object[] parameterArrray = commandRule.BuildMethodParameters();
             try
             {
-                commandRule.Method.Invoke(null, parameterArrray);
+                object returnValue = commandRule.Method.Invoke(null, parameterArrray);
+                if (returnValue is int)
+                {
+                    return (int) returnValue;
+                }
+                return 0;
             }
             catch (TargetInvocationException ex)
             {   

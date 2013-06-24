@@ -24,6 +24,7 @@ namespace NCmdLiner.Tests
             TestCommands1.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands2.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands3.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommands4.TestLogger = _mockRepository.StrictMock<ITestLogger>();
         }
 
         [TearDown]
@@ -201,6 +202,17 @@ namespace NCmdLiner.Tests
             _mockRepository.ReplayAll();
             CmdLinery.Run(typeof (TestCommands1), new string[] {"Help"}, new TestApplicationInfo());
             _mockRepository.VerifyAll();
+        }
+
+        [Test]
+        public static void CommandWithReturnValueTest()
+        {
+            Expect.Call(TestCommands4.TestLogger.Write("Running CommandWithReturnValue(\"parameter 1 value\")")).Return(null);
+            _mockRepository.ReplayAll();
+            const int expected = 10;
+            int actual = CmdLinery.Run(typeof(TestCommands4), new string[] { "CommandWithReturnValue", "/parameter1=\"parameter 1 value\"" }, new TestApplicationInfo());
+            _mockRepository.VerifyAll();
+            Assert.AreEqual(expected,actual,"Return value was not equal.");
         }
     }
 }
