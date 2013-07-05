@@ -75,6 +75,7 @@
     <Compile Include="Exceptions\InvalidConversionException.cs" />
     <Compile Include="Exceptions\InvalidDateTimeFormatException.cs" />
     <Compile Include="Exceptions\InvalidValueException.cs" />
+    <Compile Include="Exceptions\MissingDefaultValueException.cs" />
     <Compile Include="Exceptions\NCmdLinerException.cs" />
     <Compile Include="Exceptions\CommandRuleNotValidatedExption.cs" />
     <Compile Include="CommandRuleProvider.cs" />

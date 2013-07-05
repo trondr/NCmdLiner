@@ -140,6 +140,16 @@ namespace NCmdLiner.Tests
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void Parse2ItemArrayStringReturn2ItemArray()
+        {
+            const string arrayString = "{'MS.*.dll';'MS.*.exe'}";
+            IArrayParser target = new ArrayParser();
+            var actual = target.Parse(arrayString);
+            var expected = new string[] { "MS.*.dll", "MS.*.exe" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Corrupt tests

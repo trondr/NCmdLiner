@@ -6,6 +6,8 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using NCmdLiner.Exceptions;
+
 namespace NCmdLiner.Attributes
 {
     /// <summary>
@@ -13,11 +15,28 @@ namespace NCmdLiner.Attributes
     /// </summary>
     public sealed class OptionalCommandParameterAttribute : CommandParameterAttribute
     {
+        private object _defaultValue;
+        private bool _defaultValueHasBeenSet;
+
         /// <summary>
         /// Get default value
         /// </summary>
-        public object DefaultValue { get; set; }
-
+        public object DefaultValue
+        {
+            get
+            {
+                if (!_defaultValueHasBeenSet)
+                {
+                    throw new MissingDefaultValueException(string.Format("Missing default value for optional parameter with alternative name '{0}'",this.AlternativeName));
+                }
+                return _defaultValue;
+            }
+            set
+            {
+                _defaultValue = value;
+                _defaultValueHasBeenSet = true;
+            }
+        }
 
         public OptionalCommandParameterAttribute()
         {

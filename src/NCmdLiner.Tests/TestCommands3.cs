@@ -17,7 +17,7 @@ namespace NCmdLiner.Tests
 
         [Command(Description = "CommandWithOneOptionalStringParameterWithoutExampleValue description")]
         public static void CommandWithOneOptionalStringParameterWithoutExampleValue(
-            [OptionalCommandParameter(Description = "Optional parameter 1 description")] string parameter1
+            [OptionalCommandParameter(Description = "Optional parameter 1 description", AlternativeName = "p1", DefaultValue = "A default value")] string parameter1
             )
         {
             string msg = string.Format("Running CommandWithOneOptionalStringParameterWithoutExampleValue(\"{0}\")",

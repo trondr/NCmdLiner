@@ -58,8 +58,7 @@ namespace NCmdLiner
                 if (attributes[0] is OptionalCommandParameterAttribute)
                 {
                     optionalParamterFound = true;
-                    OptionalCommandParameterAttribute optionalCommandParameterAttribute =
-                        (OptionalCommandParameterAttribute) attributes[0];
+                    OptionalCommandParameterAttribute optionalCommandParameterAttribute = (OptionalCommandParameterAttribute) attributes[0];        
                     commandRule.Command.OptionalParameters.Add(
                         new OptionalCommandParameter(optionalCommandParameterAttribute.DefaultValue)
                             {

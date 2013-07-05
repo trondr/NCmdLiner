@@ -25,6 +25,7 @@ namespace NCmdLiner.Tests
             TestCommands2.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands3.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands4.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommands5.TestLogger = _mockRepository.StrictMock<ITestLogger>();
         }
 
         [TearDown]
@@ -39,17 +40,17 @@ namespace NCmdLiner.Tests
         {
             Expect.Call(TestCommands1.TestLogger.Write("Running CommandWithNoParameters")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1), new string[] {"CommandWithNoParameters"}, new TestApplicationInfo());
+            CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithNoParameters" }, new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
 
         [Test]
-        [ExpectedException(typeof (NCmdLinerException), ExpectedMessage = "Concoler test exception message")]
+        [ExpectedException(typeof(NCmdLinerException), ExpectedMessage = "Concoler test exception message")]
         public static void RunCommandWithNoParametersThrowingException()
         {
             Expect.Call(TestCommands1.TestLogger.Write("Running CommandWithNoParametersThrowingException")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1), new string[] {"CommandWithNoParametersThrowingException"},
+            CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithNoParametersThrowingException" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
@@ -61,15 +62,14 @@ namespace NCmdLiner.Tests
                 TestCommands1.TestLogger.Write(
                     "Running CommandWithRequiredStringParameter(\"required parameter1 value\")")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1),
-                          new string[]
-                              {"CommandWithRequiredStringParameter", "/parameter1=\"required parameter1 value\""},
+            CmdLinery.Run(typeof(TestCommands1),
+                          new string[] { "CommandWithRequiredStringParameter", "/parameter1=\"required parameter1 value\"" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
 
         [Test]
-        [ExpectedException(typeof (MissingCommandParameterException),
+        [ExpectedException(typeof(MissingCommandParameterException),
             ExpectedMessage = "Required parameter is missing: parameter1")]
         public static void RunCommandWithRequiredStringParameterNotSet()
         {
@@ -77,7 +77,7 @@ namespace NCmdLiner.Tests
                 TestCommands1.TestLogger.Write(
                     "Running CommandWithRequiredStringParameter(\"required parameter1 value\")")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1), new string[] {"CommandWithRequiredStringParameter"},
+            CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithRequiredStringParameter" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
@@ -89,9 +89,8 @@ namespace NCmdLiner.Tests
                 TestCommands1.TestLogger.Write(
                     "Running CommandWithOptionalStringParameter(\"optional parameter1 value\")")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1),
-                          new string[]
-                              {"CommandWithOptionalStringParameter", "/parameter1=\"optional parameter1 value\""},
+            CmdLinery.Run(typeof(TestCommands1),
+                          new string[] { "CommandWithOptionalStringParameter", "/parameter1=\"optional parameter1 value\"" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
@@ -103,7 +102,7 @@ namespace NCmdLiner.Tests
                 TestCommands1.TestLogger.Write(
                     "Running CommandWithOptionalStringParameter(\"parameter1 default value\")")).Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1), new string[] {"CommandWithOptionalStringParameter"},
+            CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithOptionalStringParameter" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
@@ -116,7 +115,7 @@ namespace NCmdLiner.Tests
                     "Running CommandWithOneRequiredAndOptionalStringParameter(\"parameter 1 value\",\"parameter 2 value\")"))
                   .Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1),
+            CmdLinery.Run(typeof(TestCommands1),
                           new string[]
                               {
                                   "CommandWithOneRequiredAndOptionalStringParameter",
@@ -134,7 +133,7 @@ namespace NCmdLiner.Tests
                     "Running CommandWithOneRequiredAndOptionalStringParameter(\"parameter 1 value\",\"parameter 2 value\")"))
                   .Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1),
+            CmdLinery.Run(typeof(TestCommands1),
                           new string[]
                               {
                                   "CommandWithOneRequiredAndOptionalStringParameter",
@@ -152,15 +151,14 @@ namespace NCmdLiner.Tests
                     "Running CommandWithOneRequiredAndOptionalStringParameter(\"parameter 1 value\",\"parameter 2 default value\")"))
                   .Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1),
-                          new string[]
-                              {"CommandWithOneRequiredAndOptionalStringParameter", "/parameter1=\"parameter 1 value\""},
+            CmdLinery.Run(typeof(TestCommands1),
+                          new string[] { "CommandWithOneRequiredAndOptionalStringParameter", "/parameter1=\"parameter 1 value\"" },
                           new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
 
 
-        [ExpectedException(typeof (MissingExampleValueException))]
+        [ExpectedException(typeof(MissingExampleValueException))]
         [Test]
         public static void RunCommandWithOneRequiredStringParameterWithoutExampleValueThrowMissingExampleValueException()
         {
@@ -169,7 +167,7 @@ namespace NCmdLiner.Tests
                     "Running CommandWithOneRequiredStringParameterWithoutExampleValue(\"parameter 1 value\")"))
                   .Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands2),
+            CmdLinery.Run(typeof(TestCommands2),
                           new string[]
                               {
                                   "CommandWithOneRequiredStringParameterWithoutExampleValue",
@@ -178,7 +176,7 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
         }
 
-        [ExpectedException(typeof (MissingExampleValueException))]
+        [ExpectedException(typeof(MissingExampleValueException))]
         [Test]
         public static void RunCommandWithOneOptionalStringParameterWithoutExampleValueThrowMissingExampleValueException()
         {
@@ -187,7 +185,7 @@ namespace NCmdLiner.Tests
                     "Running CommandWithOneOptionalStringParameterWithoutExampleValue(\"parameter 1 value\")"))
                   .Return(null);
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands3),
+            CmdLinery.Run(typeof(TestCommands3),
                           new string[]
                               {
                                   "CommandWithOneOptionalStringParameterWithoutExampleValue",
@@ -196,11 +194,30 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
         }
 
+        [ExpectedException(typeof(MissingDefaultValueException))]
+        [Test]
+        public static void RunCommandWithNoOptionalDefaultValueThrowMissingExampleValueException()
+        {
+            Expect.Call(
+                TestCommands5.TestLogger.Write(
+                    "Running CommandWithNoOptionalDefaultValue(\"parameter 1 value\")"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(typeof(TestCommands5),
+                          new string[]
+                              {
+                                  "CommandWithNoOptionalDefaultValue",
+                                  "/parameter1=\"parameter 1 value\""
+                              }, new TestApplicationInfo());
+            _mockRepository.VerifyAll();
+        }
+
+
         [Test]
         public static void ShowHelpTest()
         {
             _mockRepository.ReplayAll();
-            CmdLinery.Run(typeof (TestCommands1), new string[] {"Help"}, new TestApplicationInfo());
+            CmdLinery.Run(typeof(TestCommands1), new string[] { "Help" }, new TestApplicationInfo());
             _mockRepository.VerifyAll();
         }
 
@@ -212,7 +229,10 @@ namespace NCmdLiner.Tests
             const int expected = 10;
             int actual = CmdLinery.Run(typeof(TestCommands4), new string[] { "CommandWithReturnValue", "/parameter1=\"parameter 1 value\"" }, new TestApplicationInfo());
             _mockRepository.VerifyAll();
-            Assert.AreEqual(expected,actual,"Return value was not equal.");
+            Assert.AreEqual(expected, actual, "Return value was not equal.");
         }
+
+
+
     }
 }

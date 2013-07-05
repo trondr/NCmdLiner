@@ -59,7 +59,7 @@ namespace NCmdLiner
             if (!value.Contains(quote.ToString(CultureInfo.InvariantCulture)))
             {
                 //Quotes is not beeing used, just split on delimiter
-                return value.Split(new char[] {delimiter});
+                return value.Split(new[] {delimiter});
             }
 
             //Quotes is beeing used, use regular expression to parse the csv format.
@@ -85,6 +85,12 @@ namespace NCmdLiner
                 Console.WriteLine("index : " + matchResult.Index);
                 Console.WriteLine("length: " + matchResult.Length);
 #endif
+                if (matchResult.Index == value.Length && value[value.Length - 1] != delimiter)
+                {
+                    //Skip empty match at the end of value string
+                    matchResult = matchResult.NextMatch();
+                    continue;
+                }
                 resultList.Add(matchResult.Groups[2].Value);
                 matchResult = matchResult.NextMatch();
             }
@@ -98,20 +104,20 @@ namespace NCmdLiner
             if (value.Length == 0) return value;
             if ((value[0] == '{') && (value[value.Length - 1] == '}'))
             {
-                return value.Trim(new char[] {'{', '}'});
+                return value.Trim(new[] {'{', '}'});
             }
 
             if ((value[0] == '[') && (value[value.Length - 1] == ']'))
             {
-                return value.Trim(new char[] {'[', ']'});
+                return value.Trim(new[] {'[', ']'});
             }
             return value;
         }
 
         private static void GetDelimiterAndQuote(string value, out char delimiter, out char quote)
         {
-            char[] supportedDelimiters = new char[] {';', '+', '|'};
-            char[] supportedQuotes = new char[] {'\''};
+            char[] supportedDelimiters = new[] {';', '+', '|'};
+            char[] supportedQuotes = new[] {'\''};
             foreach (char q in supportedQuotes)
             {
                 foreach (char d in supportedDelimiters)
