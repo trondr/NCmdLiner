@@ -18,5 +18,7 @@ namespace NCmdLiner.Tests
             TestLogger.Write(msg);
             return 10;
         }
+        
+
     }
 }

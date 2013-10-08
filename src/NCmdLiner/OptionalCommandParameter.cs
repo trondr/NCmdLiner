@@ -6,6 +6,8 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using System;
+
 namespace NCmdLiner
 {
     public class OptionalCommandParameter : CommandParameter
@@ -16,6 +18,7 @@ namespace NCmdLiner
 
         public OptionalCommandParameter(object defaultValue)
         {
+            if(defaultValue == null) throw new ArgumentNullException("defaultValue","Default value is null");
             DefaultValue = defaultValue;
         }
 

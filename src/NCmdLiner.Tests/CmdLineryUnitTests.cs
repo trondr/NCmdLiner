@@ -26,6 +26,7 @@ namespace NCmdLiner.Tests
             TestCommands3.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands4.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands5.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommands6.TestLogger = _mockRepository.StrictMock<ITestLogger>();
         }
 
         [TearDown]
@@ -212,6 +213,23 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
         }
 
+        //[ExpectedException(typeof(MissingDefaultValueException))]
+        [Test]
+        public static void RunCommandWithNullOptionalDefaultValue()
+        {
+            Expect.Call(
+                TestCommands6.TestLogger.Write(
+                    "Running CommandWithNullOptionalDefaultValue(\"parameter 1 value\")"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(typeof(TestCommands6),
+                          new string[]
+                              {
+                                  "CommandWithNullOptionalDefaultValue",
+                                  "/parameter1=\"parameter 1 value\""
+                              }, new TestApplicationInfo());
+            _mockRepository.VerifyAll();
+        }
 
         [Test]
         public static void ShowHelpTest()

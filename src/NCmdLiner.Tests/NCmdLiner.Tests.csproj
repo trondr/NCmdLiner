@@ -52,6 +52,7 @@
     <Compile Include="CommandRuleUnitTests.cs" />
     <Compile Include="TestCommands4.cs" />
     <Compile Include="TestCommands5.cs" />
+    <Compile Include="TestCommands6.cs" />
     <Compile Include="ValueConverterTests.cs" />
     <Compile Include="ParseArrayTests.cs" />
     <Compile Include="TestCommands0.cs" />

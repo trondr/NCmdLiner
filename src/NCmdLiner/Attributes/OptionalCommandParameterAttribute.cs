@@ -33,7 +33,7 @@ namespace NCmdLiner.Attributes
             }
             set
             {
-                _defaultValue = value;
+                _defaultValue = value?? string.Empty;
                 _defaultValueHasBeenSet = true;
             }
         }
