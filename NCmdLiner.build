@@ -205,7 +205,7 @@
 	<Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ProductProjectNugetBuildOutputDirectory)\src\%(RecursiveDir)" />
 	
     <Copy SourceFiles="$(ProductProjectNugetSrcDirectory)\Tools\Install.ps1" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\Install.ps1" />
-	  <Exec Command="&quot;$(MSBuildProjectDirectory)\Tls\NMultiTool.Console.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET20\$(ProductName).dll&quot;" />
+	<Exec Command="&quot;$(MSBuildProjectDirectory)\Tls\NMultiTool.Console.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET20\$(ProductName).dll&quot;" />
     <Exec Command="&quot;$(MSBuildProjectDirectory)\Tls\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
 </Target>
   
