@@ -92,20 +92,52 @@ namespace NCmdLiner
 
         public List<CommandRule> GetCommandRules(Type targetType)
         {
+            return GetCommandRules(new Type[] {targetType});
+        }
+
+        //public List<CommandRule> GetCommandRules(Type targetType)
+        //{
+        //    List<CommandRule> commandRules = new List<CommandRule>();
+        //    MethodInfo[] methods =
+        //        targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+        //    foreach (MethodInfo method in methods)
+        //    {
+        //        object[] customAttributes = method.GetCustomAttributes(false);
+        //        foreach (object customAttribute in customAttributes)
+        //        {
+        //            if (customAttribute is CommandAttribute)
+        //            {
+        //                commandRules.Add(GetCommandRule(method));
+        //            }
+        //        }
+        //    }
+        //    return commandRules;
+        //}
+
+        public List<CommandRule> GetCommandRules(Type[] targetTypes)
+        {
             List<CommandRule> commandRules = new List<CommandRule>();
-            MethodInfo[] methods =
-                targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-            foreach (MethodInfo method in methods)
+            foreach (Type targetType in targetTypes)
             {
-                object[] customAttributes = method.GetCustomAttributes(false);
-                foreach (object customAttribute in customAttributes)
+                MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+                foreach (MethodInfo method in methods)
                 {
-                    if (customAttribute is CommandAttribute)
+                    object[] customAttributes = method.GetCustomAttributes(false);
+                    foreach (object customAttribute in customAttributes)
                     {
-                        commandRules.Add(GetCommandRule(method));
+                        if (customAttribute is CommandAttribute)
+                        {
+                            CommandRule newCommandRule = GetCommandRule(method);
+                            CommandRule existingCommandRule = commandRules.Find(rule => rule.Command.Name == newCommandRule.Command.Name);
+                            if (existingCommandRule != null)
+                            {
+                                throw new DuplicateCommandException("A duplicate command has been defined: " + newCommandRule.Command.Name);
+                            }
+                            commandRules.Add(newCommandRule);
+                        }
                     }
-                }
-            }
+                }    
+            }            
             return commandRules;
         }
     }

@@ -60,6 +60,7 @@
     <Compile Include="ArrayParser.cs" />
     <Compile Include="Attributes\CommandAttibute.cs" />
     <Compile Include="Attributes\CommandParameterAttribute.cs" />
+    <Compile Include="Attributes\CommandsAttribute.cs" />
     <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
     <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
     <Compile Include="Command.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Credit\ICreditProvider.cs" />
     <Compile Include="Credit\CreditInfo.cs" />
     <Compile Include="Credit\CreditProvider.cs" />
+    <Compile Include="Exceptions\DuplicateCommandException.cs" />
     <Compile Include="Exceptions\InvalidArrayParseException.cs" />
     <Compile Include="Exceptions\InvalidConversionException.cs" />
     <Compile Include="Exceptions\InvalidDateTimeFormatException.cs" />

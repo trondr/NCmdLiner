@@ -53,6 +53,10 @@
     <Compile Include="TestCommands4.cs" />
     <Compile Include="TestCommands5.cs" />
     <Compile Include="TestCommands6.cs" />
+    <Compile Include="TestCommandsMulti1.cs" />
+    <Compile Include="TestCommandsMulti1Duplicate.cs" />
+    <Compile Include="TestCommandsMulti2.cs" />
+    <Compile Include="TestCommandsMulti2Duplicate.cs" />
     <Compile Include="ValueConverterTests.cs" />
     <Compile Include="ParseArrayTests.cs" />
     <Compile Include="TestCommands0.cs" />

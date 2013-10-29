@@ -6,7 +6,10 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using System;
 using NCmdLiner.Exceptions;
+using NCmdLiner.Tests.Multi1;
+using NCmdLiner.Tests.Multi2;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -27,6 +30,10 @@ namespace NCmdLiner.Tests
             TestCommands4.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands5.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommands6.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommandsMulti1.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommandsMulti2.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommandsMulti1Duplicate.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            TestCommandsMulti2Duplicate.TestLogger = _mockRepository.StrictMock<ITestLogger>();
         }
 
         [TearDown]
@@ -250,7 +257,29 @@ namespace NCmdLiner.Tests
             Assert.AreEqual(expected, actual, "Return value was not equal.");
         }
 
+        [Test]
+        public static void CommandsFromMultipleNamespaces()
+        {
+            Expect.Call(TestCommandsMulti2.TestLogger.Write("Running SecondCommand()")).Return(null);
+            _mockRepository.ReplayAll();
+            const int expected = 10;
+            int actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1), typeof(TestCommandsMulti2) }, new string[] { "SecondCommand" }, new TestApplicationInfo());
+            _mockRepository.VerifyAll();
+            Assert.AreEqual(expected, actual, "Return value was not equal.");
+        }
 
+
+        [Test]
+        [ExpectedException(typeof(DuplicateCommandException))]
+        public static void CommandsFromMultipleNamespacesDuplicateCommandThrowDuplicateCommandException()
+        {
+            Expect.Call(TestCommandsMulti2Duplicate.TestLogger.Write("Running FirstCommand()")).Return(null);
+            _mockRepository.ReplayAll();
+            const int expected = 10;
+            int actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1Duplicate), typeof(TestCommandsMulti2Duplicate) }, new string[] { "FirstCommand" }, new TestApplicationInfo());
+            _mockRepository.VerifyAll();
+            Assert.AreEqual(expected, actual, "Return value was not equal.");
+        }
 
     }
 }

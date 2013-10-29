@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleCommands1.cs" />
+    <Compile Include="ExampleCommands2.cs" />
     <Compile Include="MyDialogMessenger.cs" />
     <Compile Include="MessengerForm.cs">
       <SubType>Form</SubType>
