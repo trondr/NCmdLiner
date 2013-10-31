@@ -121,41 +121,6 @@ namespace NCmdLiner
             _validated = true;
         }
 
-        //public string Help()
-        //{
-        //    StringBuilder helpMessage = new StringBuilder();
-        //    helpMessage.Append(string.Format("Usage: {0} {1} ", ExeName, Command.Name));
-        //    foreach (CommandParameter requiredParameter in Command.RequiredParameters)
-        //    {
-        //        helpMessage.Append(string.Format("/{0}=\"<{1}>\" ", requiredParameter.Name, GetValidValuesHelp(requiredParameter.ValidValues)));
-        //    }
-        //    foreach (OptionalCommandParameter optionalParameter in Command.OptionalParameters)
-        //    {
-        //        helpMessage.Append(string.Format("[/{0}=\"<{1}>\"] ", optionalParameter.Name, GetValidValuesHelp(optionalParameter.ValidValues)));
-        //    }
-        //    helpMessage.Append(Environment.NewLine);
-        //    helpMessage.Append(string.Format("   {1} - [Command] {2}{0}", Environment.NewLine, Command.Name, Command.Description));
-        //    foreach (CommandParameter requiredParameter in Command.RequiredParameters)
-        //    {
-        //        helpMessage.Append(string.Format("   /{1}=\"<{2}>\" - [Required Parameter] {3}.{0}", Environment.NewLine, requiredParameter.Name, GetValidValuesHelp(requiredParameter.ValidValues), requiredParameter.Description));
-        //    }
-        //    foreach (OptionalCommandParameter optionalParameter in Command.OptionalParameters)
-        //    {
-        //        helpMessage.Append(string.Format("   /{1}=\"<{2}>\" - [Optional Parameter] {3}. Default value: {4}{0}", Environment.NewLine, optionalParameter.Name, GetValidValuesHelp(optionalParameter.ValidValues), optionalParameter.Description, optionalParameter.DefaultValue));
-        //    }
-        //    helpMessage.Append(string.Format("Example: {0} {1} ", ExeName, Command.Name));
-        //    foreach (CommandParameter requiredParameter in Command.RequiredParameters)
-        //    {
-        //        helpMessage.Append(string.Format("/{0}=\"{1}\" ", requiredParameter.Name, requiredParameter.ExampleValue));
-        //    }
-        //    foreach (OptionalCommandParameter optionalParameter in Command.OptionalParameters)
-        //    {
-        //        helpMessage.Append(string.Format("/{0}=\"{1}\" ", optionalParameter.Name, optionalParameter.ExampleValue));
-        //    }
-        //    helpMessage.Append(Environment.NewLine);
-        //    return helpMessage.ToString();
-        //}
-
         private string ExeName
         {
             get
@@ -168,6 +133,8 @@ namespace NCmdLiner
             }
             set { _exeName = value; }
         }
+
+        public object Instance { get; set; }
 
         private string _exeName;
         private static bool _validated;

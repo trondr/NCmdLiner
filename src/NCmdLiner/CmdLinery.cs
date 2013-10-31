@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
 
@@ -28,16 +27,27 @@ namespace NCmdLiner
             return Run(new[] { targetType }, args, new ApplicationInfo(), new ConsoleMessenger());
         }
 
-        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
-        ///
-        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
-
-        /// <param name="args">         The command line arguments. </param>
-        ///
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
+        /// 
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type[] targetTypes, string[] args)
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            return Run(targetTypes, args, new ApplicationInfo(), new ConsoleMessenger());
+            return Run(new[] { targetType }, args, new ApplicationInfo(), messenger);
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
+        /// 
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(Type targetType, string[] args, IMessenger messenger)
+        {
+            return Run(new[] { targetType }, args, new ApplicationInfo(), messenger);
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
@@ -49,51 +59,6 @@ namespace NCmdLiner
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
         {
             return Run(new[] { targetType }, args, applicationInfo, new ConsoleMessenger());
-        }
-
-        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
-        ///
-        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
-        ///  <param name="args">         The command line arguments. </param>
-        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
-        /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
-        {
-            return Run(targetTypes, args, applicationInfo, new ConsoleMessenger());
-        }
-
-        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
-        /// 
-        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
-        ///  <param name="args">         The command line arguments. </param>
-        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type targetType, string[] args, IMessenger messenger)
-        {
-            return Run(new[]{targetType}, args, new ApplicationInfo(), messenger);
-        }
-
-        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
-        ///
-        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
-        ///  <param name="args">         The command line arguments. </param>
-        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type[] targetTypes, string[] args, IMessenger messenger)
-        {
-            return Run(targetTypes, args, new ApplicationInfo(), messenger);
-        }
-
-        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
-        /// 
-        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
-        ///  <param name="args">         The command line arguments. </param>
-        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
-        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
-        {
-            return Run(new[] { targetType }, args, new ApplicationInfo(), messenger);
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -146,6 +111,40 @@ namespace NCmdLiner
         /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         ///
         /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+
+        /// <param name="args">         The command line arguments. </param>
+        ///
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(Type[] targetTypes, string[] args)
+        {
+            return Run(targetTypes, args, new ApplicationInfo(), new ConsoleMessenger());
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
+        {
+            return Run(targetTypes, args, applicationInfo, new ConsoleMessenger());
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(Type[] targetTypes, string[] args, IMessenger messenger)
+        {
+            return Run(targetTypes, args, new ApplicationInfo(), messenger);
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
@@ -156,6 +155,60 @@ namespace NCmdLiner
             if (messenger == null) throw new ArgumentNullException("messenger");
             CommandRuleProvider commandRuleProvider = new CommandRuleProvider();
             List<CommandRule> commandRules = commandRuleProvider.GetCommandRules(targetTypes);
+            return Run(commandRules, args, applicationInfo, messenger);
+        }
+        
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(object[] targetObjects, string[] args)
+        {
+            return Run(targetObjects, args, new ApplicationInfo(), new ConsoleMessenger());
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo)
+        {
+            return Run(targetObjects, args, applicationInfo, new ConsoleMessenger());
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(object[] targetObjects, string[] args, IMessenger messenger)
+        {
+            return Run(targetObjects, args, new ApplicationInfo(), messenger);
+        }
+
+        /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///
+        /// <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (messenger == null) throw new ArgumentNullException("messenger");
+            CommandRuleProvider commandRuleProvider = new CommandRuleProvider();
+            List<CommandRule> commandRules = commandRuleProvider.GetCommandRules(targetObjects);
+            return Run(commandRules, args, applicationInfo, messenger);
+        }
+        
+        #region Privat methods
+        private static int Run(List<CommandRule> commandRules, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
             HelpProvider helpProvider = new HelpProvider(messenger);
             if (args.Length == 0)
             {
@@ -191,7 +244,7 @@ namespace NCmdLiner
             object[] parameterArrray = commandRule.BuildMethodParameters();
             try
             {
-                object returnValue = commandRule.Method.Invoke(null, parameterArrray);
+                object returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrray);
                 if (returnValue is int)
                 {
                     return (int)returnValue;
@@ -200,7 +253,6 @@ namespace NCmdLiner
             }
             catch (TargetInvocationException ex)
             {
-
                 if (ex.InnerException != null)
                 {
                     MethodInfo prepForRemoting = typeof(Exception).GetMethod("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -215,7 +267,6 @@ namespace NCmdLiner
             }
         }
 
-        #region Privat methods
         private static List<Type> GetTargetTypesFromAssembly(Assembly assembly)
         {
             List<Type> targetTypes = new List<Type>();

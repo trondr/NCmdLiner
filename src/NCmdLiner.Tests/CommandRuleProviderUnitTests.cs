@@ -33,11 +33,12 @@ namespace NCmdLiner.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (CommandMehtodNotStaticException))]
+        //2013-10-31, trondr: Non static commands are now supported
+        //[ExpectedException(typeof(CommandMehtodNotStaticException))]
         public static void GetCommandRuleMetodHasNoCommandAttributeThrowCommandMehtodNotStaticExceptionUnitTest()
         {
             CommandRuleProvider target = new CommandRuleProvider();
-            target.GetCommandRule(typeof (TestCommands0).GetMethod("CommandNotStatic"));
+            target.GetCommandRule(typeof(TestCommands0).GetMethod("CommandNotStatic"));
         }
 
         [Test]

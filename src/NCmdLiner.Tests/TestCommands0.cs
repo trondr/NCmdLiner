@@ -13,7 +13,8 @@ namespace NCmdLiner.Tests
 {
     internal class TestCommands0
     {
-        [Command(Description = "Invalid non static command")]
+        //2013-10-31, trondr: Non static commands are now supported
+        [Command(Description = "Valid non static command")]
         public void CommandNotStatic()
         {
             throw new NotImplementedException();

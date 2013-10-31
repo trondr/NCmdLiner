@@ -18,6 +18,11 @@ namespace NCmdLiner
     {
         public CommandRule GetCommandRule(MethodInfo methodInfo)
         {
+            return GetCommandRule(methodInfo, null);
+        }
+        
+        public CommandRule GetCommandRule(MethodInfo methodInfo, object targetObject)
+        {
             if (methodInfo == null) throw new ArgumentNullException("methodInfo");
             object[] customAttributes = methodInfo.GetCustomAttributes(false);
             CommandAttribute commandAttribute = null;
@@ -25,9 +30,7 @@ namespace NCmdLiner
             {
                 if (customAttribute is CommandAttribute)
                 {
-                    if (!methodInfo.IsStatic)
-                        throw new CommandMehtodNotStaticException("Command method is not a static method: " +
-                                                                  methodInfo.Name);
+                    //if (!methodInfo.IsStatic)throw new CommandMehtodNotStaticException("Command method is not a static method: " + methodInfo.Name);
                     commandAttribute = (CommandAttribute) customAttribute;
                 }
             }
@@ -36,6 +39,7 @@ namespace NCmdLiner
                                                            methodInfo.Name);
             CommandRule commandRule = new CommandRule();
             commandRule.Method = methodInfo;
+            commandRule.Instance = targetObject;
             commandRule.Command = new Command {Name = methodInfo.Name, Description = commandAttribute.Description};
             bool optionalParamterFound = false;
             foreach (ParameterInfo parameter in methodInfo.GetParameters())
@@ -95,50 +99,48 @@ namespace NCmdLiner
             return GetCommandRules(new Type[] {targetType});
         }
 
-        //public List<CommandRule> GetCommandRules(Type targetType)
-        //{
-        //    List<CommandRule> commandRules = new List<CommandRule>();
-        //    MethodInfo[] methods =
-        //        targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-        //    foreach (MethodInfo method in methods)
-        //    {
-        //        object[] customAttributes = method.GetCustomAttributes(false);
-        //        foreach (object customAttribute in customAttributes)
-        //        {
-        //            if (customAttribute is CommandAttribute)
-        //            {
-        //                commandRules.Add(GetCommandRule(method));
-        //            }
-        //        }
-        //    }
-        //    return commandRules;
-        //}
+        public List<CommandRule> GetCommandRules(object[] targetObjects)
+        {
+            List<CommandRule> commandRules = new List<CommandRule>();
+            foreach (object targetObject in targetObjects)
+            {
+                MethodInfo[] methods = targetObject.GetType().GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+                GetCommandRulesFromMethods(methods, targetObject, commandRules);
+            }
+            return commandRules;
+        }
 
         public List<CommandRule> GetCommandRules(Type[] targetTypes)
         {
             List<CommandRule> commandRules = new List<CommandRule>();
             foreach (Type targetType in targetTypes)
             {
-                MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-                foreach (MethodInfo method in methods)
-                {
-                    object[] customAttributes = method.GetCustomAttributes(false);
-                    foreach (object customAttribute in customAttributes)
-                    {
-                        if (customAttribute is CommandAttribute)
-                        {
-                            CommandRule newCommandRule = GetCommandRule(method);
-                            CommandRule existingCommandRule = commandRules.Find(rule => rule.Command.Name == newCommandRule.Command.Name);
-                            if (existingCommandRule != null)
-                            {
-                                throw new DuplicateCommandException("A duplicate command has been defined: " + newCommandRule.Command.Name);
-                            }
-                            commandRules.Add(newCommandRule);
-                        }
-                    }
-                }    
-            }            
+                MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);                
+                GetCommandRulesFromMethods(methods, null, commandRules);
+            }
             return commandRules;
         }
+
+        private void GetCommandRulesFromMethods(IEnumerable<MethodInfo> methods, object targetObject, List<CommandRule> commandRules)
+        {
+            foreach (MethodInfo method in methods)
+            {
+                object[] customAttributes = method.GetCustomAttributes(false);
+                foreach (object customAttribute in customAttributes)
+                {
+                    if (customAttribute is CommandAttribute)
+                    {
+                        CommandRule newCommandRule = GetCommandRule(method, targetObject);
+                        CommandRule existingCommandRule = commandRules.Find(rule => rule.Command.Name == newCommandRule.Command.Name);
+                        if (existingCommandRule != null)
+                        {
+                            throw new DuplicateCommandException("A duplicate command has been defined: " + newCommandRule.Command.Name);
+                        }
+                        commandRules.Add(newCommandRule);
+                    }
+                }
+            }
+        }
+
     }
 }

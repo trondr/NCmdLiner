@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="CommandRuleProviderUnitTests.cs" />
     <Compile Include="CommandRuleUnitTests.cs" />
+    <Compile Include="NonStaticAndStaticTestCommands8.cs" />
+    <Compile Include="NonStaticTestCommands7.cs" />
     <Compile Include="TestCommands4.cs" />
     <Compile Include="TestCommands5.cs" />
     <Compile Include="TestCommands6.cs" />

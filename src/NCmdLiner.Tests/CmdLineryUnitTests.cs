@@ -19,6 +19,8 @@ namespace NCmdLiner.Tests
     public class CmdLineryUnitTests
     {
         private static MockRepository _mockRepository;
+        private static NonStaticTestCommands7 _nonStaticCommands;
+        private static NonStaticAndStaticTestCommands8 _nonStaticAndStaticCommands;
 
         [SetUp]
         public static void SetUp()
@@ -34,6 +36,12 @@ namespace NCmdLiner.Tests
             TestCommandsMulti2.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommandsMulti1Duplicate.TestLogger = _mockRepository.StrictMock<ITestLogger>();
             TestCommandsMulti2Duplicate.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            _nonStaticCommands = new NonStaticTestCommands7();
+            _nonStaticCommands.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+            _nonStaticAndStaticCommands = new NonStaticAndStaticTestCommands8();
+            NonStaticAndStaticTestCommands8.TestLogger = _mockRepository.StrictMock<ITestLogger>();
+
+
         }
 
         [TearDown]
@@ -267,8 +275,7 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
             Assert.AreEqual(expected, actual, "Return value was not equal.");
         }
-
-
+        
         [Test]
         [ExpectedException(typeof(DuplicateCommandException))]
         public static void CommandsFromMultipleNamespacesDuplicateCommandThrowDuplicateCommandException()
@@ -279,6 +286,47 @@ namespace NCmdLiner.Tests
             int actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1Duplicate), typeof(TestCommandsMulti2Duplicate) }, new string[] { "FirstCommand" }, new TestApplicationInfo());
             _mockRepository.VerifyAll();
             Assert.AreEqual(expected, actual, "Return value was not equal.");
+        }
+        
+        [Test]
+        public static void RunNonStaticCommand()
+        {
+            Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand(\"parameter 1 value\")"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(new object[]{ _nonStaticCommands},
+                          new string[]
+                              {
+                                  "NonStaticCommand",
+                                  "/parameter1=\"parameter 1 value\""
+                              }, new TestApplicationInfo(),new ConsoleMessenger());
+            _mockRepository.VerifyAll();
+        }
+
+        [Test]
+        public static void RunNonStaticAndStaticCommands()
+        {
+            Expect.Call(NonStaticAndStaticTestCommands8.TestLogger.Write("Running NonStaticCommand(\"parameter 1 value\")")).Return(null);
+            Expect.Call(NonStaticAndStaticTestCommands8.TestLogger.Write("Running StaticCommand(\"parameter 1 value\")")).Return(null);
+
+            _mockRepository.ReplayAll();
+            int nonStaticResult = CmdLinery.Run(new object[] { _nonStaticAndStaticCommands },
+                          new string[]
+                              {
+                                  "NonStaticCommand",
+                                  "/parameter1=\"parameter 1 value\""
+                              }, new TestApplicationInfo(), new ConsoleMessenger());
+
+            int staticResult = CmdLinery.Run(new object[] { _nonStaticAndStaticCommands },
+                          new string[]
+                              {
+                                  "StaticCommand",
+                                  "/parameter1=\"parameter 1 value\""
+                              }, new TestApplicationInfo(), new ConsoleMessenger());
+            _mockRepository.VerifyAll();
+            Assert.AreEqual(1,nonStaticResult);
+            Assert.AreEqual(2, staticResult);
+
         }
 
     }
