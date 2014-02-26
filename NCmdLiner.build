@@ -54,7 +54,7 @@
 	<ProductProjectNugetBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetBuildOutputDirectory>
     
 	<ShortYear>$([System.DateTime]::Now.ToString(`yy`))</ShortYear>
-    <DayOfYear>$([System.DateTime]::Now.DayOfYear)</DayOfYear>
+    <DayOfYear>$([System.DateTime]::Now.DayOfYear.ToString(`000`))</DayOfYear>
     <Major>1</Major>
     <Minor>0</Minor>
     <Build>$(ShortYear)$(DayOfYear)</Build>
@@ -186,7 +186,7 @@
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
 
-    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.2\bin"/>
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.3\bin"/>
   </Target>
   
   <Target Name="ZipSource" DependsOnTargets="Version">

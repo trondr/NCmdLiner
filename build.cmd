@@ -4,8 +4,8 @@ Set ProductName=NCmdLiner
 IF EXIST "%VSDEVCMD%" goto Build
 
 :Env
-Set VSDEVCMD=%VS110COMNTOOLS%VsDevCmd.bat
-IF NOT EXIST "%VSDEVCMD%" set BuildMessage="Visual Studio 2012 do not seem to be installed. Terminating." & goto End
+Set VSDEVCMD=%VS120COMNTOOLS%VsDevCmd.bat
+IF NOT EXIST "%VSDEVCMD%" set BuildMessage="Visual Studio 2013 do not seem to be installed. Terminating." & goto End
 Echo Preparing build environment...
 call "%VSDEVCMD%"
 
