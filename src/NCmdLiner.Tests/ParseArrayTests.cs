@@ -150,6 +150,16 @@ namespace NCmdLiner.Tests
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void ParseItemArrayStringWithRegularExpressionReturnItemArray()
+        {
+            const string arrayString = @"{'^.+-133-3\d+-.+$'}";
+            IArrayParser target = new ArrayParser();
+            var actual = target.Parse(arrayString);
+            var expected = new string[] { @"^.+-133-3\d+-.+$" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         #endregion
 
         #region Corrupt tests

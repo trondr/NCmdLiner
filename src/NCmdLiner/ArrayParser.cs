@@ -63,11 +63,13 @@ namespace NCmdLiner
             }
 
             //Quotes is beeing used, use regular expression to parse the csv format.
+            string delimiterString = Regex.Escape(delimiter.ToString(CultureInfo.InvariantCulture));
+            string quoteString = Regex.Escape(quote.ToString(CultureInfo.InvariantCulture));
             StringBuilder pattern = new StringBuilder();
-            pattern.Append("([" + quote + "]{0,1})"); //Match 0 or 1 starting quote character
-            pattern.Append("([^" + quote + "]{0,})"); //Match everything in between quote charchters
+            pattern.Append("([" + quoteString + "]{0,1})"); //Match 0 or 1 starting quote character
+            pattern.Append("([^" + quoteString + "]{0,})"); //Match everything in between quote charchters
             pattern.Append("\\1"); //Match 0 or 1 quote charchter if that was found in the first match
-            pattern.Append("(" + delimiter + "|$)"); //Match 1 delimter or end of line
+            pattern.Append("(" + delimiterString + "|$)"); //Match 1 delimter or end of line
 
             //string pattern = string.Format("{1}([^{1}]+){1}{0}", delimiter, quote) + "{0,1}";
             Regex regexObj = new Regex(pattern.ToString());
