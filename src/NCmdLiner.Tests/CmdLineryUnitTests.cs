@@ -329,5 +329,20 @@ namespace NCmdLiner.Tests
 
         }
 
+        [Test]
+        public static void RunNonStaticCommandWithParamenterHavingEqualCharacter()
+        {
+            Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand(\"LDAP://OU=TST,OU=Groups,DC=tst,DC=local\")"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "NonStaticCommand",
+                                  "/parameter1=\"LDAP://OU=TST,OU=Groups,DC=tst,DC=local\""
+                              }, new TestApplicationInfo(), new ConsoleMessenger());
+            _mockRepository.VerifyAll();
+        }
+
     }
 }

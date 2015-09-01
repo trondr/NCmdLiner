@@ -212,7 +212,7 @@ namespace NCmdLiner
                 new Dictionary<string, CommandLineParameter>();
             if (args.Length >= 2)
             {
-                Regex parameterRegex = new Regex("[/-](.+)=(.+)");
+                Regex parameterRegex = new Regex("[/-](.+?)=(.+)");
                 for (int i = 1; i < args.Length; i++)
                 {
                     Match match = parameterRegex.Match(args[i]);
