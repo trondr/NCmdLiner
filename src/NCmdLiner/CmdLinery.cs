@@ -36,7 +36,7 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            return Run(new[] { targetType }, args, new ApplicationInfo(), messenger);
+            return Run(new[] { targetType }, args, applicationInfo, messenger);
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
@@ -199,6 +199,7 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
             CommandRuleProvider commandRuleProvider = new CommandRuleProvider();
