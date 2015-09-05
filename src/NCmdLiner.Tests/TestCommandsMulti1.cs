@@ -1,7 +1,7 @@
 using System;
 using NCmdLiner.Attributes;
 
-namespace NCmdLiner.Tests.Multi1
+namespace NCmdLiner.Tests
 {
     public class TestCommandsMulti1
     {

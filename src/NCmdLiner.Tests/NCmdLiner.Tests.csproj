@@ -48,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentsParserTests.cs" />
-    <Compile Include="CommandRuleProviderUnitTests.cs" />
-    <Compile Include="CommandRuleUnitTests.cs" />
+    <Compile Include="UnitTests\ArgumentsParserTests.cs" />
+    <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
+    <Compile Include="UnitTests\CommandRuleUnitTests.cs" />
     <Compile Include="NonStaticAndStaticTestCommands8.cs" />
     <Compile Include="NonStaticTestCommands7.cs" />
     <Compile Include="TestCommands4.cs" />
@@ -60,19 +60,19 @@
     <Compile Include="TestCommandsMulti1Duplicate.cs" />
     <Compile Include="TestCommandsMulti2.cs" />
     <Compile Include="TestCommandsMulti2Duplicate.cs" />
-    <Compile Include="ValueConverterTests.cs" />
-    <Compile Include="ParseArrayTests.cs" />
+    <Compile Include="UnitTests\ValueConverterTests.cs" />
+    <Compile Include="UnitTests\ParseArrayTests.cs" />
     <Compile Include="TestCommands0.cs" />
     <Compile Include="TestCommands3.cs" />
     <Compile Include="ITestLogger.cs" />
     <Compile Include="ModuleInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CmdLineryUnitTests.cs" />
+    <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="TestApplicationInfo.cs" />
     <Compile Include="TestCategory.cs" />
     <Compile Include="TestCommands1.cs" />
     <Compile Include="TestCommands2.cs" />
-    <Compile Include="TextFormaterTests.cs" />
+    <Compile Include="UnitTests\TextFormaterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NCmdLiner.pfx" />
@@ -82,6 +82,9 @@
       <Project>{ebda72ad-5d40-461e-972a-8c66b8cf8447}</Project>
       <Name>NCmdLiner</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ManualTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

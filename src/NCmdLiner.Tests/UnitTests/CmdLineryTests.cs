@@ -9,15 +9,13 @@
 using System;
 using System.Collections.Generic;
 using NCmdLiner.Exceptions;
-using NCmdLiner.Tests.Multi1;
-using NCmdLiner.Tests.Multi2;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCmdLiner.Tests
+namespace NCmdLiner.Tests.UnitTests
 {
     [TestFixture, Category(TestCategory.UnitTests)]
-    public class CmdLineryUnitTests
+    public class CmdLineryTests
     {
         private static MockRepository _mockRepository;
         private static NonStaticTestCommands7 _nonStaticCommands;
@@ -347,7 +345,7 @@ namespace NCmdLiner.Tests
 
         [Test]
         [ExpectedException(typeof(CustomTestMessengerException))]
-        public static void RunHelpcCommandWithCustomMessenger()
+        public static void RunHelpCommandWithCustomMessenger()
         {
             Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand()"))
                   .Return(null);
@@ -377,7 +375,7 @@ namespace NCmdLiner.Tests
 
         [Test]
         [ExpectedException(typeof(CustomTestHelpProviderException))]
-        public static void RunHelpcCommandWithCustomHelperProvider()
+        public static void RunHelpCommandWithCustomHelperProvider()
         {
             Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand()"))
                   .Return(null);
@@ -390,6 +388,35 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
         }
 
+        [Test]
+        public static void RunHelpCommand()
+        {            
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "Help",
+                              }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));            
+        }
+
+        [Test]
+        public static void RunLicenseCommand()
+        {
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "License",
+                              }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));            
+        }
+
+        [Test]
+        public static void RunCreditsCommand()
+        {
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "Credits",
+                              }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));            
+        }
     }
 
     public class CustomTestHelpProvider : IHelpProvider

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCmdLiner.Tests
+namespace NCmdLiner.Tests.UnitTests
 {
     [TestFixture, Category(TestCategory.UnitTests)]
     public class TextFormaterTests

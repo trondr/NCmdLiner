@@ -12,7 +12,7 @@ using NCmdLiner.Exceptions;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCmdLiner.Tests
+namespace NCmdLiner.Tests.UnitTests
 {
     [TestFixture, Category(TestCategory.UnitTests)]
     public class CommandRuleProviderUnitTests
