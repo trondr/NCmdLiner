@@ -14,7 +14,7 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    public class CommandRuleProvider
+    public class CommandRuleProvider : ICommandRuleProvider
     {
         public CommandRule GetCommandRule(MethodInfo methodInfo)
         {

@@ -65,6 +65,7 @@
     <Compile Include="Attributes\CommandsAttribute.cs" />
     <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
     <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
+    <Compile Include="CmdLineryProvider.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandLineParameter.cs" />
     <Compile Include="CommandParameter.cs" />
@@ -101,6 +102,9 @@
     <Compile Include="IApplicationInfo.cs" />
     <Compile Include="IArgumentsParser.cs" />
     <Compile Include="IArrayParser.cs" />
+    <Compile Include="ICmdLineryProvider.cs" />
+    <Compile Include="ICommandRuleProvider.cs" />
+    <Compile Include="IHelpProvider.cs" />
     <Compile Include="IMessenger.cs" />
     <Compile Include="IValueConverter.cs" />
     <Compile Include="License\ILicenseInfo.cs" />
@@ -130,6 +134,12 @@
   <ItemGroup>
     <EmbeddedResource Include="License\0.NCmdLiner License.xml" />
     <EmbeddedResource Include="License\1.NConsoler License.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\1.TinyIoC Credit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="License\2.TinyIoC License.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework'" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" Condition=" '$(TargetFrameworkIdentifier)' == '.NETPortable'" />

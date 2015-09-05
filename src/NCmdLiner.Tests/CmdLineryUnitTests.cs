@@ -7,6 +7,7 @@
 // All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using NCmdLiner.Exceptions;
 using NCmdLiner.Tests.Multi1;
 using NCmdLiner.Tests.Multi2;
@@ -344,5 +345,138 @@ namespace NCmdLiner.Tests
             _mockRepository.VerifyAll();
         }
 
+        [Test]
+        [ExpectedException(typeof(CustomTestMessengerException))]
+        public static void RunHelpcCommandWithCustomMessenger()
+        {
+            Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand()"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "Help",                                  
+                              }, new TestApplicationInfo(), new CustomTestMessenger(), new HelpProvider(() => new CustomTestMessenger()));
+            _mockRepository.VerifyAll();
+        }
+
+        [Test]
+        [ExpectedException(typeof(CustomTestApplicationInfoException))]
+        public static void RunHelpCommandWithCustomApplicationInfo()
+        {
+            Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand()"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "Help",
+                              }, new CustomTestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+            _mockRepository.VerifyAll();
+        }
+
+        [Test]
+        [ExpectedException(typeof(CustomTestHelpProviderException))]
+        public static void RunHelpcCommandWithCustomHelperProvider()
+        {
+            Expect.Call(_nonStaticCommands.TestLogger.Write("Running NonStaticCommand()"))
+                  .Return(null);
+            _mockRepository.ReplayAll();
+            CmdLinery.Run(new object[] { _nonStaticCommands },
+                          new string[]
+                              {
+                                  "Help",
+                              }, new TestApplicationInfo(), new ConsoleMessenger(), new CustomTestHelpProvider());
+            _mockRepository.VerifyAll();
+        }
+
+    }
+
+    public class CustomTestHelpProvider : IHelpProvider
+    {
+        public bool IsCreditsRequested(string commandName)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+
+        public bool IsHelpRequested(string commandName)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+
+        public bool IsLicenseRequested(string commandName)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+
+        public void ShowCredits(IApplicationInfo applicationInfo)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+
+        public void ShowHelp(List<CommandRule> commandRules, CommandRule helpForCommandRule, IApplicationInfo applicationInfo)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+
+        public void ShowLicense(IApplicationInfo applicationInfo)
+        {
+            throw new CustomTestHelpProviderException();
+        }
+    }
+
+    public class CustomTestHelpProviderException : Exception
+    {
+    }
+
+    public class CustomTestApplicationInfo : IApplicationInfo
+    {
+        //private string _name;
+
+        public string Name
+        {
+            get
+            {
+                throw new CustomTestApplicationInfoException();
+                //return _name;
+            }
+            set
+            {
+                throw new CustomTestApplicationInfoException();
+                //_name = value;
+            }
+        }
+
+        public string Version { get; set; }
+        public string Copyright { get; set; }
+        public string Authors { get; set; }
+        public string Description { get; set; }
+        public string ExeFileName { get; set; }
+    }
+
+    public class CustomTestApplicationInfoException : Exception
+    {
+    }
+
+    public class CustomTestMessenger : IMessenger
+    {
+        public void Write(string formatMessage, params object[] args)
+        {
+            throw new CustomTestMessengerException();
+        }
+
+        public void WriteLine(string formatMessage, params object[] args)
+        {
+            throw new CustomTestMessengerException();
+        }
+
+        public void Show()
+        {
+            throw new CustomTestMessengerException();
+        }
+    }
+
+    public class CustomTestMessengerException : Exception
+    {
     }
 }
