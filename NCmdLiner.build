@@ -56,17 +56,12 @@
 	<ShortYear>$([System.DateTime]::Now.ToString(`yy`))</ShortYear>
     <DayOfYear>$([System.DateTime]::Now.DayOfYear.ToString(`000`))</DayOfYear>
     <Major>1</Major>
-    <Minor>0</Minor>
+    <Minor>1</Minor>
     <Build>$(ShortYear)$(DayOfYear)</Build>
     <Revision>0</Revision>
   </PropertyGroup>
 
   <ItemGroup>
-    <NetFrameWorkName Include="NET20">
-      <Version>v2.0</Version>
-      <Profile></Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
     <NetFrameWorkName Include="NET35">
       <Version>v3.5</Version>
       <Profile></Profile>
@@ -205,7 +200,7 @@
 	<Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ProductProjectNugetBuildOutputDirectory)\src\%(RecursiveDir)" />
 	
     <Copy SourceFiles="$(ProductProjectNugetSrcDirectory)\Tools\Install.ps1" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\Install.ps1" />
-	<Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NMultiTool\NMultiTool.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET20\$(ProductName).dll&quot;" />
+	<Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NMultiTool\NMultiTool.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET35\$(ProductName).dll&quot;" />
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
 </Target>
   

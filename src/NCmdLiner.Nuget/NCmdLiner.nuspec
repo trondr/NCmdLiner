@@ -18,8 +18,6 @@
     </references>
   </metadata>
   <files>
-    <file src="net20\NCmdLiner.dll" target="lib\net20" />
-    <file src="net20\NCmdLiner.pdb" target="lib\net20" />
 
     <file src="net35\NCmdLiner.dll" target="lib\net35" />
     <file src="net35\NCmdLiner.pdb" target="lib\net35" />

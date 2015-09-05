@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NCmdLiner</RootNamespace>
     <AssemblyName>NCmdLiner</AssemblyName>
-    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == ''">v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == ''">v3.5</TargetFrameworkVersion>
     <TargetFramework Condition=" '$(TargetFramework)' == ''">NET20</TargetFramework>
     <TargetFrameworkProfile Condition=" '$(TargetFrameworkProfile)' != ''">$(TargetFrameworkProfile)</TargetFrameworkProfile>
     <TargetFrameworkIdentifier Condition=" '$(TargetFrameworkIdentifier)' == ''">.NETFramework</TargetFrameworkIdentifier>
@@ -25,6 +25,7 @@
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bld</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
     <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
   <ItemGroup>
     <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ApplicationInfoHelper.cs" />
+    <Compile Include="ArgumentsParser.cs" />
     <Compile Include="ArrayParser.cs" />
     <Compile Include="Attributes\CommandAttibute.cs" />
     <Compile Include="Attributes\CommandParameterAttribute.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Exceptions\RequiredParameterFoundAfterOptionalParameterExecption.cs" />
     <Compile Include="HelpProvider.cs" />
     <Compile Include="IApplicationInfo.cs" />
+    <Compile Include="IArgumentsParser.cs" />
     <Compile Include="IArrayParser.cs" />
     <Compile Include="IMessenger.cs" />
     <Compile Include="IValueConverter.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Resources\IEmbeddedResource.cs" />
     <Compile Include="StringToObject.cs" />
     <Compile Include="TextFormater.cs" />
+    <Compile Include="TinyIoC.cs" />
     <Compile Include="ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>

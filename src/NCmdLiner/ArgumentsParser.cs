@@ -4,7 +4,7 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    internal class ArgumentsParser
+    internal class ArgumentsParser : IArgumentsParser
     {
         /// <summary> Gets a command line parameters. </summary>
         ///
@@ -25,15 +25,18 @@ namespace NCmdLiner
                 new Dictionary<string, CommandLineParameter>();
             if (args.Length >= 2)
             {
-                Regex parameterRegex = new Regex("[/-](.+?)=(.+)");
+                var parameterRegex = new Regex("[/-](.+?)=(.+)");
                 for (int i = 1; i < args.Length; i++)
                 {
-                    Match match = parameterRegex.Match(args[i]);
+                    var match = parameterRegex.Match(args[i]);
                     if (!match.Success)
                     {
-                        throw new InvalidCommandParameterFormatException(string.Format("Invalid command line parameter format: '{0}'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'", args[i]));
+                        throw new InvalidCommandParameterFormatException(
+                            string.Format(
+                                "Invalid command line parameter format: '{0}'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'",
+                                args[i]));
                     }
-                    CommandLineParameter commandLineParameter = new CommandLineParameter();
+                    var commandLineParameter = new CommandLineParameter();
                     commandLineParameter.Name = match.Groups[1].Value;
                     commandLineParameter.Value = match.Groups[2].Value.Trim('"').Trim('\'');
                     if (commandLineParameters.ContainsKey(commandLineParameter.ToString()))
