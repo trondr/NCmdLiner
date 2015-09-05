@@ -6,7 +6,7 @@ Commands and parameters are specified as attributes on methods of a static class
 
 Parameters can be required or optional.
 
-Parameters can be of primitiv types such as: string, integer, decimal, float, double, boolean and array of all these.
+Parameters can be of primitive types such as: string, integer, decimal, float, double, boolean and array of all these.
 
 The automatic documentation outputs ready-to-use examples of each command and its parameters.
 
@@ -14,10 +14,21 @@ The automatic documentation outputs ready-to-use examples of each command and it
 
 NCmdLiner is derived from the NConsoler project http://nconsoler.csharpus.com
 
-## Supported runtimes
+## Supported runtimes NCmdLiner 1.0.*
 
 * Mono 4.0
 * .NET 2.0
+* .NET 3.5
+* .NET 3.5 Client
+* .NET 4.0
+* .NET 4.0 Client
+* .NET 4.0.3
+* .NET 4.0.3 Client
+* .NET 4.5
+
+## Supported runtimes NCmdLiner 1.1.*
+
+* Mono 4.0
 * .NET 3.5
 * .NET 3.5 Client
 * .NET 4.0
