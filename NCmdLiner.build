@@ -102,6 +102,16 @@
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
     </NetFrameWorkName>
+	<NetFrameWorkName Include="NET452">
+      <Version>v4.5.2</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+	<NetFrameWorkName Include="NET46">
+      <Version>v4.6</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>	
   </ItemGroup>
 
   <ItemGroup>

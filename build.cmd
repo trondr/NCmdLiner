@@ -2,12 +2,21 @@
 Set ProductName=NCmdLiner
 
 IF EXIST "%VSDEVCMD%" goto Build
+IF EXIST "%MSBUILDPATH%" goto Build
 
-:Env
-Set VSDEVCMD=%VS120COMNTOOLS%VsDevCmd.bat
-IF NOT EXIST "%VSDEVCMD%" set BuildMessage="Visual Studio 2013 do not seem to be installed. Terminating." & goto End
+:VSEnv
+Set VSDEVCMD=%VS140COMNTOOLS%VsDevCmd.bat
+Echo Checking to see if Visual Studio 2015 is installed ("%VS140COMNTOOLS%")
+IF NOT EXIST "%VSDEVCMD%" set BuildMessage="Visual Studio 2015 do not seem to be installed, trying MSBuild instead..." & goto MSBuildEnv
 Echo Preparing build environment...
 call "%VSDEVCMD%"
+goto Build
+
+:MSBuildEnv
+Set MSBUILDPATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin
+Echo Checking to see if MSBuild is installed ("%MSBUILDPATH%")
+IF NOT EXIST "%MSBUILDPATH%" set BuildMessage="Neither Visual Studio 2015 or MSBuild  seem to be installed. Terminating." & goto end
+Set Path=%Path%;%MSBUILDPATH%
 
 :Build
 Echo Building %ProductName%...

@@ -42,7 +42,13 @@
 
     <file src="net45\NCmdLiner.dll" target="lib\net45" />
     <file src="net45\NCmdLiner.pdb" target="lib\net45" />
+
+    <file src="net452\NCmdLiner.dll" target="lib\net452" />
+    <file src="net452\NCmdLiner.pdb" target="lib\net452" />
     
+    <file src="net46\NCmdLiner.dll" target="lib\net46" />
+    <file src="net46\NCmdLiner.pdb" target="lib\net46" />
+	
 	<file src="**\*.cs" target="src" />
 	    
   </files>
