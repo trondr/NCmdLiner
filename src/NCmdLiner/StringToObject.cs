@@ -9,19 +9,20 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Threading;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    internal class StringToObject
+    internal class StringToObject : IStringToObject
     {
         private readonly IArrayParser _arrayParser;
         private readonly CultureInfo _culture;
 
-        public StringToObject(IArrayParser arrayParser, CultureInfo culture)
+        public StringToObject(IArrayParser arrayParser)
         {
             _arrayParser = arrayParser;
-            _culture = culture;
+            _culture = Thread.CurrentThread.CurrentCulture;
         }
 
         public object ConvertValue(string value, Type argumentType)
@@ -141,8 +142,7 @@ namespace NCmdLiner
                 }
                 catch (FormatException ex)
                 {
-                    throw new InvalidDateTimeFormatException("Could not convert '{0}' to DateTime. {1}", parameter,
-                                                             ex.Message);
+                    throw new InvalidDateTimeFormatException("Could not convert '{0}' to DateTime. {1}", parameter, ex.Message);
                 }
             }
         }

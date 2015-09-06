@@ -104,13 +104,17 @@
     <Compile Include="IArrayParser.cs" />
     <Compile Include="ICmdLineryProvider.cs" />
     <Compile Include="ICommandRuleProvider.cs" />
+    <Compile Include="ICommandRuleValidator.cs" />
     <Compile Include="IHelpProvider.cs" />
     <Compile Include="IMessenger.cs" />
+    <Compile Include="IMethodParameterBuilder.cs" />
+    <Compile Include="IStringToObject.cs" />
     <Compile Include="IValueConverter.cs" />
     <Compile Include="License\ILicenseInfo.cs" />
     <Compile Include="License\ILicenseProvider.cs" />
     <Compile Include="License\LicenseInfo.cs" />
     <Compile Include="License\LicenseProvider.cs" />
+    <Compile Include="MethodParameterBuilder.cs" />
     <Compile Include="ModuleInit.cs" />
     <Compile Include="OptionalCommandParameter.cs" />
     <Compile Include="Properties\AssemblyInfo_Static.cs" />

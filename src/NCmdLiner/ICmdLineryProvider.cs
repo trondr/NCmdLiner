@@ -2,7 +2,7 @@
 
 namespace NCmdLiner
 {
-    public interface ICmdLineryProvider
+    internal interface ICmdLineryProvider
     {
         int Run(List<CommandRule> commandRules, string[] args);
     }

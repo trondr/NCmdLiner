@@ -16,6 +16,8 @@ namespace NCmdLiner
 {
     public class CommandRuleProvider : ICommandRuleProvider
     {
+
+
         public CommandRule GetCommandRule(MethodInfo methodInfo)
         {
             return GetCommandRule(methodInfo, null);

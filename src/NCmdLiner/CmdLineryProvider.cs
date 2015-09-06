@@ -5,15 +5,19 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    public class CmdLineryProvider : ICmdLineryProvider
+    internal class CmdLineryProvider : ICmdLineryProvider
     {
         private readonly Func<IHelpProvider> _helpProviderFactory;
         private readonly Func<IApplicationInfo> _applicationInfoFactory;
+        private readonly IMethodParameterBuilder _methodParameterBuilder;
+        private readonly ICommandRuleValidator _commandRuleValidator;
 
-        public CmdLineryProvider(Func<IHelpProvider> helpProviderFactory, Func<IApplicationInfo> applicationInfoFactory)
+        public CmdLineryProvider(Func<IHelpProvider> helpProviderFactory, Func<IApplicationInfo> applicationInfoFactory, IMethodParameterBuilder methodParameterBuilder, ICommandRuleValidator commandRuleValidator)
         {
             _helpProviderFactory = helpProviderFactory;
             _applicationInfoFactory = applicationInfoFactory;
+            _methodParameterBuilder = methodParameterBuilder;
+            _commandRuleValidator = commandRuleValidator;
         }
 
         public int Run(List<CommandRule> commandRules, string[] args)
@@ -50,8 +54,8 @@ namespace NCmdLiner
 
             CommandRule commandRule = commandRules.Find(rule => rule.Command.Name == commandName);
             if (commandRule == null) throw new UnknownCommandException("Unknown command: " + commandName);
-            commandRule.Validate(args);
-            object[] parameterArrray = commandRule.BuildMethodParameters();
+            _commandRuleValidator.Validate(args, commandRule);
+            object[] parameterArrray =  _methodParameterBuilder.BuildMethodParameters(commandRule);
             try
             {
                 object returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrray);

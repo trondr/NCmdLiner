@@ -30,6 +30,10 @@ using System.Runtime.CompilerServices;
    [assembly: AssemblyTitle("NCmdLiner for Mono 2.0")]
 #elif NET45
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5")]
+#elif NET452
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5.2")]
+#elif NET46
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif

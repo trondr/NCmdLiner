@@ -6,10 +6,7 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
@@ -19,146 +16,9 @@ namespace NCmdLiner
 
         public MethodInfo Method { get; set; }
 
-        public object[] BuildMethodParameters()
-        {
-            if (!_validated)
-                throw new CommandRuleNotValidatedExption(
-                    "Unable to build parameter array before command rule has been validated.");
-            if (Method == null) throw new ArgumentNullException("Method", "Method property has not been initialiazed.");
-
-            List<object> parameterValues = new List<object>();
-            ParameterInfo[] methodParameters = Method.GetParameters();
-
-            StringToObject stringToObject = new StringToObject(new ArrayParser(),
-                                                               System.Threading.Thread.CurrentThread.CurrentCulture);
-
-            for (int i = 0; i < Command.RequiredParameters.Count; i++)
-            {
-                parameterValues.Add(stringToObject.ConvertValue(Command.RequiredParameters[i].Value,
-                                                                methodParameters[i].ParameterType));
-            }
-            for (int i = 0; i < Command.OptionalParameters.Count; i++)
-            {
-                parameterValues.Add(stringToObject.ConvertValue(Command.OptionalParameters[i].Value,
-                                                                methodParameters[i + Command.RequiredParameters.Count]
-                                                                    .ParameterType));
-            }
-            return parameterValues.ToArray();
-        }
-
-        public void Validate(string[] args)
-        {
-            if (args == null) throw new ArgumentNullException("args");
-            if (Command == null) throw new NullReferenceException("Command object has not been initialized.");
-            if (args.Length == 0) throw new MissingCommandException("No command was specified.");
-            string command = args[0];
-            if (Command.Name.ToLower() != command.ToLower())
-                throw new InvalidCommandException("Invalid command: " + command + ". Valid command is: " + Command.Name);
-            if (!(Command.RequiredParameters.Count == 0 && Command.OptionalParameters.Count == 0))
-            {
-                Dictionary<string, CommandLineParameter> commandLineParameters = new ArgumentsParser().GetCommandLineParameters(args);
-                Dictionary<string, CommandParameter> validCommandParameters = GetValidCommandParameters(Command);
-                foreach (string commandLineParameterName in commandLineParameters.Keys)
-                {
-                    if (!validCommandParameters.ContainsKey(commandLineParameterName))
-                    {
-                        throw new InvalidCommandParameterException("Invalid command line parameter: " +
-                                                                   commandLineParameterName);
-                    }
-                }
-
-                foreach (CommandParameter requiredParameter in Command.RequiredParameters)
-                {
-                    bool commandLineHasParameterName = commandLineParameters.ContainsKey(requiredParameter.ToString());
-                    bool commandLineHasAlternativeParameterName =
-                        !(string.IsNullOrEmpty(requiredParameter.AlternativeName)) &&
-                        commandLineParameters.ContainsKey(requiredParameter.AlternativeName);
-                    if (
-                        !commandLineHasParameterName &&
-                        !commandLineHasAlternativeParameterName
-                        )
-                    {
-                        throw new MissingCommandParameterException("Required parameter is missing: " +
-                                                                   requiredParameter.Name);
-                    }
-                    if (commandLineHasParameterName)
-                        requiredParameter.Value = commandLineParameters[requiredParameter.ToString()].Value;
-                    else if (commandLineHasAlternativeParameterName)
-                        requiredParameter.Value = commandLineParameters[requiredParameter.AlternativeName].Value;
-
-                    //Check if example value has been specified
-                    if (requiredParameter.ExampleValue == null)
-                        throw new MissingExampleValueException(
-                            string.Format("Example vaue has not been specified for parameter '{0}' in command '{1}'",
-                                          requiredParameter, Command.Name));
-                }
-
-                foreach (OptionalCommandParameter optionaParameter in Command.OptionalParameters)
-                {
-                    if (commandLineParameters.ContainsKey(optionaParameter.ToString()))
-                    {
-                        optionaParameter.Value = commandLineParameters[optionaParameter.ToString()].Value;
-                    }
-                    else if (!(string.IsNullOrEmpty(optionaParameter.AlternativeName)) &&
-                             commandLineParameters.ContainsKey(optionaParameter.AlternativeName))
-                    {
-                        optionaParameter.Value = commandLineParameters[optionaParameter.AlternativeName].Value;
-                    }
-                    if (optionaParameter.Value == null)
-                        throw new MissingCommandParameterException("Optional parameter does not have a value: " +
-                                                                   optionaParameter.Name);
-                    //Check if example value has been specified
-                    if (optionaParameter.ExampleValue == null)
-                        throw new MissingExampleValueException(
-                            string.Format("Example vaue has not been specified for parameter '{0}' in command '{1}'",
-                                          optionaParameter, Command.Name));
-                }
-            }
-            _validated = true;
-        }
+        public bool IsValid { get; set; }
 
         public object Instance { get; set; }
 
-        private static bool _validated;
-
-        #region Private methods
-
-        /// <summary> Gets a valid command parameters. </summary>
-        ///
-        /// <remarks> Trond, 02.10.2012. </remarks>
-        ///
-        /// <param name="command">   The command. </param>
-        ///
-        /// <returns> The valid command parameters. </returns>
-        private Dictionary<string, CommandParameter> GetValidCommandParameters(Command command)
-        {
-            Dictionary<string, CommandParameter> validCommandParameters = new Dictionary<string, CommandParameter>();
-            foreach (RequiredCommandParameter requiredParameter in command.RequiredParameters)
-            {
-                validCommandParameters.Add(requiredParameter.ToString(), requiredParameter);
-                if (!string.IsNullOrEmpty(requiredParameter.AlternativeName))
-                {
-                    if (validCommandParameters.ContainsKey(requiredParameter.AlternativeName))
-                    {
-                        throw new DuplicateCommandParameterException(string.Format("Alternative parameter name '{0}' is allready in use in command '{1}'",requiredParameter.AlternativeName, command.Name));
-                    }
-                    validCommandParameters.Add(requiredParameter.AlternativeName, requiredParameter);
-                }
-            }
-            foreach (OptionalCommandParameter optionalParamter in command.OptionalParameters)
-            {
-                validCommandParameters.Add(optionalParamter.ToString(), optionalParamter);
-                if (!string.IsNullOrEmpty(optionalParamter.AlternativeName))
-                {
-                    if (validCommandParameters.ContainsKey(optionalParamter.AlternativeName))
-                    {
-                        throw new DuplicateCommandParameterException(string.Format("Alternative parameter name '{0}' is allready in use in command '{1}'", optionalParamter.AlternativeName, command.Name));
-                    }
-                    validCommandParameters.Add(optionalParamter.AlternativeName, optionalParamter);
-                }
-            }
-            return validCommandParameters;
-        }        
-        #endregion
     }
 }
