@@ -1,42 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!--
-    Include MSBuild Community Tasks.
-  -->
-  <Choose>
-    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
-      <PropertyGroup>
-        <MSBuildCommunityTasksAvailable>true</MSBuildCommunityTasksAvailable>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <MSBuildCommunityTasksAvailable>false</MSBuildCommunityTasksAvailable>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
-
-  <!--
-    Include MSBuild Mercurial Tasks.
-  -->
-  <Choose>
-    <When Condition="Exists('$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks')">
-      <PropertyGroup>
-        <MSBuildMercurialTasksAvailable>true</MSBuildMercurialTasksAvailable>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <MSBuildMercurialTasksAvailable>false</MSBuildMercurialTasksAvailable>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-  <Import Project="$(MSBuildExtensionsPath)\MSBuild.Mercurial\MSBuild.Mercurial.Tasks" Condition=" '$(MSBuildMercurialTasksAvailable)' == 'true' "/>
-
-  <PropertyGroup>
+ <PropertyGroup>
     <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
     <BuildOutputDirectory>$(MSBuildProjectDirectory)\bld</BuildOutputDirectory>
     <NuGetPackagesDirectory>$(MSBuildProjectDirectory)\..\NugetPackages</NuGetPackagesDirectory>
@@ -59,8 +24,69 @@
     <Minor>1</Minor>
     <Build>$(ShortYear)$(DayOfYear)</Build>
     <Revision>0</Revision>
+	
+	
+    <BinDirectory>$(MSBuildProjectDirectory)\bin</BinDirectory>
+    <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
+    <ToolsDirectory>$(MSBuildProjectDirectory)\tools</ToolsDirectory>
+	
+	<NunitVersion>2.6.4</NunitVersion>
+
   </PropertyGroup>
 
+    <!--
+		Include MSBuild Community Tasks.
+	-->
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>true</MSBuildCommunityTasksAvailable>
+		<MSBuildCommunityTasksPath>$(ToolsDirectory)\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>false</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(ToolsDirectory)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
+
+    <!--
+		Include MSBuild Custom Tasks.
+	-->
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>true</MSBuildCustomTasksAvailable>
+		<MSBuildCustomTasksPath>$(ToolsDirectory)\MSBuildCustomTasks</MSBuildCustomTasksPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>false</MSBuildCustomTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets" Condition=" '$(MSBuildCustomTasksAvailable)' == 'true' "/>
+
+    <!-- 
+		Verify that NUnit is available
+	-->
+  
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\NUnit\nunit.exe')">
+      <PropertyGroup>
+        <NUnitIsAvailable>true</NUnitIsAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <NUnitIsAvailable>false</NUnitIsAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
   <ItemGroup>
     <NetFrameWorkName Include="NET35">
       <Version>v3.5</Version>
@@ -71,47 +97,22 @@
       <Version>v3.5</Version>
       <Profile>Client</Profile>
       <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-    <NetFrameWorkName Include="NET40">
-      <Version>v4.0</Version>
-      <Profile></Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-    <NetFrameWorkName Include="NET40CLIENT">
-      <Version>v4.0</Version>
-      <Profile>Client</Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-    <NetFrameWorkName Include="NET403">
-      <Version>v4.0.3</Version>
-      <Profile></Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-    <NetFrameWorkName Include="NET403CLIENT">
-      <Version>v4.0.3</Version>
-      <Profile>Client</Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-    <NetFrameWorkName Include="NET40MONO">
-      <Version>v4.0</Version>
+    </NetFrameWorkName>    
+ 	<NetFrameWorkName Include="NET45MONO">
+      <Version>v4.5</Version>
       <Profile>Mono</Profile>
       <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
-	<NetFrameWorkName Include="NET45">
-      <Version>v4.5</Version>
-      <Profile></Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
+    </NetFrameWorkName> 	
 	<NetFrameWorkName Include="NET452">
       <Version>v4.5.2</Version>
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
     </NetFrameWorkName>
-	<NetFrameWorkName Include="NET46">
-      <Version>v4.6</Version>
+	<NetFrameWorkName Include="NET461">
+      <Version>v4.6.1</Version>
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>	
+    </NetFrameWorkName>
   </ItemGroup>
 
   <ItemGroup>
@@ -183,6 +184,24 @@
   <Target Name="CompileExample" DependsOnTargets="Compile">
     <MSBuild Projects="$(ProductProjectSrcDirectory).Example\$(ProductProjectName).Example.csproj" Properties="Configuration=Release"/>
   </Target>
+  
+    <!--Prepare for test-->
+  
+  <Target Name="DownloadNunit" Condition=" '$(NUnitIsAvailable)' == 'false' ">
+    <Message Text="Downloading NUnit..." Importance="normal" />
+	<MakeDir Directories="$(BinDirectory)\Download"/>
+    <WebDownload FileUri="http://github.com/nunit/nunitv2/releases/download/$(NunitVersion)/NUnit-$(NunitVersion).zip" FileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" />
+    <Message Text="Extracting NUnit..." Importance="normal" />
+    <Unzip ZipFileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" TargetDirectory="$(BinDirectory)\Download"/>
+    <ItemGroup>
+      <NUnitFiles Include="$(BinDirectory)\Download\NUnit-$(NunitVersion)\bin\**\**"/>
+    </ItemGroup>
+    <Message Text="Copying NUnit to tools folder..." Importance="normal" />
+    <Copy SourceFiles="@(NUnitFiles)" DestinationFolder="$(ToolsDirectory)\NUnit\%(RecursiveDir)"/>
+    <Copy SourceFiles="$(BinDirectory)\Download\NUnit-$(NunitVersion)\license.txt" DestinationFiles="$(ToolsDirectory)\NUnit\license.txt"/>
+    <Delete Files="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip"/>
+    <DeleteTree Directories="$(BinDirectory)\Download\NUnit-$(NunitVersion)"/>        
+  </Target>
 
    <!-- Run Unit tests -->
 
@@ -191,7 +210,7 @@
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
 
-    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="C:\Program Files (x86)\NUnit 2.6.3\bin"/>
+    <NUnit Assemblies="@(TestAssembly)" IncludeCategory="UnitTests" ToolPath="$(ToolsDirectory)\NUnit"/>
   </Target>
   
   <Target Name="ZipSource" DependsOnTargets="Version">

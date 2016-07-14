@@ -17,10 +17,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("NCmdLiner is a self documenting command line parser")]
 [assembly: AssemblyCompany("github.com/trondr")]
 [assembly: AssemblyProduct("NCmdLiner")]
-[assembly: AssemblyCopyright("Copyright © <github.com/trondr> 2015")]
+[assembly: AssemblyCopyright("Copyright © <github.com/trondr> 2016")]
 [assembly: CLSCompliant(true)]
-[assembly: AssemblyInformationalVersion("1.1.15249.8a6423e")]
-[assembly: AssemblyVersion("1.1.15249.159")]
-[assembly: AssemblyFileVersion("1.1.15249.159")]
+[assembly: AssemblyInformationalVersion("1.1.16196.0833ce3")]
+[assembly: AssemblyVersion("1.1.16196.146")]
+[assembly: AssemblyFileVersion("1.1.16196.146")]
 
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- $Id$ -->
+
+  <PropertyGroup>
+    <MsBuildCustomTasksPath Condition="'$(MsBuildCustomTasksPath)' == ''">$(MSBuildExtensionsPath)\MsBuildCustomTasks</MsBuildCustomTasksPath>
+    <MsBuildCustomTasksLib>$(MsBuildCustomTasksPath)\MSBuildCustomTasks.dll</MsBuildCustomTasksLib>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.Impersonate" />
+  <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.RunAsUser" />
+  <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.ResolveScriptInstallPackage" />
+
+  <ItemGroup>
+    <FxCopRuleAssemblies Include="UsageRules.dll"/>
+    <FxCopRuleAssemblies Include="SecurityRules.dll"/>
+    <FxCopRuleAssemblies Include="PortabilityRules.dll"/>
+    <FxCopRuleAssemblies Include="PerformanceRules.dll"/>
+    <FxCopRuleAssemblies Include="MobilityRules.dll"/>
+    <FxCopRuleAssemblies Include="InteroperabilityRules.dll"/>
+    <FxCopRuleAssemblies Include="GlobalizationRules.dll"/>
+    <FxCopRuleAssemblies Include="DesignRules.dll"/>
+  </ItemGroup>
+</Project>

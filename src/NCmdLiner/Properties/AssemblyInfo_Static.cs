@@ -24,6 +24,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.0.3")]
 #elif NET403CLIENT
    [assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.0.3 Client Profile")]
+#elif NET45MONO
+   [assembly: AssemblyTitle("NCmdLiner for Mono 4.5")]
 #elif NET40MONO
    [assembly: AssemblyTitle("NCmdLiner for Mono 4.0")]
 #elif MONO20
@@ -34,6 +36,8 @@ using System.Runtime.CompilerServices;
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5.2")]
 #elif NET46
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6")]
+#elif NET461
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6.1")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif
