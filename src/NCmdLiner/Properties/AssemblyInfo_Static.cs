@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 #if NET20
-
 [assembly: AssemblyTitle("NCmdLiner for .NET Framework 2.0")]
 #elif NET35
    [assembly: AssemblyTitle("NCmdLiner for .NET Framework 3.5")]
@@ -38,6 +37,8 @@ using System.Runtime.CompilerServices;
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6")]
 #elif NET461
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6.1")]
+#elif NETSTANDARD1_6
+	[assembly: AssemblyTitle("NCmdLiner for .NET Standard Library 1.6")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif

@@ -9,7 +9,6 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Threading;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -22,7 +21,7 @@ namespace NCmdLiner
         public StringToObject(IArrayParser arrayParser)
         {
             _arrayParser = arrayParser;
-            _culture = Thread.CurrentThread.CurrentCulture;
+            _culture = CultureInfo.CurrentCulture;
         }
 
         public object ConvertValue(string value, Type argumentType)
@@ -74,7 +73,7 @@ namespace NCmdLiner
 
             // The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32,
             // UInt32, Int64, UInt64, Char, Double, and Single
-            if (argumentType.IsPrimitive || argumentType == typeof (decimal) || argumentType.IsEnum)
+            if (argumentType.IsPrimitive() || argumentType == typeof (decimal) || argumentType.IsEnum())
             {
                 var converter = TypeDescriptor.GetConverter(argumentType);
                 try
@@ -176,7 +175,7 @@ namespace NCmdLiner
 #if NET4_0
          Contract.Requires(type != null);
 #endif
-            return type.IsValueType ? Activator.CreateInstance(type) : null;
+            return type.IsValueType() ? Activator.CreateInstance(type) : null;
         }
     }
 }

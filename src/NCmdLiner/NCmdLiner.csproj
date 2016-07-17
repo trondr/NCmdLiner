@@ -12,7 +12,7 @@
     <RootNamespace>NCmdLiner</RootNamespace>
     <AssemblyName>NCmdLiner</AssemblyName>
     <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == ''">v3.5</TargetFrameworkVersion>
-    <TargetFramework Condition=" '$(TargetFramework)' == ''">NET20</TargetFramework>
+    <TargetFramework Condition=" '$(TargetFramework)' == ''">NET35</TargetFramework>
     <TargetFrameworkProfile Condition=" '$(TargetFrameworkProfile)' != ''">$(TargetFrameworkProfile)</TargetFrameworkProfile>
     <TargetFrameworkIdentifier Condition=" '$(TargetFrameworkIdentifier)' == ''">.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkIdentifier Condition=" '$(TargetFrameworkIdentifier)' != ''">$(TargetFrameworkIdentifier)</TargetFrameworkIdentifier>
@@ -26,13 +26,14 @@
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetFrameworkProfile />
+    <CopyNuGetImplementations>false</CopyNuGetImplementations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;$(TargetFramework)</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET35;TINYIOC_INTERNAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -60,6 +61,7 @@
     <Compile Include="ApplicationInfoHelper.cs" />
     <Compile Include="ArgumentsParser.cs" />
     <Compile Include="ArrayParser.cs" />
+    <Compile Include="AssemblyExtender.cs" />
     <Compile Include="Attributes\CommandAttibute.cs" />
     <Compile Include="Attributes\CommandParameterAttribute.cs" />
     <Compile Include="Attributes\CommandsAttribute.cs" />
@@ -123,9 +125,11 @@
     <Compile Include="Exceptions\UnknownCommandException.cs" />
     <Compile Include="Resources\EmbeddedResource.cs" />
     <Compile Include="Resources\IEmbeddedResource.cs" />
+    <Compile Include="SerializerHelper.cs" />
     <Compile Include="StringToObject.cs" />
     <Compile Include="TextFormater.cs" />
     <Compile Include="TinyIoC.cs" />
+    <Compile Include="TypeExtender.cs" />
     <Compile Include="ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,8 +152,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework'" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" Condition=" '$(TargetFrameworkIdentifier)' == '.NETPortable'" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" Condition=" '$(SilverlightVersion)' != ''" />
-  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
-    <VisualStudioVersion>11.0</VisualStudioVersion>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition=" '$(TargetFrameworkIdentifier)' == '.NETCore'" />
   <ProjectExtensions />

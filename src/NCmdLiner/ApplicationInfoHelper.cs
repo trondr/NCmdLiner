@@ -43,8 +43,11 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_applicationVersion))
                 {
-                    Assembly assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-                    AssemblyInformationalVersionAttribute informationalVersionAttribute = Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute), false) as AssemblyInformationalVersionAttribute;
+                    Assembly assembly = Assembly.GetEntryAssembly() ?? Assembly.GetEntryAssembly();
+
+
+
+                    AssemblyInformationalVersionAttribute informationalVersionAttribute = assembly.GetCustomAttributeEx(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
                     if (informationalVersionAttribute != null)
                     {
                         _applicationVersion = informationalVersionAttribute.InformationalVersion;    
@@ -110,9 +113,9 @@ namespace NCmdLiner
                     Assembly assembly = Assembly.GetEntryAssembly();
                     if (assembly == null)
                     {
-                        assembly = Assembly.GetExecutingAssembly();                        
+                        assembly = Assembly.GetEntryAssembly();
                     }                    
-                    _applicationCopyright = ((AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCopyrightAttribute), false)).Copyright;
+                    _applicationCopyright = ((AssemblyCopyrightAttribute)assembly.GetCustomAttributeEx(typeof(AssemblyCopyrightAttribute))).Copyright;
                 }
                 return _applicationCopyright;
             }
@@ -129,9 +132,9 @@ namespace NCmdLiner
                     Assembly assembly = Assembly.GetEntryAssembly();
                     if (assembly == null)
                     {
-                        assembly = Assembly.GetExecutingAssembly();
+                        assembly = Assembly.GetEntryAssembly();
                     }
-                    _applicationDescription = ((AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute), false)).Description;
+                    _applicationDescription = ((AssemblyDescriptionAttribute)assembly.GetCustomAttributeEx(typeof(AssemblyDescriptionAttribute))).Description;
                 }
                 return _applicationDescription;
             }            

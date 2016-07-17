@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
@@ -26,9 +27,9 @@ namespace NCmdLiner
         public CommandRule GetCommandRule(MethodInfo methodInfo, object targetObject)
         {
             if (methodInfo == null) throw new ArgumentNullException("methodInfo");
-            object[] customAttributes = methodInfo.GetCustomAttributes(false);
+            var customAttributes = methodInfo.GetCustomAttributes(false);
             CommandAttribute commandAttribute = null;
-            foreach (object customAttribute in customAttributes)
+            foreach (var customAttribute in customAttributes)
             {
                 if (customAttribute is CommandAttribute)
                 {
@@ -46,15 +47,15 @@ namespace NCmdLiner
             bool optionalParamterFound = false;
             foreach (ParameterInfo parameter in methodInfo.GetParameters())
             {
-                object[] attributes = parameter.GetCustomAttributes(typeof (CommandParameterAttribute), false);
-                if (attributes.Length == 0)
+                var attributes = parameter.GetCustomAttributes(typeof (CommandParameterAttribute), false).ToList();
+                if (attributes.Count == 0)
                 {
                     throw new MissingCommandParameterAttributeException(
                         string.Format(
                             "Command parameter attribute is not decorating the parameter '{0}' in the method '{1}'",
                             parameter.Name, methodInfo.Name));
                 }
-                if (attributes.Length > 1)
+                if (attributes.Count > 1)
                 {
                     throw new DuplicateCommandParameterAttributeException(
                         string.Format(
@@ -127,7 +128,7 @@ namespace NCmdLiner
         {
             foreach (MethodInfo method in methods)
             {
-                object[] customAttributes = method.GetCustomAttributes(false);
+                var customAttributes = method.GetCustomAttributes(false);
                 foreach (object customAttribute in customAttributes)
                 {
                     if (customAttribute is CommandAttribute)

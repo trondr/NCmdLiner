@@ -34,7 +34,9 @@ namespace NCmdLiner.Credit
     /// ICreditInfo creditInfo = new CreditInfo();
     /// Console.WriteLine(creditInfo);
     /// </summary>
+    #if !NETSTANDARD1_6
     [Serializable]
+    #endif
     public class CreditInfo : ICreditInfo
     {
         #region Implementation of ICreditInfo
@@ -71,48 +73,6 @@ namespace NCmdLiner.Credit
         }
 
         private string _creditText;
-
-        #endregion
-
-        #region Public static methods
-
-        /// <summary>  Serialize credit. </summary>
-        ///
-        /// <param name="fileName">      File name. </param>
-        /// <param name="creditInfo">   Information describing the credit. </param>
-        public static void Serialize(string fileName, CreditInfo creditInfo)
-        {
-            using (StreamWriter streamWriter = new StreamWriter(fileName, false, Encoding.UTF8))
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof (CreditInfo));
-                xmlSerializer.Serialize(streamWriter, creditInfo);
-            }
-        }
-
-        /// <summary>
-        /// Deserialize credit
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public static CreditInfo DeSerialize(string fileName)
-        {
-            using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof (CreditInfo));
-                return xmlSerializer.Deserialize(streamReader) as CreditInfo;
-            }
-        }
-
-        /// <summary>
-        /// Deserialize credit
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        internal static CreditInfo DeSerialize(Stream stream)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof (CreditInfo));
-            return xmlSerializer.Deserialize(stream) as CreditInfo;
-        }
 
         #endregion
 

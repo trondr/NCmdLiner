@@ -52,7 +52,7 @@ namespace NCmdLiner.License
                         {
                             try
                             {
-                                ILicenseInfo licenseInfo = LicenseInfo.DeSerialize(resourceStream);
+                                ILicenseInfo licenseInfo = SerializerHelper<ILicenseInfo>.DeSerialize(resourceStream);
                                 licenses.Add(licenseInfo);
                             }
                             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace NCmdLiner.License
         /// <returns>  The assembly. </returns>
         private Assembly GetAssembly(Assembly assembly)
         {
-            return assembly ?? (Assembly.GetCallingAssembly());
+            return assembly ?? (typeof(LicenseProvider).GetAssembly());
         }
 
         #endregion

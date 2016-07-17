@@ -64,6 +64,10 @@
 #define USE_OBJECT_CONSTRUCTOR
 #endif
 
+#if NETSTANDARD1_6
+#undef APPDOMAIN_GETASSEMBLIES
+#endif
+
 #endregion
 namespace TinyIoC
 {
@@ -858,6 +862,7 @@ namespace TinyIoC
     }
     #endregion
 
+    #region Class:TinyIoCContainer
 #if TINYIOC_INTERNAL
     internal
 #else
@@ -1140,7 +1145,7 @@ namespace TinyIoC
 #if APPDOMAIN_GETASSEMBLIES
             AutoRegisterInternal(AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsIgnoredAssembly(a)), DuplicateImplementationActions.RegisterSingle, null);
 #else
-            AutoRegisterInternal(new Assembly[] {this.GetType().Assembly()}, true, null);
+            AutoRegisterInternal(new Assembly[] {this.GetType().GetAssembly()}, DuplicateImplementationActions.RegisterSingle, null);
 #endif
         }
 
@@ -1157,7 +1162,7 @@ namespace TinyIoC
 #if APPDOMAIN_GETASSEMBLIES
             AutoRegisterInternal(AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsIgnoredAssembly(a)), DuplicateImplementationActions.RegisterSingle, registrationPredicate);
 #else
-            AutoRegisterInternal(new Assembly[] { this.GetType().Assembly()}, true, registrationPredicate);
+            AutoRegisterInternal(new Assembly[] { this.GetType().GetAssembly()}, DuplicateImplementationActions.RegisterSingle, registrationPredicate);
 #endif
         }
 
@@ -1171,7 +1176,7 @@ namespace TinyIoC
 #if APPDOMAIN_GETASSEMBLIES
             AutoRegisterInternal(AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsIgnoredAssembly(a)), duplicateAction, null);
 #else
-            AutoRegisterInternal(new Assembly[] { this.GetType().Assembly() }, ignoreDuplicateImplementations, null);
+            AutoRegisterInternal(new Assembly[] { this.GetType().GetAssembly() }, duplicateAction, null);
 #endif
         }
 
@@ -1187,7 +1192,7 @@ namespace TinyIoC
 #if APPDOMAIN_GETASSEMBLIES
             AutoRegisterInternal(AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsIgnoredAssembly(a)), duplicateAction, registrationPredicate);
 #else
-            AutoRegisterInternal(new Assembly[] { this.GetType().Assembly() }, ignoreDuplicateImplementations, registrationPredicate);
+            AutoRegisterInternal(new Assembly[] { this.GetType().GetAssembly() }, duplicateAction, registrationPredicate);
 #endif
         }
 
@@ -3340,7 +3345,7 @@ namespace TinyIoC
             }
 
 #if RESOLVE_OPEN_GENERICS
-            if (checkType.IsInterface && checkType.IsGenericType)
+            if (checkType.IsInterface() && checkType.IsGenericType())
             {
                 // if the type is registered as an open generic, then see if the open generic is registered
                 if (_RegisteredTypes.TryGetValue(new TypeRegistration(checkType.GetGenericTypeDefinition(), name), out factory))
@@ -3907,7 +3912,7 @@ namespace TinyIoC
             {
                 if (registerType.IsInterface())
                 {
-                    if (!registerImplementation.FindInterfaces((t, o) => t.Name == registerType.Name, null).Any())
+                    if (!registerImplementation.FindInterfacesEx((t, o) => t.Name == registerType.Name, null).Any())
                         return false;
                 }
                 else if (registerType.IsAbstract() && registerImplementation.BaseType() != registerType)
@@ -3937,69 +3942,107 @@ namespace TinyIoC
 
         #endregion
     }
+    #endregion
 
-}
-
-// reverse shim for WinRT SR changes...
-#if !NETFX_CORE
-namespace System.Reflection
-{
+    #region Class: TypeExtender
 #if TINYIOC_INTERNAL
     internal
 #else
     public
 #endif
-    static class ReverseTypeExtender
+    static class TypeExtender
     {
         public static bool IsClass(this Type type)
         {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsClass;
+#else
             return type.IsClass;
-        }
-
-        public static bool IsAbstract(this Type type)
-        {
-            return type.IsAbstract;
-        }
-
-        public static bool IsInterface(this Type type)
-        {
-            return type.IsInterface;
-        }
-
-        public static bool IsPrimitive(this Type type)
-        {
-            return type.IsPrimitive;
-        }
-
-        public static bool IsValueType(this Type type)
-        {
-            return type.IsValueType;
-        }
-
-        public static bool IsGenericType(this Type type)
-        {
-            return type.IsGenericType;
-        }
-
-        public static bool IsGenericParameter(this Type type)
-        {
-            return type.IsGenericParameter;
-        }
+#endif
+        } 
 
         public static bool IsGenericTypeDefinition(this Type type)
         {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsGenericTypeDefinition;
+#else
             return type.IsGenericTypeDefinition;
-        }
+#endif
+        } 
 
-        public static Type BaseType(this Type type)
+        public static bool IsInterface(this Type type)
         {
-            return type.BaseType;
-        }
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsInterface;
+#else
+            return type.IsInterface;
+#endif
+        }  
 
-        public static Assembly Assembly(this Type type)
+        public static bool IsAbstract(this Type type)
         {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsAbstract;
+#else
+            return type.IsAbstract;
+#endif
+        }  
+
+        public static bool IsPrimitive(this Type type)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsPrimitive;
+#else
+            return type.IsPrimitive;
+#endif
+        } 
+
+        public static bool IsGenericType(this Type type)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsGenericType;
+#else
+            return type.IsGenericType;
+#endif
+        } 
+
+        public static bool IsValueType(this Type type)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().IsValueType;
+#else
+            return type.IsValueType;
+#endif
+        } 
+        
+        public static Assembly GetAssembly(this Type type)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().Assembly;
+#else
             return type.Assembly;
+#endif
+        }    
+        
+        public static Type[] FindInterfacesEx(this Type type, TypeFilter filter,object filterCriteria)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().FindInterfaces(filter,filterCriteria);
+#else
+            return type.FindInterfaces(filter,filterCriteria);
+#endif
+        }
+
+         public static Type BaseType(this Type type)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().BaseType;
+#else
+            return type.BaseType;
+#endif
         }
     }
+
+    #endregion
+
 }
-#endif

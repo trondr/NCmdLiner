@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
@@ -22,7 +23,7 @@ namespace NCmdLiner
         static CmdLinery()
         {
             Container = new TinyIoCContainer();
-            Container.AutoRegister(new[] { Container.GetType().Assembly });
+            Container.AutoRegister(new[] { Container.GetType().GetAssembly() });
         }
 
         #region Run from TargetType
@@ -647,10 +648,10 @@ namespace NCmdLiner
         private static List<Type> GetTargetTypesFromAssembly(Assembly assembly)
         {
             var targetTypes = new List<Type>();
-            foreach (Type type in assembly.GetTypes())
+            foreach (var type in assembly.GetTypes())
             {
-                object[] attributes = type.GetCustomAttributes(typeof(CommandsAttribute), true);
-                if (attributes.Length == 1)
+                var attributes = type.GetCustomAttributes(typeof(CommandsAttribute), true);
+                if (attributes.Count() == 1)
                     targetTypes.Add(type);
             }
             return targetTypes;

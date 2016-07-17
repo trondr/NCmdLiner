@@ -1,0 +1,59 @@
+{
+  "version": "1.0.0-*",
+  "dependencies": {
+    
+  },
+  "frameworks": {
+    "net35": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
+    "net452": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
+    "net461": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
+    ".NETFramework,Version=v4.5,Profile=Mono": {
+      "buildOptions": {
+        "define": [ "NET45MONO" ]
+      },
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
+
+    "netstandard1.6": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Collections.Specialized": "4.0.1",
+        "System.ComponentModel.TypeConverter": "4.1.0",
+        "System.Globalization.Extensions": "4.0.1",
+        "System.Reflection.TypeExtensions": "4.1.0",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Threading": "4.0.11",
+        "System.Threading.Thread": "4.0.0",
+        "System.Xml.XmlSerializer": "4.0.11"
+      }
+    }
+  },
+  "buildOptions": {
+    "define": [ "TINYIOC_INTERNAL" ]
+  }
+}

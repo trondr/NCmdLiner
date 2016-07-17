@@ -8,6 +8,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -34,20 +35,21 @@ namespace NCmdLiner.License
     /// ILicenseInfo licenseInfo = new LicenseInfo();
     /// Console.WriteLine(licenseInfo);
     /// </summary>
+    #if !NETSTANDARD1_6
     [Serializable]
+    #endif
     public class LicenseInfo : ILicenseInfo
     {
         #region Implementation of ILicenseInfo
 
         /// <summary>
         /// Get/set product name
-        /// </summary>
+        /// </summary>        
         public string ProductName
         {
             get { return _productName; }
             set { _productName = value; }
         }
-
         private string _productName;
 
         /// <summary>
@@ -58,7 +60,6 @@ namespace NCmdLiner.License
             get { return _productHome; }
             set { _productHome = value; }
         }
-
         private string _productHome;
 
         /// <summary> 
@@ -69,7 +70,6 @@ namespace NCmdLiner.License
             get { return _creditText; }
             set { _creditText = value; }
         }
-
         private string _creditText;
 
         /// <summary> 
@@ -80,7 +80,6 @@ namespace NCmdLiner.License
             get { return _license; }
             set { _license = value; }
         }
-
         private string _license;
 
         /// <summary> 
@@ -92,50 +91,7 @@ namespace NCmdLiner.License
             get { return _licenseText; }
             set { _licenseText = value; }
         }
-
         private string _licenseText;
-
-        #endregion
-
-        #region Public static methods
-
-        /// <summary>  Serialize license. </summary>
-        ///
-        /// <param name="fileName">      File name. </param>
-        /// <param name="licenseInfo">   Information describing the license. </param>
-        public static void Serialize(string fileName, LicenseInfo licenseInfo)
-        {
-            using (StreamWriter streamWriter = new StreamWriter(fileName, false, Encoding.UTF8))
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof (LicenseInfo));
-                xmlSerializer.Serialize(streamWriter, licenseInfo);
-            }
-        }
-
-        /// <summary>
-        /// Deserialize license
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public static LicenseInfo DeSerialize(string fileName)
-        {
-            using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof (LicenseInfo));
-                return xmlSerializer.Deserialize(streamReader) as LicenseInfo;
-            }
-        }
-
-        /// <summary>
-        /// Deserialize license
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        internal static LicenseInfo DeSerialize(Stream stream)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof (LicenseInfo));
-            return xmlSerializer.Deserialize(stream) as LicenseInfo;
-        }
 
         #endregion
 

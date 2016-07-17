@@ -93,11 +93,6 @@
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
     </NetFrameWorkName>
-    <NetFrameWorkName Include="NET35CLIENT">
-      <Version>v3.5</Version>
-      <Profile>Client</Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>    
  	<NetFrameWorkName Include="NET45MONO">
       <Version>v4.5</Version>
       <Profile>Mono</Profile>

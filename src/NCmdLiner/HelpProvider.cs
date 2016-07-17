@@ -209,7 +209,7 @@ namespace NCmdLiner
                 Environment.NewLine);
             ICreditProvider creditProvider = new CreditProvider();
             List<ICreditInfo> creditInfos = creditProvider.GetCredits(Assembly.GetEntryAssembly());
-            AssemblyName[] referencedAssemblies = Assembly.GetCallingAssembly().GetReferencedAssemblies();
+            AssemblyName[] referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
             foreach (AssemblyName referencedAssembly in referencedAssemblies)
             {
                 List<ICreditInfo> referencedCreditInfos = creditProvider.GetCredits(Assembly.Load(referencedAssembly));
@@ -252,7 +252,7 @@ namespace NCmdLiner
                 }
             }
 
-            AssemblyName[] referencedAssemblies = Assembly.GetCallingAssembly().GetReferencedAssemblies();
+            AssemblyName[] referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
             foreach (AssemblyName referencedAssembly in referencedAssemblies)
             {
                 IList<ILicenseInfo> referencedLicenseInfos =

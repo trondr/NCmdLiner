@@ -52,7 +52,7 @@ namespace NCmdLiner.Credit
                         {
                             try
                             {
-                                ICreditInfo creditInfo = CreditInfo.DeSerialize(resourceStream);
+                                ICreditInfo creditInfo = SerializerHelper<ICreditInfo>.DeSerialize(resourceStream);
                                 credits.Add(creditInfo);
                             }
                             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace NCmdLiner.Credit
         /// <returns>  The assembly. </returns>
         private Assembly GetAssembly(Assembly assembly)
         {
-            return assembly ?? (Assembly.GetCallingAssembly());
+            return assembly ?? (typeof(CreditProvider).GetAssembly());
         }
 
         #endregion

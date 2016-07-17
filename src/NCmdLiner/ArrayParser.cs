@@ -56,15 +56,15 @@ namespace NCmdLiner
         private static string[] String2Array(string value, char delimiter, char quote)
         {
             StringCollection resultList = new StringCollection();
-            if (!value.Contains(quote.ToString(CultureInfo.InvariantCulture)))
+            if (!value.Contains(quote.ToString()))
             {
                 //Quotes is not beeing used, just split on delimiter
                 return value.Split(new[] {delimiter});
             }
 
             //Quotes is beeing used, use regular expression to parse the csv format.
-            string delimiterString = Regex.Escape(delimiter.ToString(CultureInfo.InvariantCulture));
-            string quoteString = Regex.Escape(quote.ToString(CultureInfo.InvariantCulture));
+            string delimiterString = Regex.Escape(delimiter.ToString());
+            string quoteString = Regex.Escape(quote.ToString());
             StringBuilder pattern = new StringBuilder();
             pattern.Append("([" + quoteString + "]{0,1})"); //Match 0 or 1 starting quote character
             pattern.Append("([^" + quoteString + "]{0,})"); //Match everything in between quote charchters
