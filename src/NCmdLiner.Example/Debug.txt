@@ -1,4 +1,0 @@
-﻿ExampleCommand2 /parameter1="Some other example parameter1 value" /parameter2="Some other example parameter2 value" /parameter3="1000" /parameter4="Some other example value for parameter4" /parameter5="True"
-ExampleCommand2 /p1="Some other example parameter1 value" /p2="Some other example parameter2 value" /p3="1000" /p4="Some other example value for parameter4" /p5="True"
-ExampleCommand3 /p1="Some example parameter1 value" /ap2="string1;string2;string3" 
-Help

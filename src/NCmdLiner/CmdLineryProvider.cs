@@ -69,13 +69,28 @@ namespace NCmdLiner
             {
                 if (ex.InnerException != null)
                 {
-                    MethodInfo prepForRemoting = typeof(Exception).GetMethod("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (prepForRemoting != null)
-                    {
-                        //Preserve stack trace before re-throwing inner exception
-                        prepForRemoting.Invoke(ex.InnerException, new object[0]);
-                        throw ex.InnerException;
-                    }
+                    var innerException = ex.InnerException;
+                    //var preparedException = ex.InnerException.PrepForRemoting();
+                    //throw preparedException;
+                    //MethodInfo prepForRemoting = typeof(Exception).GetMethodEx("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
+                    //if (prepForRemoting != null)
+                    //{
+                    //    //Preserve stack trace before re-throwing inner exception
+                    //    prepForRemoting.Invoke(ex.InnerException, new object[0]);                    
+                    //    throw ex.InnerException;
+                    //}
+                    innerException.PrepForRemotingAndThrow();
+                    //var prepForRemoting = typeof(Exception).GetMethodEx("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
+                    //if (prepForRemoting != null)
+                    //{
+                    //    prepForRemoting.Invoke(innerException, new object[0]);
+                    //    throw innerException;
+                    //}
+                    //else
+                    //{
+                    //    var exceptionDispatchInfo = ExceptionDispatchInfo.Capture(innerException);
+                    //    exceptionDispatchInfo.Throw();
+                    //}
                 }
                 throw;
             }

@@ -1,16 +1,10 @@
-{
+﻿{
   "version": "1.0.0-*",
   "dependencies": {
     
   },
   "frameworks": {
     "net35": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
-    "net45": {
       "frameworkAssemblies": {
         "System": "",
         "System.Xml": ""
@@ -37,7 +31,6 @@
         "System.Xml": ""
       }
     },
-
     "netstandard1.6": {
       "imports": "dnxcore50",
       "dependencies": {
@@ -54,6 +47,7 @@
     }
   },
   "buildOptions": {
-    "define": [ "TINYIOC_INTERNAL" ]
+    "keyFile": "./NCmdLiner.snk",
+    "delaySign": true
   }
 }

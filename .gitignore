@@ -26,6 +26,9 @@ obj*/
 *.sbr
 *.scc
 
+# Visual Studio 2015 cache/options directory
+.vs/*
+
 #Include binaries (build tools etc.)
 !*.exe
 !*.pdb

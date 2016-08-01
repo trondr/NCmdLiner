@@ -123,5 +123,23 @@ namespace NCmdLiner
             return (IEnumerable<Attribute>)type.GetCustomAttributes(attributeType, inherit);
 #endif
         }
+
+        public static MethodInfo GetMethodEx(this Type type, string methodName)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().GetMethod(methodName);
+#else
+            return type.GetMethod(methodName);
+#endif
+        }
+
+        public static MethodInfo GetMethodEx(this Type type, string methodName, BindingFlags bindingFlags)
+        {
+#if NETSTANDARD1_6
+            return type.GetTypeInfo().GetMethod(methodName, bindingFlags);
+#else
+            return type.GetMethod(methodName, bindingFlags);
+#endif
+        }
     }    
 }

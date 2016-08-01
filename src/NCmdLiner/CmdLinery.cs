@@ -18,15 +18,16 @@ namespace NCmdLiner
 {
     public class CmdLinery
     {
-        private static readonly TinyIoCContainer Container;
+        //private static readonly TinyIoCContainer Container;
 
         static CmdLinery()
         {
-            Container = new TinyIoCContainer();
-            Container.AutoRegister(new[] { Container.GetType().GetAssembly() });
+            //Container = new TinyIoCContainer();
+            //container.AutoRegister(new[] { container.GetType().GetAssembly() });
         }
 
         #region Run from TargetType
+
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
@@ -36,8 +37,11 @@ namespace NCmdLiner
         {
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
-
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -52,10 +56,13 @@ namespace NCmdLiner
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -70,10 +77,13 @@ namespace NCmdLiner
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -90,11 +100,14 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -109,10 +122,13 @@ namespace NCmdLiner
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -123,17 +139,21 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo,
+            IHelpProvider helpProvider)
         {
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -150,11 +170,14 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
 
@@ -166,24 +189,29 @@ namespace NCmdLiner
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
+            IHelpProvider helpProvider)
         {
             if (targetType == null) throw new ArgumentNullException("targetType");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-            
-            return Run(new[] { targetType }, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
         #endregion
 
         #region Run from Assembly
+
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
         ///
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
@@ -193,8 +221,11 @@ namespace NCmdLiner
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
-
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -208,12 +239,15 @@ namespace NCmdLiner
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
         ///
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
@@ -225,10 +259,13 @@ namespace NCmdLiner
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -244,13 +281,16 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
         ///
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
@@ -262,12 +302,15 @@ namespace NCmdLiner
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
         ///
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
@@ -275,17 +318,21 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo,
+            IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -301,11 +348,14 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(assembly, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -316,20 +366,24 @@ namespace NCmdLiner
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
+            IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            var targetTypes = GetTargetTypesFromAssembly(assembly);
-            return Run(targetTypes.ToArray(), args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                var targetTypes = GetTargetTypesFromAssembly(assembly);
+                return Run(targetTypes.ToArray(), args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
         #endregion
@@ -345,10 +399,13 @@ namespace NCmdLiner
         {
             if (targetTypes == null) throw new ArgumentNullException("targetTypes");
             if (args == null) throw new ArgumentNullException("args");
-
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
@@ -360,10 +417,13 @@ namespace NCmdLiner
             if (targetTypes == null) throw new ArgumentNullException("targetTypes");
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -377,12 +437,15 @@ namespace NCmdLiner
             if (targetTypes == null) throw new ArgumentNullException("targetTypes");
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
 
-            Container.Register<IMessenger>(messenger);
-
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
@@ -396,13 +459,16 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
-        
+
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
@@ -414,10 +480,13 @@ namespace NCmdLiner
             if (targetTypes == null) throw new ArgumentNullException("targetTypes");
             if (args == null) throw new ArgumentNullException("args");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -427,17 +496,21 @@ namespace NCmdLiner
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo,
+            IHelpProvider helpProvider)
         {
             if (targetTypes == null) throw new ArgumentNullException("targetTypes");
             if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");            
+            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -454,10 +527,14 @@ namespace NCmdLiner
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
 
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            return Run(targetTypes, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -475,15 +552,17 @@ namespace NCmdLiner
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            var commandRuleProvider = Container.Resolve<ICommandRuleProvider>();
-            var cmdLineryProvider = Container.Resolve<ICmdLineryProvider>();
-            var commandRules = commandRuleProvider.GetCommandRules(targetTypes);
-            return cmdLineryProvider.Run(commandRules, args);
+                var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
+                var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();
+                var commandRules = commandRuleProvider.GetCommandRules(targetTypes);
+                return cmdLineryProvider.Run(commandRules, args);
+            }
         }
 
         #endregion
@@ -499,8 +578,10 @@ namespace NCmdLiner
         {
             if (targetObjects == null) throw new ArgumentNullException("targetObjects");
             if (args == null) throw new ArgumentNullException("args");
-
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -515,9 +596,13 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
 
-            Container.Register<IApplicationInfo>(applicationInfo);
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
 
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -531,10 +616,14 @@ namespace NCmdLiner
             if (targetObjects == null) throw new ArgumentNullException("targetObjects");
             if (args == null) throw new ArgumentNullException("args");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -550,11 +639,15 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (messenger == null) throw new ArgumentNullException("messenger");
-            
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -569,9 +662,13 @@ namespace NCmdLiner
             if (args == null) throw new ArgumentNullException("args");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
 
-            Container.Register<IHelpProvider>(helpProvider);
+            using (var container = GetContainer())
+            {
+                container.Register<IHelpProvider>(helpProvider);
 
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -588,10 +685,14 @@ namespace NCmdLiner
             if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IHelpProvider>(helpProvider);
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IHelpProvider>(helpProvider);
 
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                    container.Resolve<IHelpProvider>());
+            }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -608,10 +709,12 @@ namespace NCmdLiner
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
 
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
-
-            return Run(targetObjects, args, Container.Resolve<IApplicationInfo>(), Container.Resolve<IMessenger>(), Container.Resolve<IHelpProvider>());
+            using (var container = GetContainer())
+            {
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
+                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
         }
         
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -630,15 +733,26 @@ namespace NCmdLiner
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (helpProvider == null) throw new ArgumentNullException("helpProvider");
 
-            Container.Register<IApplicationInfo>(applicationInfo);
-            Container.Register<IMessenger>(messenger);
-            Container.Register<IHelpProvider>(helpProvider);
+            using (var container = GetContainer())
+            {
+                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register<IMessenger>(messenger);
+                container.Register<IHelpProvider>(helpProvider);
 
-            var commandRuleProvider = Container.Resolve<ICommandRuleProvider>();
-            var cmdLineryProvider = Container.Resolve<ICmdLineryProvider>();
+                var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
+                var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();
 
-            var commandRules = commandRuleProvider.GetCommandRules(targetObjects);
-            return cmdLineryProvider.Run(commandRules, args);
+                var commandRules = commandRuleProvider.GetCommandRules(targetObjects);
+                return cmdLineryProvider.Run(commandRules, args);
+            }
+        }
+
+        private static TinyIoCContainer GetContainer()
+        {
+            var container = new TinyIoCContainer();
+            var thisAssembly = typeof(CmdLinery).GetAssembly();
+            container.AutoRegister(new[] { thisAssembly });
+            return container;
         }
 
         #endregion

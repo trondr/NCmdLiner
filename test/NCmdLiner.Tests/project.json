@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0"
+    },    
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "xunit": "2.2.0-beta2-build3300",
+    "moq.netcore": "4.4.0-beta8",
+    "NCmdLiner": "1.0.0-*",
+    "System.Linq": "4.1.0",
+    "System.Linq.Dynamic.Core": "1.0.5.4",
+    "System.Diagnostics.TraceSource": "4.0.0"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [ "dnxcore50", "dotnet5.4" ]
+    }
+  },
+
+  "buildOptions": {
+    "keyFile": "./NCmdLiner.snk",
+    "delaySign": true
+  }
+}
