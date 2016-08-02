@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <Configuration>Release</Configuration>
+    
+    <ProductName>NCmdLiner</ProductName>
+    <ProductCompany>github.com/trondr</ProductCompany>
+    <ProductDescription>NCmdLiner provides a command line parser with auto documentation capabilities.</ProductDescription>
+    <TestsProductDescription>NCmdLiner.Tests contains tests of the NCmdLiner library.</TestsProductDescription>
+
+    <ProductCopyright>Copyright &#169; &lt;github.com/trondr&gt; $([System.DateTime]::Now.Year)</ProductCopyright>
+    <ProductProjectName>$(ProductName)</ProductProjectName>
+
+    <ShortYear>$([System.DateTime]::Now.ToString(`yy`))</ShortYear>
+    <DayOfYear>$([System.DateTime]::Now.DayOfYear.ToString(`000`))</DayOfYear>
+    <Major>1</Major>
+    <Minor>2</Minor>
+    <Build>$(ShortYear)$(DayOfYear)</Build>
+    <Revision>0</Revision>
+
+    <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
+    <TestDirectory>$(MSBuildProjectDirectory)\test</TestDirectory>
+    <BuildOutputDirectory>$(MSBuildProjectDirectory)\bin</BuildOutputDirectory>
+    <NuGetPackagesDirectory>$(MSBuildProjectDirectory)\..\NugetPackages</NuGetPackagesDirectory>
+    <BinDirectory>$(MSBuildProjectDirectory)\bin</BinDirectory>
+    <SrcDirectory>$(MSBuildProjectDirectory)\src</SrcDirectory>
+    <ToolsDirectory>$(MSBuildProjectDirectory)\tools</ToolsDirectory>
+    <ProductProjectSrcDirectory>$(SrcDirectory)\$(ProductProjectName)</ProductProjectSrcDirectory>
+    <ProductProjectBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName)</ProductProjectBuildOutputDirectory>
+    <ProductProjectNugetSrcDirectory>$(SrcDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetSrcDirectory>
+    <ProductProjectNugetBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetBuildOutputDirectory>
+
+    <NunitVersion>3.4.1</NunitVersion>
+
+  </PropertyGroup>
+
+  <!--
+		Include MSBuild Community Tasks.
+	-->
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>true</MSBuildCommunityTasksAvailable>
+        <MSBuildCommunityTasksPath>$(ToolsDirectory)\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCommunityTasksAvailable>false</MSBuildCommunityTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(ToolsDirectory)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition=" '$(MSBuildCommunityTasksAvailable)' == 'true' "/>
+
+  <!--
+		Include MSBuild Custom Tasks.
+	-->
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets')">
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>true</MSBuildCustomTasksAvailable>
+        <MSBuildCustomTasksPath>$(ToolsDirectory)\MSBuildCustomTasks</MSBuildCustomTasksPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSBuildCustomTasksAvailable>false</MSBuildCustomTasksAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(ToolsDirectory)\MSBuildCustomTasks\MSBuildCustomTasks.Targets" Condition=" '$(MSBuildCustomTasksAvailable)' == 'true' "/>
+
+  <!-- 
+		Verify that NUnit is available
+	-->
+
+  <Choose>
+    <When Condition="Exists('$(ToolsDirectory)\NUnit\nunit3-console.exe')">
+      <PropertyGroup>
+        <NUnitIsAvailable>true</NUnitIsAvailable>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <NUnitIsAvailable>false</NUnitIsAvailable>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <!-- Verify if current solution is in a .git repository-->
+
+  <Choose>
+    <When Condition="Exists('$(MSBuildProjectDirectory)\.git')">
+      <PropertyGroup>
+        <IsGitRepository>true</IsGitRepository>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <IsGitRepository>false</IsGitRepository>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
+  <ItemGroup>
+    <DefaultExclude Include="$(SrcDirectory)\**\.hg\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\.git\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\.svn\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\bin\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\obj\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Release\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Debug\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\Test\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\TestResults\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\doc\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\www\**" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.user" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.suo" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.zip" />
+    <DefaultExclude Include="$(SrcDirectory)\**\*.txt" />
+    <DefaultExclude Include="$(SrcDirectory)\**\TestResult.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceFiles Include="$(SrcDirectory)\**\*.*" Exclude="@(DefaultExclude)" />
+  </ItemGroup>
+
+  <Target Name="GitHashInit">
+    <CreateProperty Value="unknown">
+      <Output TaskParameter="Value" PropertyName="RevisionHash" />
+    </CreateProperty>
+    <Message Text="Initial RevisionHash=$(RevisionHash)" Importance="normal" />
+  </Target>
+
+  <Target Name="GitHash" Condition=" '$(IsGitRepository)' == 'true' " DependsOnTargets="GitHashInit">
+    <GitVersion LocalPath="$(MSBuildProjectDirectory)" Timeout="5000">
+      <Output TaskParameter="CommitHash" PropertyName="RevisionHash" />
+    </GitVersion>
+    <Message Text="Calculated RevisionHash=$(RevisionHash)" Importance="normal" />
+  </Target>
+
+  <Target Name="UpdateRevisionVersion">
+    <XmlRead XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Revision" />
+    </XmlRead>
+    <Math.Add Numbers="$(Revision);1">
+      <Output TaskParameter="Result" PropertyName="Revision" />
+    </Math.Add>
+    <XmlUpdate XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml" Value="$(Revision)"/>
+  </Target>
+
+  <Target Name="UpdateBuildVersion">
+    <XmlRead XPath="/version/property[@name='build']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Build" />
+    </XmlRead>
+    <Math.Add Numbers="0;$(ShortYear)$(DayOfYear)">
+      <Output TaskParameter="Result" PropertyName="Build" />
+    </Math.Add>
+    <XmlUpdate XPath="/version/property[@name='build']/@value" XmlFileName="version.xml" Value="$(Build)"/>
+  </Target>
+
+  <Target Name="UpdateVersion" DependsOnTargets="GitHash;UpdateRevisionVersion;UpdateBuildVersion">
+    <XmlRead XPath="/version/property[@name='major']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Major" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='minor']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Minor" />
+    </XmlRead>
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
+  </Target>
+
+  <Target Name="Version" DependsOnTargets="GitHash">
+    <XmlRead XPath="/version/property[@name='major']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Major" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='minor']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Minor" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='build']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Build" />
+    </XmlRead>
+    <XmlRead XPath="/version/property[@name='revision']/@value" XmlFileName="version.xml">
+      <Output TaskParameter="Value" PropertyName="Revision" />
+    </XmlRead>
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
+    </CreateProperty>
+    <CreateProperty Value="$(Major)_$(Minor)_$(Build)_$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AssemblyVersionU" />
+    </CreateProperty>
+
+    <AssemblyInfo CodeLanguage="CS"
+       OutputFile="$(SrcDirectory)\$(ProductProjectName)\Properties\AssemblyInfo_Build.cs"
+       AssemblyDescription="$(ProductDescription)"
+       AssemblyCompany="$(ProductCompany)"
+       AssemblyProduct="$(ProductName)"
+       AssemblyCopyright="$(ProductCopyright)"
+       CLSCompliant="false"
+       AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+       AssemblyVersion="$(AssemblyVersion)"
+       AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="$(TestDirectory)\$(ProductProjectName).Tests\Properties\AssemblyInfo_Build.cs"
+      AssemblyDescription="$(TestsProductDescription)"
+      AssemblyCompany="$(ProductCompany)"
+      AssemblyProduct="$(ProductName).Tests"
+      AssemblyCopyright="$(ProductCopyright)"
+      CLSCompliant="false"
+      AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision).$(RevisionHash)"
+      AssemblyVersion="$(AssemblyVersion)"
+      AssemblyFileVersion="$(AssemblyVersion)"
+	  />
+
+  </Target>
+
+  <ItemGroup>
+    <!--<NetFrameWorkName Include="NET35">
+      <Version>v3.5</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET45MONO">
+      <Version>v4.5</Version>
+      <Profile>Mono</Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+    <NetFrameWorkName Include="NET452">
+      <Version>v4.5.2</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>-->
+    <NetFrameWorkName Include="NET461">
+      <Version>v4.6.1</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
+  </ItemGroup>
+  
+  <!--Compile class library for all defined NetFrameWorkNames-->
+
+  <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+    <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
+    <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)" />
+    <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
+    <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).dll"/>
+    <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).pdb"/>
+  </Target>
+
+  <Target Name="CompileTests" DependsOnTargets="Compile" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+     <Message Text="Compiling %(NetFrameWorkName.Identity) tests targets" />
+     <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
+  </Target>
+
+  <Target Name="CompileExample" DependsOnTargets="Compile">
+    <MSBuild Projects="$(ProductProjectSrcDirectory).Example\$(ProductProjectName).Example.csproj" Properties="Configuration=$(Configuration)"/>
+  </Target>
+
+  <!--Prepare for test-->
+
+  <Target Name="DownloadNunit" Condition=" '$(NUnitIsAvailable)' == 'false' ">
+    <Message Text="Downloading NUnit..." Importance="normal" />
+    <MakeDir Directories="$(BinDirectory)\Download"/>
+    <WebDownload FileUri="https://github.com/nunit/nunit/releases/download/$(NunitVersion)/NUnit-$(NunitVersion).zip" FileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" />
+    <Message Text="Extracting NUnit..." Importance="normal" />
+    <Unzip ZipFileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" TargetDirectory="$(BinDirectory)\Download"/>
+    <ItemGroup>
+      <NUnitFiles Include="$(BinDirectory)\Download\NUnit-$(NunitVersion)\bin\**\**"/>
+    </ItemGroup>
+    <Message Text="Copying NUnit to tools folder..." Importance="normal" />
+    <Copy SourceFiles="@(NUnitFiles)" DestinationFolder="$(ToolsDirectory)\NUnit\%(RecursiveDir)"/>
+    <Copy SourceFiles="$(BinDirectory)\Download\NUnit-$(NunitVersion)\license.txt" DestinationFiles="$(ToolsDirectory)\NUnit\license.txt"/>
+    <Delete Files="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip"/>
+    <DeleteTree Directories="$(BinDirectory)\Download\NUnit-$(NunitVersion)"/>
+  </Target>
+
+  <!-- Run Unit tests -->
+
+  <Target Name="Tests" DependsOnTargets="CompileTests" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+    <CreateItem Include="$(BinDirectory)\$(ProductProjectName).Tests\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductName).Tests.dll">
+      <Output TaskParameter="Include" ItemName="TestAssembly" />
+    </CreateItem>
+
+    <NUnit3 Assemblies="@(TestAssembly)" ToolPath="$(ToolsDirectory)\NUnit"/>
+  </Target>
+
+  <Target Name="ZipSource" DependsOnTargets="Version">
+    <Zip Files="@(SourceFiles)"
+         WorkingDirectory="$(SrcDirectory)"
+         ZipFileName="$(BuildOutputDirectory)\$(ProductProjectName)\bin\$(ProductProjectName).Source.$(AssemblyVersion).zip"
+         ZipLevel="9"
+         />
+    <Message Text="$(ProductName) zip complete" Importance="normal" />
+  </Target>
+
+  <Target Name="NugetPack" >
+    <MakeDir Directories="$(NuGetPackagesDirectory)"/>
+
+    <!-- Create NCmdLiner nuget package-->
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ProductProjectNugetBuildOutputDirectory)\src\%(RecursiveDir)" />
+
+    
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NMultiTool\NMultiTool.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET461\$(ProductName).dll&quot;" />
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
+  </Target>
+
+  <Target Name="Deploy" DependsOnTargets="Tests;CompileExample;ZipSource;NugetPack">
+
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Deploy">
+    <Message Text="$(ProductProjectName) $(AssemblyVersion) build complete" Importance="normal" />
+  </Target>
+</Project>

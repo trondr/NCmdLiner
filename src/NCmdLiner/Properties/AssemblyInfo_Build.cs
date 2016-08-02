@@ -8,19 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-[assembly: AssemblyDescription("NCmdLiner is a self documenting command line parser")]
-[assembly: AssemblyCompany("github.com/trondr")]
-[assembly: AssemblyProduct("NCmdLiner")]
-[assembly: AssemblyCopyright("Copyright © <github.com/trondr> 2016")]
-[assembly: CLSCompliant(true)]
-[assembly: AssemblyInformationalVersion("1.1.16206.cf69f7b")]
-[assembly: AssemblyVersion("1.1.16206.169")]
-[assembly: AssemblyFileVersion("1.1.16206.169")]
+[assembly: System.Reflection.AssemblyDescription("NCmdLiner provides a command line parser with auto documentation capabilities.")]
+[assembly: System.Reflection.AssemblyCompany("github.com/trondr")]
+[assembly: System.Reflection.AssemblyProduct("NCmdLiner")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright © <github.com/trondr> 2016")]
+[assembly: System.CLSCompliant(false)]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.2.16215.169.57a9877")]
+[assembly: System.Reflection.AssemblyVersion("1.2.16215.169")]
+[assembly: System.Reflection.AssemblyFileVersion("1.2.16215.169")]
 
 
