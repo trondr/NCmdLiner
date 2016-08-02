@@ -2854,6 +2854,37 @@
           "lib/net451/dotnet-test-nunit.exe": {}
         }
       },
+      "dotnet-test-xunit/2.2.0-preview2-build1029": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-003121",
+          "Microsoft.NETCore.Platforms": "1.0.1",
+          "xunit.runner.reporters": "2.2.0-beta2-build3300"
+        },
+        "frameworkAssemblies": [
+          "System.Threading.Tasks"
+        ],
+        "compile": {
+          "lib/net451/dotnet-test-xunit.exe": {}
+        },
+        "runtime": {
+          "lib/net451/dotnet-test-xunit.exe": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix-x64/lib/net451/dotnet-test-xunit.exe": {
+            "assetType": "runtime",
+            "rid": "unix-x64"
+          },
+          "runtimes/win7-x64/lib/net451/dotnet-test-xunit.exe": {
+            "assetType": "runtime",
+            "rid": "win7-x64"
+          },
+          "runtimes/win7-x86/lib/net451/dotnet-test-xunit.exe": {
+            "assetType": "runtime",
+            "rid": "win7-x86"
+          }
+        }
+      },
       "Microsoft.DiaSymReader/1.0.8": {
         "type": "package",
         "dependencies": {
@@ -2948,6 +2979,15 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Extensions.Testing.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/_._": {}
         }
       },
       "moq.netcore/4.4.0-beta8": {
@@ -3640,6 +3680,86 @@
         },
         "runtime": {
           "lib/net46/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "xunit/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.assert": "[2.2.0-beta2-build3300]",
+          "xunit.core": "[2.2.0-beta2-build3300]"
+        }
+      },
+      "xunit.abstractions/2.0.1-rc2": {
+        "type": "package",
+        "compile": {
+          "lib/net35/xunit.abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/net35/xunit.abstractions.dll": {}
+        }
+      },
+      "xunit.assert/2.2.0-beta2-build3300": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/xunit.assert.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/xunit.assert.dll": {}
+        }
+      },
+      "xunit.core/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.extensibility.core": "[2.2.0-beta2-build3300]",
+          "xunit.extensibility.execution": "[2.2.0-beta2-build3300]"
+        }
+      },
+      "xunit.extensibility.core/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.abstractions": "2.0.1-rc2"
+        },
+        "compile": {
+          "lib/net45/xunit.core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/xunit.core.dll": {}
+        }
+      },
+      "xunit.extensibility.execution/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.extensibility.core": "[2.2.0-beta2-build3300]"
+        },
+        "compile": {
+          "lib/net45/xunit.execution.desktop.dll": {}
+        },
+        "runtime": {
+          "lib/net45/xunit.execution.desktop.dll": {}
+        }
+      },
+      "xunit.runner.reporters/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.runner.utility": "[2.2.0-beta2-build3300]"
+        },
+        "compile": {
+          "lib/net45/xunit.runner.reporters.desktop.dll": {}
+        },
+        "runtime": {
+          "lib/net45/xunit.runner.reporters.desktop.dll": {}
+        }
+      },
+      "xunit.runner.utility/2.2.0-beta2-build3300": {
+        "type": "package",
+        "dependencies": {
+          "xunit.abstractions": "2.0.1-rc2"
+        },
+        "compile": {
+          "lib/net45/xunit.runner.utility.desktop.dll": {}
+        },
+        "runtime": {
+          "lib/net45/xunit.runner.utility.desktop.dll": {}
         }
       },
       "NCmdLiner/1.0.0": {
@@ -10257,7 +10377,9 @@
       "NUnit >= 3.4.1",
       "System",
       "System.Xml",
-      "dotnet-test-nunit >= 3.4.0-beta-1"
+      "dotnet-test-nunit >= 3.4.0-beta-1",
+      "dotnet-test-xunit >= 2.2.0-preview2-build1029",
+      "xunit >= 2.2.0-beta2-build3300"
     ]
   },
   "tools": {},

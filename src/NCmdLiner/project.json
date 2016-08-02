@@ -10,6 +10,12 @@
         "System.Xml": ""
       }
     },
+    "net451": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      }
+    },
     "net452": {
       "frameworkAssemblies": {
         "System": "",

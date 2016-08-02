@@ -31,12 +31,16 @@ using System.Runtime.CompilerServices;
    [assembly: AssemblyTitle("NCmdLiner for Mono 2.0")]
 #elif NET45
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5")]
+#elif NET451
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5.1")]
 #elif NET452
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.5.2")]
 #elif NET46
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6")]
 #elif NET461
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6.1")]
+#elif NET462
+	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6.2")]
 #elif NETSTANDARD1_6
 	[assembly: AssemblyTitle("NCmdLiner for .NET Standard Library 1.6")]
 #else

@@ -4,6 +4,7 @@
   "targets": {
     ".NETFramework,Version=v3.5": {},
     ".NETFramework,Version=v4.5,Profile=Mono": {},
+    ".NETFramework,Version=v4.5.1": {},
     ".NETFramework,Version=v4.5.2": {},
     ".NETFramework,Version=v4.6.1": {},
     ".NETStandard,Version=v1.6": {
@@ -4621,6 +4622,10 @@
       "System.Xml"
     ],
     ".NETFramework,Version=v4.5,Profile=Mono": [
+      "System",
+      "System.Xml"
+    ],
+    ".NETFramework,Version=v4.5.1": [
       "System",
       "System.Xml"
     ],
