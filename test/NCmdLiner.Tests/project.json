@@ -3,23 +3,46 @@
   "testRunner": "xunit",
 
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.0"
-    },    
-    "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "xunit": "2.2.0-beta2-build3300",
     "moq.netcore": "4.4.0-beta8",
-    "NCmdLiner": "1.0.0-*",
-    "System.Linq": "4.1.0",
-    "System.Linq.Dynamic.Core": "1.0.5.4",
-    "System.Diagnostics.TraceSource": "4.0.0"
-  },
-
+    "NCmdLiner": {
+      "target": "project"
+    },
+    "NUnit.Console": "3.4.1"
+	  },
+  
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [ "dnxcore50", "dotnet5.4" ]
-    }
+    "net461": {
+      "frameworkAssemblies": {
+        "System": "",
+        "System.Xml": ""
+      },
+      "dependencies": {
+        "NUnit": "3.4.1",
+		"dotnet-test-nunit": "3.4.0-beta-1",
+      },
+	  "buildOptions": {
+        "define": [ "NUNIT" ]
+      }	  
+    },
+	"netcoreapp1.0": {
+      "imports": [ "dnxcore50", "dotnet5.4" ],
+	  "dependencies": {
+		"Microsoft.NETCore.App": {
+		  "type": "platform",
+		  "version": "1.0.0"
+		},    
+		"dotnet-test-xunit": "2.2.0-preview2-build1029",
+		"xunit": "2.2.0-beta2-build3300",	
+        "NUnit": "3.4.1",
+		"dotnet-test-nunit": "3.4.0-beta-1",		
+		"System.Linq": "4.1.0",
+		"System.Linq.Dynamic.Core": "1.0.5.4",
+		"System.Diagnostics.TraceSource": "4.0.0"
+	  },
+	  "buildOptions": {
+        "define": [ "XUNIT" ]
+      }
+    }	
   },
 
   "buildOptions": {
