@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8D2D7823-CE54-485C-8962-E9ADA1FB23C2}</ProjectGuid>
+    <ProjectGuid>{0BAC3A43-CA14-498A-897C-D100C5F45F5F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NCmdLiner.Tests</RootNamespace>
     <AssemblyName>NCmdLiner.Tests</AssemblyName>
-    <TargetFramework>NET461</TargetFramework>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFramework>NET45MONO</TargetFramework>
+    <TargetFrameworkProfile>Mono</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
@@ -20,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET461</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -28,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;NET461</DefineConstants>
+    <DefineConstants>TRACE;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -106,9 +107,9 @@
     <Folder Include="ManualTests\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NCmdLiner\NCmdLiner.NET461.csproj">
-      <Project>{26e44f12-6320-4bfd-9ee0-de6a9ab95758}</Project>
-      <Name>NCmdLiner.NET461</Name>
+    <ProjectReference Include="..\..\src\NCmdLiner\NCmdLiner.NET45MONO.csproj">
+      <Project>{d6fd8471-ade1-4f89-84f2-1d0209133107}</Project>
+      <Name>NCmdLiner.NET45MONO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

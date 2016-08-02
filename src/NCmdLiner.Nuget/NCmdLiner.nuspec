@@ -19,14 +19,14 @@
   </metadata>
   <files>
 
- <!--    <file src="net35\NCmdLiner.dll" target="lib\net35" />
+    <file src="net35\NCmdLiner.dll" target="lib\net35" />
     <file src="net35\NCmdLiner.pdb" target="lib\net35" />
 
 	<file src="net45mono\ncmdliner.dll" target="lib\net45-mono" />
     <file src="net45mono\ncmdliner.pdb" target="lib\net45-mono" />
-	
-	<file src="net452\NCmdLiner.dll" target="lib\net452" />
-    <file src="net452\NCmdLiner.pdb" target="lib\net452" /> -->
+
+	<file src="net452\ncmdliner.dll" target="lib\net452" />
+    <file src="net452\ncmdliner.pdb" target="lib\net452" />
     
     <file src="net461\NCmdLiner.dll" target="lib\net461" />
     <file src="net461\NCmdLiner.pdb" target="lib\net461" />

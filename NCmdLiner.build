@@ -220,7 +220,7 @@
   </Target>
 
   <ItemGroup>
-    <!--<NetFrameWorkName Include="NET35">
+    <NetFrameWorkName Include="NET35">
       <Version>v3.5</Version>
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
@@ -234,7 +234,7 @@
       <Version>v4.5.2</Version>
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>-->
+    </NetFrameWorkName>
     <NetFrameWorkName Include="NET461">
       <Version>v4.6.1</Version>
       <Profile></Profile>
@@ -251,7 +251,7 @@
     <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).dll"/>
     <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).pdb"/>
   </Target>
-
+  
   <Target Name="CompileTests" DependsOnTargets="Compile" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
      <Message Text="Compiling %(NetFrameWorkName.Identity) tests targets" />
      <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
@@ -304,12 +304,11 @@
     <!-- Create NCmdLiner nuget package-->
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(ProductProjectNugetBuildOutputDirectory)\src\%(RecursiveDir)" />
 
-    
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NMultiTool\NMultiTool.exe&quot; CreateNugetSpec /manifestTemplate=&quot;$(ProductProjectNugetSrcDirectory)\$(ProductName).nuspec&quot; /manifestTarget=&quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; /assemblyPath=&quot;$(ProductProjectNugetBuildOutputDirectory)\NET461\$(ProductName).dll&quot;" />
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
   </Target>
 
-  <Target Name="Deploy" DependsOnTargets="Tests;CompileExample;ZipSource;NugetPack">
+  <Target Name="Deploy" DependsOnTargets="Tests;ZipSource;NugetPack">
 
   </Target>
 
