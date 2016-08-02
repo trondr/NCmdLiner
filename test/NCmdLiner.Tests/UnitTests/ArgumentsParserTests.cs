@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using NCmdLiner.Exceptions;
 using TinyIoC;
@@ -49,10 +48,8 @@ namespace NCmdLiner.Tests.UnitTests
                     {"name2", new CommandLineParameter() {Name = "name2", Value = "value2"}}
                 };
 
-                var sortedExpected = expected.ToImmutableSortedDictionary();
-                var sortedActual = actual.ToImmutableSortedDictionary();
-                Assert.AreEqual(sortedExpected.Keys, sortedActual.Keys);
-                Assert.AreEqual(sortedExpected.Values, sortedActual.Values);
+                Assert.AreEquivalent(expected.Keys, actual.Keys);
+                Assert.AreEquivalent(expected.Values, actual.Values);
 
                 Assert.IsTrue(actual.ContainsKey("name1"));
                 Assert.AreEqual("name1", expected["name1"].Name);
@@ -80,11 +77,7 @@ namespace NCmdLiner.Tests.UnitTests
                             {"name2", new CommandLineParameter() {Name = "name2", Value = "value2=2=2"}}
                         };
 
-                var sortedExpected = expected.ToImmutableSortedDictionary();
-                var sortedActual = actual.ToImmutableSortedDictionary();
-
-                Assert.AreEqual(sortedExpected.Keys, sortedActual.Keys);
-                Assert.AreEqual(sortedExpected.Values, sortedActual.Values);
+                Assert.AreEquivalent(expected,actual);
 
                 Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
                 Assert.AreEqual("name1", expected["name1"].Name);

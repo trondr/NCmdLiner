@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,11 @@ using System.Threading.Tasks;
 using Xunit;
 using Test = Xunit.FactAttribute;
 using XUnitAssert = Xunit.Assert;
+using System.Collections.Immutable;
 #else
 using NUnit.Framework;
 using NUnitAssert = NUnit.Framework.Assert;
+using NUnitCollectionAssert = NUnit.Framework.CollectionAssert;
 #endif
 
 namespace NCmdLiner.Tests.Extensions
@@ -82,5 +85,18 @@ namespace NCmdLiner.Tests.Extensions
             NUnitAssert.IsFalse(isNotContaining, message);
 #endif
         }
+
+        public static void AreEquivalent<T>(IEnumerable<T> expected, IEnumerable<T> actual, string message = null)
+        {
+#if XUNIT            
+            var sortedExpected = expected.ToImmutableList().Sort();
+            var sortedActual = actual.ToImmutableList().Sort();
+            XUnitAssert.Equal(sortedExpected, sortedActual);
+            XUnitAssert.Equal(sortedExpected, sortedActual);            
+#else
+            NUnitCollectionAssert.AreEquivalent(expected, actual, message);
+#endif
+        }
+        
     }
 }

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26E44F12-6320-4BFD-9EE0-DE6A9AB95758}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NCmdLiner</RootNamespace>
+    <AssemblyName>NCmdLiner</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET461</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;NET461</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationInfo.cs" />
+    <Compile Include="ApplicationInfoHelper.cs" />
+    <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="ArrayParser.cs" />
+    <Compile Include="AssemblyExtender.cs" />
+    <Compile Include="Attributes\CommandAttibute.cs" />
+    <Compile Include="Attributes\CommandParameterAttribute.cs" />
+    <Compile Include="Attributes\CommandsAttribute.cs" />
+    <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
+    <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
+    <Compile Include="CmdLinery.cs" />
+    <Compile Include="CmdLineryProvider.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandLineParameter.cs" />
+    <Compile Include="CommandParameter.cs" />
+    <Compile Include="CommandRule.cs" />
+    <Compile Include="CommandRuleProvider.cs" />
+    <Compile Include="ConsoleMessenger.cs" />
+    <Compile Include="Credit\CreditInfo.cs" />
+    <Compile Include="Credit\CreditProvider.cs" />
+    <Compile Include="Credit\ICreditInfo.cs" />
+    <Compile Include="Credit\ICreditProvider.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="Exceptions\CommandMehtodNotStaticException.cs" />
+    <Compile Include="Exceptions\CommandRuleNotValidatedExption.cs" />
+    <Compile Include="Exceptions\DuplicateCommandException.cs" />
+    <Compile Include="Exceptions\DuplicateCommandParameterAttributeException.cs" />
+    <Compile Include="Exceptions\DuplicateCommandParameterException.cs" />
+    <Compile Include="Exceptions\InvalidArrayParseException.cs" />
+    <Compile Include="Exceptions\InvalidCommandException.cs" />
+    <Compile Include="Exceptions\InvalidCommandParameterException.cs" />
+    <Compile Include="Exceptions\InvalidCommandParameterFormatException.cs" />
+    <Compile Include="Exceptions\InvalidConversionException.cs" />
+    <Compile Include="Exceptions\InvalidDateTimeFormatException.cs" />
+    <Compile Include="Exceptions\InvalidValueException.cs" />
+    <Compile Include="Exceptions\MissingCommandAttributeException.cs" />
+    <Compile Include="Exceptions\MissingCommandException.cs" />
+    <Compile Include="Exceptions\MissingCommandParameterAttributeException.cs" />
+    <Compile Include="Exceptions\MissingCommandParameterException.cs" />
+    <Compile Include="Exceptions\MissingDefaultValueException.cs" />
+    <Compile Include="Exceptions\MissingExampleValueException.cs" />
+    <Compile Include="Exceptions\NCmdLinerException.cs" />
+    <Compile Include="Exceptions\RequiredParameterFoundAfterOptionalParameterExecption.cs" />
+    <Compile Include="Exceptions\UnknownCommandException.cs" />
+    <Compile Include="Exceptions\UnknownTypeException.cs" />
+    <Compile Include="HelpProvider.cs" />
+    <Compile Include="IApplicationInfo.cs" />
+    <Compile Include="IArgumentsParser.cs" />
+    <Compile Include="IArrayParser.cs" />
+    <Compile Include="ICmdLineryProvider.cs" />
+    <Compile Include="ICommandRuleProvider.cs" />
+    <Compile Include="ICommandRuleValidator.cs" />
+    <Compile Include="IHelpProvider.cs" />
+    <Compile Include="IMessenger.cs" />
+    <Compile Include="IMethodParameterBuilder.cs" />
+    <Compile Include="IStringToObject.cs" />
+    <Compile Include="IValueConverter.cs" />
+    <Compile Include="License\ILicenseInfo.cs" />
+    <Compile Include="License\ILicenseProvider.cs" />
+    <Compile Include="License\LicenseInfo.cs" />
+    <Compile Include="License\LicenseProvider.cs" />
+    <Compile Include="MethodParameterBuilder.cs" />
+    <Compile Include="ModuleInit.cs" />
+    <Compile Include="OptionalCommandParameter.cs" />
+    <Compile Include="Properties\AssemblyInfo_Build.cs" />
+    <Compile Include="Properties\AssemblyInfo_Static.cs" />
+    <Compile Include="RequiredCommandParameter.cs" />
+    <Compile Include="Resources\EmbeddedResource.cs" />
+    <Compile Include="Resources\IEmbeddedResource.cs" />
+    <Compile Include="SerializerHelper.cs" />
+    <Compile Include="StringToObject.cs" />
+    <Compile Include="TextFormater.cs" />
+    <Compile Include="TinyIoC.cs" />
+    <Compile Include="TypeExtender.cs" />
+    <Compile Include="ValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NCmdLiner.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Credit\0.NConsoler Credit.xml" />
+    <Content Include="Credit\1.TinyIoC Credit.xml" />
+    <Content Include="License\0.NCmdLiner License.xml" />
+    <Content Include="License\1.NConsoler License.xml" />
+    <Content Include="License\2.TinyIoC License.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
