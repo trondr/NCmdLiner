@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using NCmdLiner.Exceptions;
-using Xunit;
-using Test = Xunit.FactAttribute;
 using TinyIoC;
 using NCmdLiner;
 
+#if XUNIT
+using Xunit;
+using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
+
 namespace NCmdLiner.Tests.UnitTests
 {
+
+    [TestFixture]
     public class ArgumentsParserTests
     {
         [Test]
-        [Trait("Category", "UnitTests")]
         public void InvalidCommandLineParametersThrow()
         {
             using (var testBootStrapper = new TestBootStrapper(GetType()))
@@ -28,7 +36,6 @@ namespace NCmdLiner.Tests.UnitTests
         }
 
         [Test]
-        [Trait("Category", "UnitTests")]
         public void ValidCommandLineParameters()
         {
             using (var testBootStrapper = new TestBootStrapper(GetType()))
@@ -44,22 +51,22 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var sortedExpected = expected.ToImmutableSortedDictionary();
                 var sortedActual = actual.ToImmutableSortedDictionary();
-                Assert.Equal(sortedExpected.Keys, sortedActual.Keys);
-                Assert.Equal(sortedExpected.Values, sortedActual.Values);
+                Assert.AreEqual(sortedExpected.Keys, sortedActual.Keys);
+                Assert.AreEqual(sortedExpected.Values, sortedActual.Values);
 
-                Assert.True(actual.ContainsKey("name1"));
-                Assert.Equal("name1", expected["name1"].Name);
-                Assert.Equal("value1", expected["name1"].Value);
+                Assert.IsTrue(actual.ContainsKey("name1"));
+                Assert.AreEqual("name1", expected["name1"].Name);
+                Assert.AreEqual("value1", expected["name1"].Value);
 
-                Assert.True(actual.ContainsKey("name2"));
-                Assert.Equal("name2", expected["name2"].Name);
-                Assert.Equal("value2", expected["name2"].Value);
+                Assert.IsTrue(actual.ContainsKey("name2"));
+                Assert.AreEqual("name2", expected["name2"].Name);
+                Assert.AreEqual("value2", expected["name2"].Value);
 
             }
         }
 
         [Test]
-        [Trait("Category", "UnitTests")]
+        
         public void CommandLineParametersWithMultipleEqualCharcters()
         {
             using (var testBootStrapper = new TestBootStrapper(GetType()))
@@ -76,16 +83,16 @@ namespace NCmdLiner.Tests.UnitTests
                 var sortedExpected = expected.ToImmutableSortedDictionary();
                 var sortedActual = actual.ToImmutableSortedDictionary();
 
-                Assert.Equal(sortedExpected.Keys, sortedActual.Keys);
-                Assert.Equal(sortedExpected.Values, sortedActual.Values);
+                Assert.AreEqual(sortedExpected.Keys, sortedActual.Keys);
+                Assert.AreEqual(sortedExpected.Values, sortedActual.Values);
 
-                Assert.True(expected.ContainsKey("name1"), "name1 not found");
-                Assert.Equal("name1", expected["name1"].Name);
-                Assert.Equal("value1=1=1", expected["name1"].Value);
+                Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
+                Assert.AreEqual("name1", expected["name1"].Name);
+                Assert.AreEqual("value1=1=1", expected["name1"].Value);
 
-                Assert.True(expected.ContainsKey("name2"), "name2 not found");
-                Assert.Equal("name2", expected["name2"].Name);
-                Assert.Equal("value2=2=2", expected["name2"].Value);
+                Assert.IsTrue(expected.ContainsKey("name2"), "name2 not found");
+                Assert.AreEqual("name2", expected["name2"].Name);
+                Assert.AreEqual("value2=2=2", expected["name2"].Value);
             }
         }
 

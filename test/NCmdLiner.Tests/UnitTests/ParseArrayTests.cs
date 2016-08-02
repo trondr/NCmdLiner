@@ -7,11 +7,20 @@
 // All rights reserved.
 
 using NCmdLiner.Exceptions;
+
+#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
+
+    [TestFixture]
     public class ParseArrayTest
     {
         #region Semicolon tests
@@ -23,7 +32,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -33,7 +42,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15", "" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -43,7 +52,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15", "" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -53,7 +62,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -63,7 +72,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion
@@ -77,7 +86,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -87,7 +96,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -97,7 +106,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12", "13", "14", "15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion
@@ -111,7 +120,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new[] { "12-13-14-15" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -121,7 +130,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new string[] { };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -131,7 +140,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new string[] { "MS.*.dll", "MS.*.exe" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -141,7 +150,7 @@ namespace NCmdLiner.Tests.UnitTests
             IArrayParser target = new ArrayParser();
             var actual = target.Parse(arrayString);
             var expected = new string[] { @"^.+-133-3\d+-.+$" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion

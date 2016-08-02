@@ -13,11 +13,20 @@ using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
 using NCmdLiner;
 using NCmdLiner.Tests.UnitTests.TestCommands;
+
+#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
+
+    [TestFixture]
     public class CommandRuleProviderUnitTests
     {
         [Test]
@@ -78,9 +87,9 @@ namespace NCmdLiner.Tests.UnitTests
             CommandRuleProvider target = new CommandRuleProvider();
             string expectedCommandName = "CommandWithTwoRequiredParameterAndOneOptionalParameter";
             CommandRule commandRule = target.GetCommandRule(typeof(TestCommands0).GetMethodEx(expectedCommandName));
-            Assert.Equal(expectedCommandName, commandRule.Command.Name);
-            Assert.Equal(2, commandRule.Command.RequiredParameters.Count);
-            Assert.Equal(1, commandRule.Command.OptionalParameters.Count);
+            Assert.AreEqual(expectedCommandName, commandRule.Command.Name);
+            Assert.AreEqual(2, commandRule.Command.RequiredParameters.Count);
+            Assert.AreEqual(1, commandRule.Command.OptionalParameters.Count);
             //Console.WriteLine(commandRule.Help());
         }
 
@@ -89,18 +98,18 @@ namespace NCmdLiner.Tests.UnitTests
         {
             CommandRuleProvider target = new CommandRuleProvider();
             List<CommandRule> actual = target.GetCommandRules(typeof(FiveTestCommands));
-            Assert.Equal(5, actual.Count);
-            Assert.True(actual[0].Command.Name == "Command1", "Name of command 1");
-            Assert.True(actual[1].Command.Name == "Command2", "Name of command 2");
-            Assert.True(actual[2].Command.Name == "Command3", "Name of command 3");
-            Assert.True(actual[3].Command.Name == "Command4", "Name of command 4");
-            Assert.True(actual[4].Command.Name == "Command5", "Name of command 5");
+            Assert.AreEqual(5, actual.Count);
+            Assert.IsTrue(actual[0].Command.Name == "Command1", "Name of command 1");
+            Assert.IsTrue(actual[1].Command.Name == "Command2", "Name of command 2");
+            Assert.IsTrue(actual[2].Command.Name == "Command3", "Name of command 3");
+            Assert.IsTrue(actual[3].Command.Name == "Command4", "Name of command 4");
+            Assert.IsTrue(actual[4].Command.Name == "Command5", "Name of command 5");
 
-            Assert.True(actual[0].Command.Description == "Command 1 description", "Description of command 1");
-            Assert.True(actual[1].Command.Description == "Command 2 description", "Description of command 2");
-            Assert.True(actual[2].Command.Description == "Command 3 description", "Description of command 3");
-            Assert.True(actual[3].Command.Description == "Command 4 description", "Description of command 4");
-            Assert.True(actual[4].Command.Description == "Command 5 description", "Description of command 5");
+            Assert.IsTrue(actual[0].Command.Description == "Command 1 description", "Description of command 1");
+            Assert.IsTrue(actual[1].Command.Description == "Command 2 description", "Description of command 2");
+            Assert.IsTrue(actual[2].Command.Description == "Command 3 description", "Description of command 3");
+            Assert.IsTrue(actual[3].Command.Description == "Command 4 description", "Description of command 4");
+            Assert.IsTrue(actual[4].Command.Description == "Command 5 description", "Description of command 5");
         }
 
         internal class FiveTestCommands

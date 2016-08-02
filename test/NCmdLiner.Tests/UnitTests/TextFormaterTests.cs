@@ -9,11 +9,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Moq;
+
+#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
+
+    [TestFixture]
     public class TextFormaterTests
     {
 
@@ -23,7 +32,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("This is a test of a line to be fitted to a 80 character line.", 80);
             const string expected = "This  is  a  test  of  a   line   to    be   fitted  to  a  80  character  line.";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -32,7 +41,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("This line will not be justified.", 80);
             const string expected = "This line will not be justified.";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -41,7 +50,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("This line will be justified because it is 45.", 80);
             const string expected = "This   line    will     be         justified          because     it    is   45.";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -50,7 +59,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("Thislinewillnotbejustifiedbecauseitisonlyoneword.", 80);
             const string expected = "Thislinewillnotbejustifiedbecauseitisonlyoneword.";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -59,7 +68,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("Thislinewillnotbejustified.", 80);
             const string expected = "Thislinewillnotbejustified.";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -68,7 +77,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             List<string> actual = target.BreakIntoLines("This", 80);
             List<string> expected = new List<string>() { "This" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -83,7 +92,7 @@ namespace NCmdLiner.Tests.UnitTests
                 {
                     "Thisisaveryveryveryveryverylonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglongword"
                 };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -92,7 +101,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             List<string> actual = target.BreakIntoLines("This is", 80);
             List<string> expected = new List<string>() { "This is" };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -109,7 +118,7 @@ namespace NCmdLiner.Tests.UnitTests
                     "changing to second line. We should now be on the second line and if we write",
                     "som more we get to the third line."
                 };
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -118,7 +127,7 @@ namespace NCmdLiner.Tests.UnitTests
             TextFormater target = new TextFormater();
             string actual = target.Justify("[Required] Required", 29);
             const string expected = "[Required] Required";
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

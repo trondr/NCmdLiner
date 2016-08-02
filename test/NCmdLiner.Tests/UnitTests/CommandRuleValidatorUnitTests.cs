@@ -10,11 +10,20 @@ using System;
 using NCmdLiner;
 using NCmdLiner.Exceptions;
 using TinyIoC;
+
+#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
-{    
+{
+
+    [TestFixture]
     public class CommandRuleValidatorUnitTests
     {
         private static CommandRule GetTestCommandRule()
@@ -163,11 +172,11 @@ namespace NCmdLiner.Tests.UnitTests
         public static void ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndAllRequiredParametersAndNoOptionalParametersSuccessTest()
         {
             var commandRule = GetTestCommandRule();
-            Assert.True(commandRule.Command.RequiredParameters.Count == 2, "Number of required parameters");
-            Assert.True(commandRule.Command.OptionalParameters.Count == 1, "Number of optional parameters");
-            Assert.Null(commandRule.Command.RequiredParameters[0].Value);
-            Assert.Null(commandRule.Command.RequiredParameters[1].Value);
-            Assert.NotNull(commandRule.Command.OptionalParameters[0].Value);
+            Assert.IsTrue(commandRule.Command.RequiredParameters.Count == 2, "Number of required parameters");
+            Assert.IsTrue(commandRule.Command.OptionalParameters.Count == 1, "Number of optional parameters");
+            Assert.IsNull(commandRule.Command.RequiredParameters[0].Value);
+            Assert.IsNull(commandRule.Command.RequiredParameters[1].Value);
+            Assert.IsNotNull(commandRule.Command.OptionalParameters[0].Value);
 
             using (var testBootStrapper = new TestBootStrapper())
             {
@@ -175,11 +184,11 @@ namespace NCmdLiner.Tests.UnitTests
                 target.Validate(new string[] { "SomeValidCommand", "/InputFile=\"c:\\temp\\input.txt\"", "/OutputFile=\"c:\\temp\\output.txt\"" }, commandRule);
             }
 
-            Assert.True(commandRule.Command.RequiredParameters.Count == 2, "Number of required parameters");
-            Assert.True(commandRule.Command.OptionalParameters.Count == 1, "Number of optional parameters");
-            Assert.NotNull(commandRule.Command.RequiredParameters[0].Value);
-            Assert.NotNull(commandRule.Command.RequiredParameters[1].Value);
-            Assert.NotNull(commandRule.Command.OptionalParameters[0].Value);
+            Assert.IsTrue(commandRule.Command.RequiredParameters.Count == 2, "Number of required parameters");
+            Assert.IsTrue(commandRule.Command.OptionalParameters.Count == 1, "Number of optional parameters");
+            Assert.IsNotNull(commandRule.Command.RequiredParameters[0].Value);
+            Assert.IsNotNull(commandRule.Command.RequiredParameters[1].Value);
+            Assert.IsNotNull(commandRule.Command.OptionalParameters[0].Value);
         }
         
         internal class TestBootStrapper : IDisposable

@@ -13,11 +13,20 @@ using NCmdLiner.Exceptions;
 using NCmdLiner.Tests.Common;
 using NCmdLiner.Tests.UnitTests.Custom;
 using NCmdLiner.Tests.UnitTests.TestCommands;
+
+#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
+using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;
+#else
+using NUnit.Framework;
+#endif
+using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
+
+    [TestFixture]
     public class CmdLineryTests
     {
         [Test]
@@ -58,7 +67,7 @@ namespace NCmdLiner.Tests.UnitTests
             }
             catch (Exception ex)
             {
-                Assert.Contains("TestCommands1.CommandWithNoParametersThrowingException",ex.StackTrace);
+                Assert.Contains("TestCommands1.CommandWithNoParametersThrowingException", ex.StackTrace);
             }            
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -260,7 +269,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             int actual = CmdLinery.Run(typeof(TestCommands4), commandString, new TestApplicationInfo());
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -277,7 +286,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             int actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1), typeof(TestCommandsMulti2) }, commandString, new TestApplicationInfo());
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -315,7 +324,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             int actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -345,8 +354,8 @@ namespace NCmdLiner.Tests.UnitTests
                                           "/parameter1=\"parameter 1 value\""
                               }, new TestApplicationInfo(), new ConsoleMessenger());
 
-            Assert.Equal(1, nonStaticResult);
-            Assert.Equal(2, staticResult);
+            Assert.AreEqual(1, nonStaticResult);
+            Assert.AreEqual(2, staticResult);
             testLoggerMoc.Verify(logger => logger.Write(logMessage1), Times.Once);
 
         }
@@ -366,7 +375,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             int actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.Equal(expected, actual);
+            Assert.AreEqual(expected, actual);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
 
         }
