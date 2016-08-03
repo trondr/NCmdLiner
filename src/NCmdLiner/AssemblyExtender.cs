@@ -10,7 +10,7 @@ namespace NCmdLiner
 #if NETSTANDARD1_6
             return assembly.GetCustomAttribute(attributeType);
 #else
-            return Attribute.GetCustomAttribute(assembly, typeof(AssemblyInformationalVersionAttribute), false);
+            return Attribute.GetCustomAttribute(assembly, attributeType, false);
 #endif
         }
     }

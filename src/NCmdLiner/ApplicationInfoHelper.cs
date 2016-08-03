@@ -14,6 +14,26 @@ namespace NCmdLiner
 {
     public static class ApplicationInfoHelper
     {
+        private static Assembly AppAssembly
+        {
+            get
+            {
+                if (_appAssembly == null)
+                {
+                    _appAssembly = GetAssembly();
+                }
+                return _appAssembly;
+            }
+        }
+
+        private static Assembly GetAssembly()
+        {
+            var assembly = Assembly.GetEntryAssembly() ?? typeof(ApplicationInfoHelper).GetAssembly();
+            return assembly;
+        }
+
+        private static Assembly _appAssembly;
+
         private static string _applicationName;
         /// <summary>
         /// Get exe file path
@@ -43,18 +63,14 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_applicationVersion))
                 {
-                    Assembly assembly = Assembly.GetEntryAssembly() ?? Assembly.GetEntryAssembly();
-
-
-
-                    AssemblyInformationalVersionAttribute informationalVersionAttribute = assembly.GetCustomAttributeEx(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
+                   var informationalVersionAttribute = AppAssembly.GetCustomAttributeEx(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
                     if (informationalVersionAttribute != null)
                     {
                         _applicationVersion = informationalVersionAttribute.InformationalVersion;    
                     }
                     if (string.IsNullOrEmpty(_applicationVersion))
                     {
-                        _applicationVersion = assembly.GetName().Version.ToString();
+                        _applicationVersion = AppAssembly.GetName().Version.ToString();
                     }
                 }
                 return _applicationVersion;
@@ -88,13 +104,7 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_exeFilePath))
                 {
-                    Assembly exeAssembly = Assembly.GetEntryAssembly();
-                    if (exeAssembly == null)
-                    {
-                        return string.Empty;
-                        //throw new Exception("Failed to find path to the exe file of the current process.");
-                    }
-                    _exeFilePath = exeAssembly.Location;
+                    _exeFilePath = AppAssembly.Location;
                     if (!File.Exists(_exeFilePath))
                     {
                         throw new FileNotFoundException("Could not find exe file path: " + _exeFilePath);
@@ -109,13 +119,10 @@ namespace NCmdLiner
             get
             {
                 if (string.IsNullOrEmpty(_applicationCopyright))
-                {
-                    Assembly assembly = Assembly.GetEntryAssembly();
-                    if (assembly == null)
-                    {
-                        assembly = Assembly.GetEntryAssembly();
-                    }                    
-                    _applicationCopyright = ((AssemblyCopyrightAttribute)assembly.GetCustomAttributeEx(typeof(AssemblyCopyrightAttribute))).Copyright;
+                {                   
+                    var attribute = AppAssembly.GetCustomAttributeEx(typeof(AssemblyCopyrightAttribute));
+                    var copyRightAttribute = (AssemblyCopyrightAttribute)attribute;
+                    _applicationCopyright = copyRightAttribute.Copyright;
                 }
                 return _applicationCopyright;
             }
@@ -129,16 +136,14 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_applicationDescription))
                 {
-                    Assembly assembly = Assembly.GetEntryAssembly();
-                    if (assembly == null)
-                    {
-                        assembly = Assembly.GetEntryAssembly();
-                    }
-                    _applicationDescription = ((AssemblyDescriptionAttribute)assembly.GetCustomAttributeEx(typeof(AssemblyDescriptionAttribute))).Description;
+                    var attribute = AppAssembly.GetCustomAttributeEx(typeof(AssemblyDescriptionAttribute));
+                    var descriptionAttribute = (AssemblyDescriptionAttribute) attribute;
+                    _applicationDescription = descriptionAttribute.Description;
                 }
                 return _applicationDescription;
             }            
         }
         private static string _applicationDescription;
+        
     }
 }

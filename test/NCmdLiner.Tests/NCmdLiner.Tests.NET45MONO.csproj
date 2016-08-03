@@ -69,6 +69,7 @@
     <Compile Include="Extensions\TestFixtureAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo_Build.cs" />
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
+    <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
