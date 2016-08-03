@@ -43,6 +43,8 @@ using System.Runtime.CompilerServices;
 	[assembly: AssemblyTitle("NCmdLiner.Tests for .NET Framework 4.6.2")]
 #elif NETSTANDARD1_6
 	[assembly: AssemblyTitle("NCmdLiner.Tests for .NET Standard Library 1.6")]
+#elif NETCOREAPP1_0
+	[assembly: AssemblyTitle("NCmdLiner.Tests for .NET Core App 1.0")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif

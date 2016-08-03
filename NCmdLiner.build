@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    ToolsVersion="14.0"
+    >
   
   <PropertyGroup>
     <Configuration>Release</Configuration>
@@ -243,19 +244,19 @@
     </NetFrameWorkName>
   </ItemGroup>
   
-  <Target Name="DeActivateProjectJson">
+  <Target Name="DeActivateProjectJson" BeforeTargets="Compile;CompileTests" AfterTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore">
     <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
     <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
   </Target>
   
-  <Target Name="ActivateProjectJson">
+  <Target Name="ActivateProjectJson" BeforeTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore">
     <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
     <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
   </Target>
   
   <!--Compile class library for all defined NetFrameWorkNames-->
 
-  <Target Name="Compile" DependsOnTargets="Version;DeActivateProjectJson" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+  <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
     <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
     <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)" />
     <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
@@ -267,7 +268,28 @@
      <Message Text="Compiling %(NetFrameWorkName.Identity) tests targets" />
      <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
   </Target>
-
+    
+  <Target Name="RestoreCore" DependsOnTargets="ActivateProjectJson">
+    <Message Text="Restoring .NET Core dependencies" />
+    <Exec Command="dotnet.exe restore &quot;$(SrcDirectory)\$(ProductProjectName)&quot; " />
+    <Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; " />
+  </Target> 
+    
+  <Target Name="CompileCore" DependsOnTargets="Version;ActivateProjectJson;RestoreCore">
+    <Message Text="Compiling .NET Core" />
+    <Exec Command="dotnet.exe build &quot;$(SrcDirectory)\$(ProductProjectName)&quot; --output &quot;$(BinDirectory)\$(ProductProjectName)\bin.netstandard1.6\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName)\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netstandard1.6 " />
+  </Target> 
+  
+  <Target Name="CompileTestsCore" DependsOnTargets="ActivateProjectJson;CompileCore">
+    <Message Text="Compiling .NET Core" />
+    <Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; --output &quot;$(BinDirectory)\$(ProductProjectName).Tests\bin.netcoreapp1.0\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName).Tests\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netcoreapp1.0 " />
+  </Target> 
+  
+  <Target Name="TestsCore" DependsOnTargets="ActivateProjectJson;CompileTestsCore">
+    <Message Text="Testing .NET Core" />
+    <Exec Command="dotnet.exe test &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; --output &quot;$(BinDirectory)\$(ProductProjectName).Tests\bin.netcoreapp1.0\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName).Tests\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netcoreapp1.0 " />
+  </Target> 
+  
   <Target Name="CompileExample" DependsOnTargets="Compile">
     <MSBuild Projects="$(ProductProjectSrcDirectory).Example\$(ProductProjectName).Example.csproj" Properties="Configuration=$(Configuration)"/>
   </Target>

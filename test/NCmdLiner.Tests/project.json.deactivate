@@ -16,15 +16,6 @@
 
   "frameworks": {
 
-    "net461": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      },
-      "buildOptions": {
-        "define": [ "XUNIT" ]
-      }
-    },
     "netcoreapp1.0": {
       "imports": [ "dnxcore50", "dotnet5.4" ],
       "dependencies": {

@@ -4,39 +4,6 @@
     
   },
   "frameworks": {
-    "net35": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
-    "net451": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
-    "net452": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
-    "net461": {
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
-    ".NETFramework,Version=v4.5,Profile=Mono": {
-      "buildOptions": {
-        "define": [ "NET45MONO" ]
-      },
-      "frameworkAssemblies": {
-        "System": "",
-        "System.Xml": ""
-      }
-    },
     "netstandard1.6": {
       "imports": "dnxcore50",
       "dependencies": {
@@ -55,9 +22,5 @@
   "buildOptions": {
     "keyFile": "./NCmdLiner.snk",
     "delaySign": true
-  },
-  "runtimes": {
-    "win": { }
   }
-
 }
