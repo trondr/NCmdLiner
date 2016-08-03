@@ -8,8 +8,8 @@
     
     <ProductName>NCmdLiner</ProductName>
     <ProductCompany>github.com/trondr</ProductCompany>
-    <ProductDescription>NCmdLiner provides a command line parser with auto documentation capabilities.</ProductDescription>
-    <TestsProductDescription>NCmdLiner.Tests contains tests of the NCmdLiner library.</TestsProductDescription>
+    <ProductDescription>NCmdLiner features a command line parser with auto documentation capabilities.</ProductDescription>
+    <TestsProductDescription>NCmdLiner.Tests features NCmdLiner tests.</TestsProductDescription>
 
     <ProductCopyright>Copyright &#169; &lt;github.com/trondr&gt; $([System.DateTime]::Now.Year)</ProductCopyright>
     <ProductProjectName>$(ProductName)</ProductProjectName>
