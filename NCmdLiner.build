@@ -244,7 +244,7 @@
     </NetFrameWorkName>
   </ItemGroup>
   
-  <Target Name="DeActivateProjectJson" BeforeTargets="Compile;CompileTests" AfterTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore">
+  <Target Name="DeActivateProjectJson" BeforeTargets="Compile;CompileTests;ZipSource;NugetPack;Tests;Deploy" AfterTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore;Deploy;ZipSource;NugetPack">
     <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
     <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
   </Target>
@@ -258,6 +258,8 @@
 
   <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
     <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)" />
     <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
     <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).dll"/>
@@ -266,27 +268,40 @@
   
   <Target Name="CompileTests" DependsOnTargets="Compile" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
      <Message Text="Compiling %(NetFrameWorkName.Identity) tests targets" />
+     <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+     <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
      <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
   </Target>
     
   <Target Name="RestoreCore" DependsOnTargets="ActivateProjectJson">
     <Message Text="Restoring .NET Core dependencies" />
+    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Exec Command="dotnet.exe restore &quot;$(SrcDirectory)\$(ProductProjectName)&quot; " />
     <Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; " />
   </Target> 
     
   <Target Name="CompileCore" DependsOnTargets="Version;ActivateProjectJson;RestoreCore">
     <Message Text="Compiling .NET Core" />
+    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Exec Command="dotnet.exe build &quot;$(SrcDirectory)\$(ProductProjectName)&quot; --output &quot;$(BinDirectory)\$(ProductProjectName)\bin.netstandard1.6\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName)\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netstandard1.6 " />
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.netstandard1.6\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\NETSTANDARD1.6\$(ProductProjectName).dll"/>
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.netstandard1.6\$(Configuration)\$(ProductProjectName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\NETSTANDARD1.6\$(ProductProjectName).pdb"/>
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.netstandard1.6\$(Configuration)\$(ProductProjectName).deps.json" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\NETSTANDARD1.6\$(ProductProjectName).deps.json"/>
   </Target> 
   
   <Target Name="CompileTestsCore" DependsOnTargets="ActivateProjectJson;CompileCore">
     <Message Text="Compiling .NET Core" />
+    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; --output &quot;$(BinDirectory)\$(ProductProjectName).Tests\bin.netcoreapp1.0\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName).Tests\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netcoreapp1.0 " />
   </Target> 
   
   <Target Name="TestsCore" DependsOnTargets="ActivateProjectJson;CompileTestsCore">
     <Message Text="Testing .NET Core" />
+    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Exec Command="dotnet.exe test &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; --output &quot;$(BinDirectory)\$(ProductProjectName).Tests\bin.netcoreapp1.0\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName).Tests\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netcoreapp1.0 " />
   </Target> 
   
@@ -315,6 +330,8 @@
   <!-- Run Unit tests -->
 
   <Target Name="Tests" DependsOnTargets="CompileTests" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <CreateItem Include="$(BinDirectory)\$(ProductProjectName).Tests\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductName).Tests.dll">
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
@@ -323,6 +340,8 @@
   </Target>
 
   <Target Name="ZipSource" DependsOnTargets="Version">
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Zip Files="@(SourceFiles)"
          WorkingDirectory="$(SrcDirectory)"
          ZipFileName="$(BuildOutputDirectory)\$(ProductProjectName)\bin\$(ProductProjectName).Source.$(AssemblyVersion).zip"
@@ -332,6 +351,8 @@
   </Target>
 
   <Target Name="NugetPack" >
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <MakeDir Directories="$(NuGetPackagesDirectory)"/>
 
     <!-- Create NCmdLiner nuget package-->
@@ -341,7 +362,7 @@
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
   </Target>
 
-  <Target Name="Deploy" DependsOnTargets="Tests;ZipSource;NugetPack">
+  <Target Name="Deploy" DependsOnTargets="Tests;TestsCore;ZipSource;NugetPack">
 
   </Target>
 
