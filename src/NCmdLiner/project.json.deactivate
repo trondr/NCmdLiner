@@ -21,6 +21,17 @@
   },
   "buildOptions": {
     "keyFile": "./NCmdLiner.snk",
-    "delaySign": true
+    "delaySign": true,
+    "embed": {
+      "includeFiles": [
+        "Credit/0.NConsoler-Credit.xml",
+        "Credit/1.TinyIoC-Credit.xml",
+		"License/0.NCmdLiner-License.xml",
+		"License/1.NConsoler-License.xml",
+		"License/2.TinyIoC-License.xml",
+      ]
+    }
+    
+
   }
 }

@@ -127,11 +127,11 @@
     <None Include="NCmdLiner.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Credit\0.NConsoler Credit.xml" />
-    <EmbeddedResource Include="Credit\1.TinyIoC Credit.xml" />
-    <EmbeddedResource Include="License\0.NCmdLiner License.xml" />
-    <EmbeddedResource Include="License\1.NConsoler License.xml" />
-    <EmbeddedResource Include="License\2.TinyIoC License.xml" />
+    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
+    <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
+    <EmbeddedResource Include="License\1.NConsoler-License.xml" />
+    <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
