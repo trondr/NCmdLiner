@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F43FB22-6011-427B-A24E-980AFCA08362}</ProjectGuid>
+    <ProjectGuid>{A52E4E45-82A6-4AA6-9E9C-4BF3FEB9AE5D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUtil</RootNamespace>
@@ -12,7 +12,7 @@
     <TargetFramework>NET35</TargetFramework>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\..\bin</BuildOutputDirectory>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NCmdLiner, Version=1.2.16216.172, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.172\lib\net35\NCmdLiner.dll</HintPath>
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.172\lib\net35\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,7 +73,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Credit\0.NCmdLiner-Credit.xml" />
     <Content Include="Debug.txt" />
-    <EmbeddedResource Include="License\0.NCmdLiner.Example-License.xml" />
+    <EmbeddedResource Include="License\0.MyUtil-License.xml" />
     <EmbeddedResource Include="License\1.NCmdLiner-License.xml" />
   </ItemGroup>
   <ItemGroup>

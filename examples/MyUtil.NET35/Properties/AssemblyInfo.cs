@@ -1,5 +1,5 @@
 ﻿// File: AssemblyInfo.cs
-// Project Name: NCmdLiner.Example
+// Project Name: MyUtil
 // Project Home: https://github.com/trondr/NCmdLiner/blob/master/README.md
 // License: New BSD License (BSD) https://github.com/trondr/NCmdLiner/blob/master/License.md
 // Credits: See the Credit folder in this project
@@ -14,11 +14,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NCmdLiner.Example")]
+[assembly: AssemblyTitle("MyUtil")]
 [assembly: AssemblyDescription("Example of how to use NCmdLiner")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("<github.com/trondr>")]
-[assembly: AssemblyProduct("NCmdLiner.Example")]
+[assembly: AssemblyProduct("MyUtil")]
 [assembly: AssemblyCopyright("Copyright © <github.com/trondr> 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

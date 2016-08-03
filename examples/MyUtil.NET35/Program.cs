@@ -1,5 +1,5 @@
 ﻿// File: Program.cs
-// Project Name: NCmdLiner.Example
+// Project Name: MyUtil
 // Project Home: https://github.com/trondr/NCmdLiner/blob/master/README.md
 // License: New BSD License (BSD) https://github.com/trondr/NCmdLiner/blob/master/License.md
 // Credits: See the Credit folder in this project

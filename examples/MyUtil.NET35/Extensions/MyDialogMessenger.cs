@@ -29,7 +29,7 @@ namespace MyUtil.Extensions
         public void Show()
         {
             MessengerForm form = new MessengerForm(_message.ToString());
-            form.Text = "NCmdLiner.Example";
+            form.Text = "MyUtil";
             form.ShowDialog();
         }
     }

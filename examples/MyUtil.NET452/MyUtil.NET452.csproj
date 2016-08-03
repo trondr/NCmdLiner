@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F43FB22-6011-427B-A24E-980AFCA08362}</ProjectGuid>
+    <ProjectGuid>{9902372E-CC81-4C26-971D-5E983E77FB89}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUtil</RootNamespace>
@@ -12,7 +12,7 @@
     <TargetFramework>NET452</TargetFramework>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\..\bin</BuildOutputDirectory>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -41,7 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NCmdLiner, Version=1.2.16216.172, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.172\lib\net452\NCmdLiner.dll</HintPath>
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.172\lib\net452\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -74,7 +74,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Credit\0.NCmdLiner-Credit.xml" />
     <Content Include="Debug.txt" />
-    <EmbeddedResource Include="License\0.NCmdLiner.Example-License.xml" />
+    <EmbeddedResource Include="License\0.MyUtil-License.xml" />
     <EmbeddedResource Include="License\1.NCmdLiner-License.xml" />
   </ItemGroup>
   <ItemGroup>
