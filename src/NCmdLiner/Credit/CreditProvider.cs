@@ -52,7 +52,7 @@ namespace NCmdLiner.Credit
                         {
                             try
                             {
-                                ICreditInfo creditInfo = SerializerHelper<ICreditInfo>.DeSerialize(resourceStream);
+                                var creditInfo = SerializerHelper<CreditInfo>.DeSerialize(resourceStream);
                                 credits.Add(creditInfo);
                             }
                             catch (Exception ex)

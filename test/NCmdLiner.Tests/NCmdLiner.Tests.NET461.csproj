@@ -70,6 +70,8 @@
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
     <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
+    <Compile Include="UnitTests\LicenseProviderTests.cs" />
+    <Compile Include="UnitTests\CreditProviderTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
     <Compile Include="UnitTests\CommandRuleValidatorUnitTests.cs" />

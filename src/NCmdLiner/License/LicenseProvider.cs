@@ -52,7 +52,7 @@ namespace NCmdLiner.License
                         {
                             try
                             {
-                                ILicenseInfo licenseInfo = SerializerHelper<ILicenseInfo>.DeSerialize(resourceStream);
+                                var licenseInfo = SerializerHelper<LicenseInfo>.DeSerialize(resourceStream);
                                 licenses.Add(licenseInfo);
                             }
                             catch (Exception ex)

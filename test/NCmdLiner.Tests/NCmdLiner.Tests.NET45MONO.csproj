@@ -74,12 +74,14 @@
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
     <Compile Include="UnitTests\CommandRuleValidatorUnitTests.cs" />
+    <Compile Include="UnitTests\CreditProviderTests.cs" />
     <Compile Include="UnitTests\Custom\CustomTestApplicationInfo.cs" />
     <Compile Include="UnitTests\Custom\CustomTestApplicationInfoException.cs" />
     <Compile Include="UnitTests\Custom\CustomTestHelpProvider.cs" />
     <Compile Include="UnitTests\Custom\CustomTestHelpProviderException.cs" />
     <Compile Include="UnitTests\Custom\CustomTestMessenger.cs" />
     <Compile Include="UnitTests\Custom\CustomTestMessengerException.cs" />
+    <Compile Include="UnitTests\LicenseProviderTests.cs" />
     <Compile Include="UnitTests\ParseArrayTests.cs" />
     <Compile Include="UnitTests\TestCommands\NonStaticAndStaticTestCommands8.cs" />
     <Compile Include="UnitTests\TestCommands\NonStaticTestCommands7.cs" />
