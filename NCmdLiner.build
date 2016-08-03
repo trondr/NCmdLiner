@@ -362,7 +362,7 @@
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
   </Target>
 
-  <Target Name="Deploy" DependsOnTargets="Tests;TestsCore;ZipSource;NugetPack">
+  <Target Name="Deploy" DependsOnTargets="UpdateRevisionVersion;Tests;TestsCore;ZipSource;NugetPack">
 
   </Target>
 

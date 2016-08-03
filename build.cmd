@@ -22,50 +22,10 @@ Set Path=%Path%;%MSBUILDPATH%
 Echo Building %ProductName%...
 Echo msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
 msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
+msbuild.exe %ProductName%.build /target:DeActivateProjectJson
 Set BuildErrorLevel=%ERRORLEVEL%
 IF %BuildErrorLevel%==0 Set BuildMessage=Sucessfully build %ProductName%
 IF NOT %BuildErrorLevel% == 0 Set BuildMessage=Failed to build %ProductName%
-
-REM dotnet restore "%~dp0src\%ProductName%"
-REM Set Configuration=Release
-REM 
-REM Set DotNetFrameWork=net35
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM Set DotNetFrameWork=net451
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM 
-REM Set DotNetFrameWork=net452
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM Set DotNetFrameWork=net461
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM Set DotNetFrameWork=.NETFramework,Version=v4.5,Profile=Mono
-REM Set OutputDir=net45-mono
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM Set DotNetFrameWork=netstandard1.6
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0src\%ProductName%" --output "%~dp0bin\%Configuration%\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM dotnet restore "%~dp0test\%ProductName%.Tests"
-REM Set DotNetFrameWork=netcoreapp1.0
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0test\%ProductName%.Tests" --output "%~dp0bin\%Configuration%\Tests\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\Tests\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM dotnet test "%~dp0test\%ProductName%.Tests" --output "%~dp0bin\%Configuration%\Tests\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\Tests\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM Set DotNetFrameWork=net461
-REM Set OutputDir=%DotNetFrameWork%
-REM dotnet build "%~dp0test\%ProductName%.Tests" --output "%~dp0bin\%Configuration%\Tests\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\Tests\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM dotnet test "%~dp0test\%ProductName%.Tests" --output "%~dp0bin\%Configuration%\Tests\%OutputDir%" --build-base-path "%~dp0bin\obj\%Configuration%\Tests\%OutputDir%" --configuration Release --framework %DotNetFrameWork%
-REM 
-REM dotnet pack "%~dp0src\%ProductName%" --output "%~dp0bin\NugetPackages" --build-base-path "%~dp0bin\obj\%Configuration% --configuration Release
 
 :End
 Echo %BuildMessage%
