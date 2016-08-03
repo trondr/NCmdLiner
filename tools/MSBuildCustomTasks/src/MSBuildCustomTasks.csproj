@@ -55,11 +55,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivateProjectJson.cs" />
     <Compile Include="Common\DirectoryOperation.cs" />
     <Compile Include="Common\IIniFileOperation.cs" />
     <Compile Include="Common\IMsiFileInfo.cs" />
     <Compile Include="Common\IniFileOperation.cs" />
     <Compile Include="Common\MsiFileOperation.cs" />
+    <Compile Include="DeactivateProjectJson.cs" />
     <Compile Include="ResolveScriptInstallPackage.cs" />
     <Compile Include="Common\SecurityHelper.cs" />
     <Compile Include="Impersonate.cs" />

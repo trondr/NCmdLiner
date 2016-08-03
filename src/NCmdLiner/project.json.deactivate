@@ -55,5 +55,9 @@
   "buildOptions": {
     "keyFile": "./NCmdLiner.snk",
     "delaySign": true
+  },
+  "runtimes": {
+    "win": { }
   }
+
 }

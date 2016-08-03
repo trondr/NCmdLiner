@@ -10,7 +10,9 @@
   <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.Impersonate" />
   <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.RunAsUser" />
   <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.ResolveScriptInstallPackage" />
-
+  <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.ActivateProjectJson" />
+  <UsingTask AssemblyFile="$(MsBuildCustomTasksLib)" TaskName="MSBuildCustomTasks.DeActivateProjectJson" />
+  
   <ItemGroup>
     <FxCopRuleAssemblies Include="UsageRules.dll"/>
     <FxCopRuleAssemblies Include="SecurityRules.dll"/>

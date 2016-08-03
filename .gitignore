@@ -43,3 +43,6 @@ _ReSharper*/
 *.shfbproj_*
 Doc\Help
 .metadata/*
+
+#.NET Core
+project.json.lock

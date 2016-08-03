@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  
   <PropertyGroup>
     <Configuration>Release</Configuration>
     
@@ -242,9 +243,19 @@
     </NetFrameWorkName>
   </ItemGroup>
   
+  <Target Name="DeActivateProjectJson">
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
+  </Target>
+  
+  <Target Name="ActivateProjectJson">
+    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
+  </Target>
+  
   <!--Compile class library for all defined NetFrameWorkNames-->
 
-  <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+  <Target Name="Compile" DependsOnTargets="Version;DeActivateProjectJson" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
     <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
     <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)" />
     <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
@@ -260,7 +271,7 @@
   <Target Name="CompileExample" DependsOnTargets="Compile">
     <MSBuild Projects="$(ProductProjectSrcDirectory).Example\$(ProductProjectName).Example.csproj" Properties="Configuration=$(Configuration)"/>
   </Target>
-
+  
   <!--Prepare for test-->
 
   <Target Name="DownloadNunit" Condition=" '$(NUnitIsAvailable)' == 'false' ">
