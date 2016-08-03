@@ -86,9 +86,10 @@ namespace NCmdLiner.Tests.Extensions
 
         public static void AreEquivalent<T>(IEnumerable<T> expected, IEnumerable<T> actual, string message = null)
         {
-#if XUNIT            
-            var sortedExpected = expected.ToImmutableList().Sort();
-            var sortedActual = actual.ToImmutableList().Sort();
+#if XUNIT
+            var comparison = new Comparison<T>((x, y) => String.CompareOrdinal(x.ToString(), y.ToString()));
+            var sortedExpected = expected.ToImmutableList().Sort(comparison);
+            var sortedActual = actual.ToImmutableList().Sort(comparison);
             XUnitAssert.Equal(sortedExpected, sortedActual);
             XUnitAssert.Equal(sortedExpected, sortedActual);            
 #else
