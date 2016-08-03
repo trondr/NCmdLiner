@@ -9,32 +9,38 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUtil</RootNamespace>
     <AssemblyName>MyUtil</AssemblyName>
+    <TargetFramework>NET35</TargetFramework>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\..\bin</BuildOutputDirectory>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCmdLiner, Version=1.2.16216.171, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.171\lib\net35\NCmdLiner.dll</HintPath>
+    <Reference Include="NCmdLiner, Version=1.2.16216.172, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\tools\NuGetPackages\NCmdLiner.1.2.16216.172\lib\net35\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
