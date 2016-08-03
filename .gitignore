@@ -45,4 +45,5 @@ Doc\Help
 .metadata/*
 
 #.NET Core
-project.json.lock
+project.lock.json
+project.lock.json.deactivate

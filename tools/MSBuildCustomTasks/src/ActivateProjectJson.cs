@@ -14,22 +14,34 @@ namespace MSBuildCustomTasks
                 return false;
             }
 
-            var projectJson = Path.Combine(ProjectFolder, "project.json");
             var projectJsonDeactivate = Path.Combine(ProjectFolder, "project.json.deactivate");
-            if (File.Exists(projectJsonDeactivate))
+            var projectLockJsonDeactivate = Path.Combine(ProjectFolder, "project.lock.json.deactivate");
+            var activated = ActivateFile(projectJsonDeactivate);
+            if(File.Exists(projectLockJsonDeactivate))
+                activated &= ActivateFile(projectLockJsonDeactivate);
+            if (!activated)
+                return false;
+            return base.Execute();
+        }
+
+        private bool ActivateFile(string file)
+        {
+            var activeFile = file.Replace(".deactivate", "");
+            if (File.Exists(file))
             {
-                Rename(projectJsonDeactivate, projectJson);
+                Rename(file, activeFile);
+                return true;
             }
-            else if (File.Exists(projectJson))
+            if (File.Exists(activeFile))
             {
-                Log.LogMessage(MessageImportance.Normal,"project.json has allready been activated.");
+                Log.LogMessage(MessageImportance.Normal,"File '{0}' has allready been activated.", file);
+                return true;
             }
             else
             {
-                Log.LogError("Unable to activate project.json. There is no project.json to be found in project folder '{0}'.", ProjectFolder);
+                Log.LogError("Unable to activate file '{0}' as the file cannot be found in the project folder '{1}'.", file, ProjectFolder);
                 return false;
             }
-            return base.Execute();
         }
 
         private void Rename(string file1, string file2)
