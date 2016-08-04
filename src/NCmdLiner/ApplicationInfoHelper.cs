@@ -121,8 +121,15 @@ namespace NCmdLiner
                 if (string.IsNullOrEmpty(_applicationCopyright))
                 {                   
                     var attribute = AppAssembly.GetCustomAttributeEx(typeof(AssemblyCopyrightAttribute));
-                    var copyRightAttribute = (AssemblyCopyrightAttribute)attribute;
-                    _applicationCopyright = copyRightAttribute.Copyright;
+                    if (attribute != null)
+                    {
+                        var copyRightAttribute = (AssemblyCopyrightAttribute) attribute;
+                        _applicationCopyright = copyRightAttribute.Copyright;
+                    }
+                    else
+                    {
+                        _applicationCopyright = "<Not Set>";
+                    }
                 }
                 return _applicationCopyright;
             }
@@ -137,8 +144,15 @@ namespace NCmdLiner
                 if (string.IsNullOrEmpty(_applicationDescription))
                 {
                     var attribute = AppAssembly.GetCustomAttributeEx(typeof(AssemblyDescriptionAttribute));
-                    var descriptionAttribute = (AssemblyDescriptionAttribute) attribute;
-                    _applicationDescription = descriptionAttribute.Description;
+                    if (attribute != null)
+                    {
+                        var descriptionAttribute = (AssemblyDescriptionAttribute) attribute;
+                        _applicationDescription = descriptionAttribute.Description;
+                    }
+                    else
+                    {
+                        _applicationDescription = "<Not Set>";
+                    }
                 }
                 return _applicationDescription;
             }            
