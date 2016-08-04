@@ -44,6 +44,10 @@ _ReSharper*/
 Doc\Help
 .metadata/*
 
+tools/NuGetPackages/
+tools/NMultiTool/(null)
+
 #.NET Core
 project.lock.json
 project.lock.json.deactivate
+
