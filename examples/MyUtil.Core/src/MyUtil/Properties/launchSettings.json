@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MyUtil": {
+      "commandName": "Project",
+      "commandLineArgs": "Help"
+    }
+  }
+}
