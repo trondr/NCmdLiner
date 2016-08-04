@@ -256,7 +256,7 @@
   
   <!--Compile class library for all defined NetFrameWorkNames-->
 
-  <Target Name="Compile" DependsOnTargets="Version" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
+  <Target Name="Compile" DependsOnTargets="Version;RestoreNugetPackages" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
     <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
     <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
     <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
@@ -273,6 +273,13 @@
      <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
   </Target>
     
+  <Target Name="RestoreNugetPackages" DependsOnTargets="">
+    <Message Text="Restoring NuGet packages" />
+    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
+    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
+    <Exec Command="&quot;$(ToolsDirectory)\NuGet\nuget.exe&quot; restore &quot;$(MSBuildProjectDirectory)\$(ProductProjectName).sln&quot; " />    
+  </Target> 
+	
   <Target Name="RestoreCore" DependsOnTargets="ActivateProjectJson">
     <Message Text="Restoring .NET Core dependencies" />
     <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
