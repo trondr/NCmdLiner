@@ -13,8 +13,8 @@
 [assembly: System.Reflection.AssemblyProduct("NCmdLiner")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright © <github.com/trondr> 2016")]
 [assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyInformationalVersion("1.2.16217.176.fefd8a7")]
-[assembly: System.Reflection.AssemblyVersion("1.2.16217.176")]
-[assembly: System.Reflection.AssemblyFileVersion("1.2.16217.176")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.2.16217.178.ae0d9d2")]
+[assembly: System.Reflection.AssemblyVersion("1.2.16217.178")]
+[assembly: System.Reflection.AssemblyFileVersion("1.2.16217.178")]
 
 

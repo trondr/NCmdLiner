@@ -242,6 +242,11 @@
       <Profile></Profile>
       <Identifier>.NETFramework</Identifier>
     </NetFrameWorkName>
+	<NetFrameWorkName Include="NET462">
+      <Version>v4.6.2</Version>
+      <Profile></Profile>
+      <Identifier>.NETFramework</Identifier>
+    </NetFrameWorkName>
   </ItemGroup>
   
   <Target Name="DeActivateProjectJson" BeforeTargets="Compile;CompileTests;ZipSource;NugetPack;Tests;Deploy" AfterTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore;Deploy;ZipSource;NugetPack">

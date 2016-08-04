@@ -4,23 +4,24 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9902372E-CC81-4C26-971D-5E983E77FB89}</ProjectGuid>
+    <ProjectGuid>{AB15035E-74FB-4167-9E6D-3773307ABF79}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUtil</RootNamespace>
     <AssemblyName>MyUtil</AssemblyName>
-    <TargetFramework>NET452</TargetFramework>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFramework>NET462</TargetFramework>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET462</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -29,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;NET452</DefineConstants>
+    <DefineConstants>TRACE;NET462</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -41,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NCmdLiner, Version=1.2.16217.178, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.16217.178\lib\net452\NCmdLiner.dll</HintPath>
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.16217.178\lib\net462\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
