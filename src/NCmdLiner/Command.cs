@@ -16,6 +16,19 @@ namespace NCmdLiner
 
         public string Description { get; set; }
 
+        public string Summary
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_summary))
+                {
+                    _summary = Description;
+                }
+                return _summary;
+            }
+            set { _summary = value; }
+        }
+
         public List<RequiredCommandParameter> RequiredParameters
         {
             get
@@ -44,5 +57,6 @@ namespace NCmdLiner
         }
 
         private List<OptionalCommandParameter> _optionalParameters;
+        private string _summary;
     }
 }

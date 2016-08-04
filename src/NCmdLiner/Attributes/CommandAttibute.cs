@@ -16,6 +16,8 @@ namespace NCmdLiner.Attributes
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public sealed class CommandAttribute : Attribute
     {
+        private string _summary;
+
         /// <summary>  Default constructor. </summary>
         public CommandAttribute()
         {
@@ -34,5 +36,21 @@ namespace NCmdLiner.Attributes
         /// Description is used for help messages
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Summary is used to give summary description of a command. For use in the help message about the command.
+        /// </summary>
+        public string Summary
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_summary))
+                {
+                    _summary = Description;
+                }
+                return _summary;
+            }
+            set { _summary = value; }
+        }
     }
 }

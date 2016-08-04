@@ -344,9 +344,11 @@ namespace NCmdLiner
             StringBuilder exampleString = new StringBuilder();
             StringBuilder alternativeExampleString = new StringBuilder();
             helpString.Append(FormatCommand(commandRule.Command.Name));
-            helpString.Append(FormatCommandDescription(commandRule.Command.Description, _commandColumnWidth, MaxWidth - _commandColumnWidth));
+            if(!includeParameters)
+                helpString.Append(FormatCommandDescription(commandRule.Command.Summary, _commandColumnWidth, MaxWidth - _commandColumnWidth));
             if (includeParameters)
             {
+                helpString.Append(FormatCommandDescription(commandRule.Command.Description, _commandColumnWidth, MaxWidth - _commandColumnWidth));
                 if (Type.GetType("Mono.Runtime") != null)
                     exampleString.Append("mono ");
                 exampleString.Append(applicationInfo.ExeFileName + " ");

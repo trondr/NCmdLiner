@@ -43,7 +43,7 @@ namespace NCmdLiner
             CommandRule commandRule = new CommandRule();
             commandRule.Method = methodInfo;
             commandRule.Instance = targetObject;
-            commandRule.Command = new Command {Name = methodInfo.Name, Description = commandAttribute.Description};
+            commandRule.Command = new Command {Name = methodInfo.Name, Description = commandAttribute.Description, Summary = commandAttribute.Summary};
             bool optionalParamterFound = false;
             foreach (ParameterInfo parameter in methodInfo.GetParameters())
             {

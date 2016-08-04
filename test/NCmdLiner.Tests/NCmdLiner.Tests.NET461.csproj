@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
     <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
+    <Compile Include="UnitTests\Custom\StringMessenger.cs" />
     <Compile Include="UnitTests\LicenseProviderTests.cs" />
     <Compile Include="UnitTests\CreditProviderTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="UnitTests\TestCommands\TestCommands4.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands5.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands6.cs" />
+    <Compile Include="UnitTests\TestCommands\TestCommands9.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti1.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti1Duplicate.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti2.cs" />

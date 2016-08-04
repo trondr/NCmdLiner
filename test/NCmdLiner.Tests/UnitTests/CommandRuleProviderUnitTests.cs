@@ -6,12 +6,14 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Moq;
 using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
 using NCmdLiner;
+using NCmdLiner.Tests.UnitTests.Custom;
 using NCmdLiner.Tests.UnitTests.TestCommands;
 
 #if XUNIT
@@ -81,8 +83,7 @@ namespace NCmdLiner.Tests.UnitTests
         }
 
         [Test]
-        public static void
-            GetCommandRuleMetodHasCommandWithTwoRequiredParameterAndOneOptionalParameterVerifyCommandRuleSucessUnitTest()
+        public static void GetCommandRuleMetodHasCommandWithTwoRequiredParameterAndOneOptionalParameterVerifyCommandRuleSucessUnitTest()
         {
             CommandRuleProvider target = new CommandRuleProvider();
             string expectedCommandName = "CommandWithTwoRequiredParameterAndOneOptionalParameter";
@@ -110,6 +111,53 @@ namespace NCmdLiner.Tests.UnitTests
             Assert.IsTrue(actual[2].Command.Description == "Command 3 description", "Description of command 3");
             Assert.IsTrue(actual[3].Command.Description == "Command 4 description", "Description of command 4");
             Assert.IsTrue(actual[4].Command.Description == "Command 5 description", "Description of command 5");
+        }
+
+        [Test]
+        public static void GetCommandRuleWithBothDescriptionAndSummaryDefinedTest()
+        {
+            var target = new CommandRuleProvider();
+            string expectedCommandName = "CommandWithBothDescriptionAndSummaryDefined";
+            var actualCommandRule = target.GetCommandRule(typeof(TestCommands9).GetMethodEx(expectedCommandName));
+            Assert.AreEqual(expectedCommandName, actualCommandRule.Command.Name);
+            Assert.AreEqual(0, actualCommandRule.Command.RequiredParameters.Count);
+            Assert.AreEqual(0, actualCommandRule.Command.OptionalParameters.Count);
+            var expectedDescription = "Command with both summary and description defined";
+            var epectedSummary = "Summary of command";
+            Assert.AreEqual(expectedDescription, actualCommandRule.Command.Description);
+            Assert.AreEqual(epectedSummary, actualCommandRule.Command.Summary);
+        }
+
+        [Test]
+        public static void GetCommandRuleWithOnlyDescriptionAndNoSummaryDefinedTest()
+        {
+            var target = new CommandRuleProvider();
+            string expectedCommandName = "CommandWithOnlyDescriptionAndNoSummaryDefined";
+            var actualCommandRule = target.GetCommandRule(typeof(TestCommands9).GetMethodEx(expectedCommandName));
+            Assert.AreEqual(expectedCommandName, actualCommandRule.Command.Name);
+            Assert.AreEqual(0, actualCommandRule.Command.RequiredParameters.Count);
+            Assert.AreEqual(0, actualCommandRule.Command.OptionalParameters.Count);
+            var expectedDescription = "Command with only description defined. Summary should the be set to the same as the description.";
+            var epectedSummary = "Command with only description defined. Summary should the be set to the same as the description.";
+            Assert.AreEqual(expectedDescription, actualCommandRule.Command.Description);
+            Assert.AreEqual(epectedSummary, actualCommandRule.Command.Summary);
+        }
+
+        [Test]
+        public static void GetCommandRulesHelpProviderTest()
+        {
+            var target = new CommandRuleProvider();
+            var actualCommandRules = target.GetCommandRules(typeof(TestCommands9));
+            var messenger = new StringMessenger();
+            var helpProvider = new HelpProvider(new Func<IMessenger>(() => messenger));
+            helpProvider.ShowHelp(actualCommandRules,null,new ApplicationInfo());
+            Assert.Contains("CommandWithBothDescriptionAndSummaryDefined              Summary of command", messenger.Message.ToString());
+            Assert.Contains("CommandWithOnlyDescriptionAndNoSummaryDefined            Command with only", messenger.Message.ToString());
+            Assert.Contains("CommandWithTwoRequiredParameterAndOneOptionalParameter   Summary of", messenger.Message.ToString());
+
+            Assert.Contains("CommandWithBothDescriptionAndSummaryDefined              Command with both", messenger.Message.ToString());
+            Assert.Contains("CommandWithOnlyDescriptionAndNoSummaryDefined            Command with only", messenger.Message.ToString());
+            Assert.Contains("CommandWithTwoRequiredParameterAndOneOptionalParameter   Command with two", messenger.Message.ToString());
         }
 
         internal class FiveTestCommands

@@ -78,6 +78,7 @@
     <Compile Include="UnitTests\Custom\CustomTestHelpProviderException.cs" />
     <Compile Include="UnitTests\Custom\CustomTestMessenger.cs" />
     <Compile Include="UnitTests\Custom\CustomTestMessengerException.cs" />
+    <Compile Include="UnitTests\Custom\StringMessenger.cs" />
     <Compile Include="UnitTests\LicenseProviderTests.cs" />
     <Compile Include="UnitTests\ParseArrayTests.cs" />
     <Compile Include="UnitTests\TestCommands\NonStaticAndStaticTestCommands8.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="UnitTests\TestCommands\TestCommands4.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands5.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands6.cs" />
+    <Compile Include="UnitTests\TestCommands\TestCommands9.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti1.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti1Duplicate.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti2.cs" />
