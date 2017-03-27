@@ -65,6 +65,4 @@ namespace NCmdLiner.Tests.UnitTests
             }
         }
     }
-    
-    
 }

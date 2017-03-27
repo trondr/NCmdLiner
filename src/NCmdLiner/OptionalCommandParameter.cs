@@ -7,6 +7,7 @@
 // All rights reserved.
 
 using System;
+using System.Linq;
 
 namespace NCmdLiner
 {
@@ -30,6 +31,13 @@ namespace NCmdLiner
             {
                 if (_value == null)
                 {
+                    if (DefaultValue is Array)
+                    {
+                        var array = (Array)DefaultValue;
+                        var stringArray = array.OfType<object>().Select(o => o.ToString()).ToArray();
+                        var defaultValue = "['" + string.Join("';'", stringArray) + "']";
+                        return defaultValue;
+                    }
                     return DefaultValue.ToString();
                 }
                 return _value;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NCmdLiner.Tests.UnitTests.Custom
 {
@@ -12,14 +8,30 @@ namespace NCmdLiner.Tests.UnitTests.Custom
 
         public void Write(string formatMessage, params object[] args)
         {
-            Message.Append(string.Format(formatMessage, args));
-            System.Console.Write(formatMessage,args);
+            if (args == null || args.Length == 0)
+            {
+                Message.Append(formatMessage);
+                System.Console.Write(formatMessage);
+            }
+            else
+            {
+                Message.Append(string.Format(formatMessage, args));
+                System.Console.Write(formatMessage, args);
+            }
         }
 
         public void WriteLine(string formatMessage, params object[] args)
         {
-            Message.AppendLine(string.Format(formatMessage, args));
-            System.Console.WriteLine(formatMessage, args);
+            if (args == null || args.Length == 0)
+            {
+                Message.AppendLine(formatMessage);
+                System.Console.WriteLine(formatMessage);
+            }
+            else
+            {
+                Message.AppendLine(string.Format(formatMessage, args));
+                System.Console.WriteLine(formatMessage, args);
+            }
         }
 
         public void Show()

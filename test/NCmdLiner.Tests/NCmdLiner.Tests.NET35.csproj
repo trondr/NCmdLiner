@@ -68,8 +68,9 @@
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
     <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
-    <Compile Include="UnitTests\CmdLineryExampleValueWithFormatCharactersTests.cs" />
+    <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndDefaultValueWithArrayValueTests.cs" />
     <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
+    <Compile Include="UnitTests\CmdLineryRequiredCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
     <Compile Include="UnitTests\CommandRuleValidatorUnitTests.cs" />

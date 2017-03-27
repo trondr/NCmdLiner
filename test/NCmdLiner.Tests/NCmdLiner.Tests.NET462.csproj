@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndDefaultValueWithArrayValueTests.cs" />
     <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
     <Compile Include="Common\ITestLogger.cs" />
     <Compile Include="Common\TestApplicationInfo.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
     <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
-    <Compile Include="UnitTests\CmdLineryExampleValueWithFormatCharactersTests.cs" />
+    <Compile Include="UnitTests\CmdLineryRequiredCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
     <Compile Include="UnitTests\Custom\StringMessenger.cs" />
     <Compile Include="UnitTests\LicenseProviderTests.cs" />
     <Compile Include="UnitTests\CreditProviderTests.cs" />
