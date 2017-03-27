@@ -13,7 +13,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>  Trond, 03.10.2012. </remarks>
     internal sealed class UnknownTypeException : NCmdLinerException
     {
-        public UnknownTypeException(string message, params object[] arguments) : base(message, arguments)
+        public UnknownTypeException(string message) : base(message)
         {
         }
     }

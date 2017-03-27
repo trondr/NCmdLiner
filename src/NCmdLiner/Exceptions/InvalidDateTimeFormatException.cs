@@ -13,7 +13,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>  Trond, 03.10.2012. </remarks>
     public sealed class InvalidDateTimeFormatException : NCmdLinerException
     {
-        public InvalidDateTimeFormatException(string message, params object[] arguments) : base(message, arguments)
+        public InvalidDateTimeFormatException(string message) : base(message)
         {
         }
     }

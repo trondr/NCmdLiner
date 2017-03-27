@@ -13,7 +13,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>  Trond, 03.10.2012. </remarks>
     internal sealed class InvalidArrayParseException : NCmdLinerException
     {
-        public InvalidArrayParseException(string message, params object[] arguments) : base(message, arguments)
+        public InvalidArrayParseException(string message) : base(message)
         {
         }
     }

@@ -121,7 +121,7 @@ namespace NCmdLiner
                     throw;
                 }
             }
-            throw new UnknownTypeException("Unknown type is used in your method: {0}", argumentType.FullName);
+            throw new UnknownTypeException("Unknown type is used in your method: " + argumentType.FullName);
         }
 
         private DateTime ConvertToDateTime(string parameter)
@@ -141,7 +141,7 @@ namespace NCmdLiner
                 }
                 catch (FormatException ex)
                 {
-                    throw new InvalidDateTimeFormatException("Could not convert '{0}' to DateTime. {1}", parameter, ex.Message);
+                    throw new InvalidDateTimeFormatException("Could not convert " + parameter + " to DateTime. " + ex.Message);
                 }
             }
         }

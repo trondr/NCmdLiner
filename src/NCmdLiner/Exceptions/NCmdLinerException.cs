@@ -15,7 +15,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>  Trond, 03.10.2012. </remarks>
     public class NCmdLinerException : Exception
     {
-        public NCmdLinerException(string message, params object[] arguments) : base(string.Format(message, arguments))
+        public NCmdLinerException(string message) : base(message)
         {
         }
     }

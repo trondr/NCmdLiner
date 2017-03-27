@@ -13,7 +13,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>   trond, 2013-05-01. </remarks>
     public sealed class InvalidConversionException : NCmdLinerException
     {
-        public InvalidConversionException(string message, params object[] arguments) : base(message, arguments)
+        public InvalidConversionException(string message) : base(message)
         {
         }
     }

@@ -13,7 +13,7 @@ namespace NCmdLiner.Exceptions
     /// <remarks>   trondr, 2013-05-01. </remarks>
     public sealed class InvalidValueException : NCmdLinerException
     {
-        public InvalidValueException(string message, params object[] arguments) : base(message, arguments)
+        public InvalidValueException(string message) : base(message)
         {
         }
     }

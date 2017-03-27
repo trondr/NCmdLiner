@@ -68,6 +68,8 @@
     <Compile Include="Properties\AssemblyInfo_Static.cs" />
     <Compile Include="UnitTests\ApplicationInfoHelperTests.cs" />
     <Compile Include="UnitTests\ArgumentsParserTests.cs" />
+    <Compile Include="UnitTests\CmdLineryExampleValueWithFormatCharactersTests.cs" />
+    <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
     <Compile Include="UnitTests\CommandRuleValidatorUnitTests.cs" />
@@ -112,6 +114,9 @@
       <Project>{8d5e22b5-3867-4ccf-adfc-1e118d19825d}</Project>
       <Name>NCmdLiner.NET35</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
