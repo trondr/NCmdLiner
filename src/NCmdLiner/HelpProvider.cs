@@ -357,7 +357,8 @@ namespace NCmdLiner
                 foreach (RequiredCommandParameter requiredCommandParameter in commandRule.Command.RequiredParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + requiredCommandParameter.Name));
-                    helpString.Append(FormatCommandDescription(string.Format("[Required] {0}  Alternative parameter name: /{1}", requiredCommandParameter.Description, requiredCommandParameter.AlternativeName), _commandColumnWidth, MaxWidth - _commandColumnWidth));
+                    var commandParameterDescription = GetRequiredCommandParameterDescription(requiredCommandParameter.Description, requiredCommandParameter.AlternativeName);
+                    helpString.Append(commandParameterDescription);
                     exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(requiredCommandParameter.AlternativeName))
                     {
@@ -371,11 +372,8 @@ namespace NCmdLiner
                 foreach (OptionalCommandParameter optionalCommandParameter in commandRule.Command.OptionalParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + optionalCommandParameter.Name));
-                    helpString.Append(
-                        FormatCommandDescription(
-                            string.Format("[Optional] {0}  Alternative parameter name: /{1}. Default value: {2} ",
-                                          optionalCommandParameter.Description, optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.DefaultValue)), _commandColumnWidth,
-                            MaxWidth - _commandColumnWidth));
+                    var optionalCommandParameterDescription = GetOptionalCommandParameterDescription(optionalCommandParameter.Description, optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.DefaultValue));
+                    helpString.Append(optionalCommandParameterDescription);
                     exampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
                     if (!string.IsNullOrEmpty(optionalCommandParameter.AlternativeName))
                     {
@@ -389,15 +387,46 @@ namespace NCmdLiner
                 }
                 helpString.Append(Environment.NewLine);
                 helpString.Append("".PadLeft(3) + "Example: " + exampleString + Environment.NewLine);
-                helpString.Append("".PadLeft(3) + "Example (alternative): " + alternativeExampleString +
-                                  Environment.NewLine);
+                if (exampleString.ToString() != alternativeExampleString.ToString())
+                {
+                    helpString.Append("".PadLeft(3) + "Example (alternative): " + alternativeExampleString + Environment.NewLine);
+                }
+                
                 helpString.Append(Environment.NewLine);
                 helpString.Append(Environment.NewLine);
             }
             var messenger = _messengerFactory.Invoke();
             messenger.Write(helpString.ToString());
         }
-        
+
+        private string GetOptionalCommandParameterDescription(string description, string alternativeName, string defaultValue)
+        {
+            string optionalCommandParameterDescription;
+            if (!string.IsNullOrEmpty(alternativeName))
+            {
+                optionalCommandParameterDescription = FormatCommandDescription(string.Format("[Optional] {0}  Alternative parameter name: /{1}. Default value: {2} ", description, alternativeName, defaultValue), _commandColumnWidth, MaxWidth - _commandColumnWidth);
+            }
+            else
+            {
+                optionalCommandParameterDescription = FormatCommandDescription(string.Format("[Optional] {0}. Default value: {1} ", description, defaultValue), _commandColumnWidth, MaxWidth - _commandColumnWidth);
+            }
+            return optionalCommandParameterDescription;
+        }
+
+        private string GetRequiredCommandParameterDescription(string description, string alternativeName)
+        {
+            string requiredCommandParameterDescription;
+            if (!string.IsNullOrEmpty(alternativeName))
+            {
+                requiredCommandParameterDescription = FormatCommandDescription(string.Format("[Required] {0}  Alternative parameter name: /{1}", description, alternativeName), _commandColumnWidth, MaxWidth - _commandColumnWidth);
+            }
+            else
+            {
+                requiredCommandParameterDescription = FormatCommandDescription(string.Format("[Required] {0}", description), _commandColumnWidth, MaxWidth - _commandColumnWidth);
+            }
+            return requiredCommandParameterDescription;
+        }
+
         /// <summary>   Format command parameter. </summary>
         ///
         /// <remarks>   trond, 2013-05-01. </remarks>

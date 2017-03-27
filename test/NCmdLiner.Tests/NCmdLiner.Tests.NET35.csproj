@@ -71,6 +71,7 @@
     <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndDefaultValueWithArrayValueTests.cs" />
     <Compile Include="UnitTests\CmdLineryOptionalCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
     <Compile Include="UnitTests\CmdLineryRequiredCommandParameterAndExampleValueWithFormatCharactersTests.cs" />
+    <Compile Include="UnitTests\CmdLineryRequiredCommandParameterWithAndWithoutAlternativeNameTests.cs" />
     <Compile Include="UnitTests\CmdLineryTests.cs" />
     <Compile Include="UnitTests\CommandRuleProviderUnitTests.cs" />
     <Compile Include="UnitTests\CommandRuleValidatorUnitTests.cs" />
