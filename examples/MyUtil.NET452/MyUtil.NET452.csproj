@@ -40,8 +40,8 @@
     <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCmdLiner, Version=1.2.17086.227, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.17086.227\lib\net452\NCmdLiner.dll</HintPath>
+    <Reference Include="NCmdLiner, Version=1.2.17086.228, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.17086.228\lib\net452\NCmdLiner.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

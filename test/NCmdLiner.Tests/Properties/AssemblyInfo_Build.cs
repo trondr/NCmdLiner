@@ -11,10 +11,10 @@
 [assembly: System.Reflection.AssemblyDescription("NCmdLiner.Tests features NCmdLiner tests.")]
 [assembly: System.Reflection.AssemblyCompany("github.com/trondr")]
 [assembly: System.Reflection.AssemblyProduct("NCmdLiner.Tests")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright © <github.com/trondr> 2017")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright © github.com/trondr 2013-2017")]
 [assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyInformationalVersion("1.2.17086.227.6e00900")]
-[assembly: System.Reflection.AssemblyVersion("1.2.17086.227")]
-[assembly: System.Reflection.AssemblyFileVersion("1.2.17086.227")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.2.17086.228.f46c48f")]
+[assembly: System.Reflection.AssemblyVersion("1.2.17086.228")]
+[assembly: System.Reflection.AssemblyFileVersion("1.2.17086.228")]
 
 
