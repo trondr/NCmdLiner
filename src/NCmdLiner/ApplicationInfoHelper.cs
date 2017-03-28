@@ -6,7 +6,6 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
-using System;
 using System.IO;
 using System.Reflection;
 
@@ -44,7 +43,7 @@ namespace NCmdLiner
             {
                 if (string.IsNullOrEmpty(_applicationName))
                 {
-                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(ExeFilePath);
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(ExeFilePath);
                     if (fileNameWithoutExtension != null)
                         _applicationName =
                             fileNameWithoutExtension.Replace(".Gui", "").Replace(".Console", "").Replace('.', ' ');

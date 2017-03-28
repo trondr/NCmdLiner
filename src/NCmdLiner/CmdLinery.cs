@@ -8,24 +8,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using NCmdLiner.Attributes;
-using NCmdLiner.Exceptions;
 using TinyIoC;
+using System.Linq;
 
 namespace NCmdLiner
 {
     public class CmdLinery
     {
-        //private static readonly TinyIoCContainer Container;
-
-        static CmdLinery()
-        {
-            //Container = new TinyIoCContainer();
-            //container.AutoRegister(new[] { container.GetType().GetAssembly() });
-        }
-
         #region Run from TargetType
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
@@ -35,8 +26,8 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
@@ -53,12 +44,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register(applicationInfo);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -74,12 +65,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IMessenger messenger)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
+                container.Register(messenger);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -96,14 +87,14 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
+                container.Register(applicationInfo);
+                container.Register(messenger);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -119,12 +110,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IHelpProvider helpProvider)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(helpProvider);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -142,14 +133,14 @@ namespace NCmdLiner
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo,
             IHelpProvider helpProvider)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(helpProvider);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -166,14 +157,14 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type targetType, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -192,16 +183,16 @@ namespace NCmdLiner
         public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
             IHelpProvider helpProvider)
         {
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -219,8 +210,8 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
@@ -236,12 +227,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register(applicationInfo);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -256,12 +247,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args, IMessenger messenger)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
+                container.Register(messenger);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -277,14 +268,14 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
+                container.Register(applicationInfo);
+                container.Register(messenger);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -299,12 +290,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args, IHelpProvider helpProvider)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(helpProvider);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -321,14 +312,14 @@ namespace NCmdLiner
         public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo,
             IHelpProvider helpProvider)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(helpProvider);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -344,14 +335,14 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Assembly assembly, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -369,16 +360,16 @@ namespace NCmdLiner
         public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
             IHelpProvider helpProvider)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 var targetTypes = GetTargetTypesFromAssembly(assembly);
                 return Run(targetTypes.ToArray(), args, container.Resolve<IApplicationInfo>(),
@@ -397,8 +388,8 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
@@ -414,12 +405,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register(applicationInfo);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -434,12 +425,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IMessenger messenger)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
+                container.Register(messenger);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -455,14 +446,14 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
+                container.Register(applicationInfo);
+                container.Register(messenger);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -477,12 +468,12 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IHelpProvider helpProvider)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(helpProvider);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -499,14 +490,14 @@ namespace NCmdLiner
         public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo,
             IHelpProvider helpProvider)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(helpProvider);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -522,15 +513,15 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
 
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -547,16 +538,16 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetTypes == null) throw new ArgumentNullException("targetTypes");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
                 var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();
@@ -576,8 +567,8 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
@@ -592,13 +583,13 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
 
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
+                container.Register(applicationInfo);
 
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -613,13 +604,13 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IMessenger messenger)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
 
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
+                container.Register(messenger);
 
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -635,15 +626,15 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
 
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
+                container.Register(applicationInfo);
+                container.Register(messenger);
 
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -658,13 +649,13 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IHelpProvider helpProvider)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
 
             using (var container = GetContainer())
             {
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(helpProvider);
 
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -680,15 +671,15 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
 
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(helpProvider);
 
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
@@ -704,15 +695,15 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
 
             using (var container = GetContainer())
             {
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(messenger);
+                container.Register(helpProvider);
                 return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
@@ -727,17 +718,17 @@ namespace NCmdLiner
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetObjects == null) throw new ArgumentNullException("targetObjects");
-            if (args == null) throw new ArgumentNullException("args");
-            if (applicationInfo == null) throw new ArgumentNullException("applicationInfo");
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (helpProvider == null) throw new ArgumentNullException("helpProvider");
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
 
             using (var container = GetContainer())
             {
-                container.Register<IApplicationInfo>(applicationInfo);
-                container.Register<IMessenger>(messenger);
-                container.Register<IHelpProvider>(helpProvider);
+                container.Register(applicationInfo);
+                container.Register(messenger);
+                container.Register(helpProvider);
 
                 var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
                 var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();

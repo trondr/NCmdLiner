@@ -17,12 +17,12 @@ namespace NCmdLiner
     {
         public string Justify(string line, int width)
         {
-            if (string.IsNullOrEmpty(line)) throw new ArgumentNullException("line");
-            if (width <= 0) throw new ArgumentException("Width must be greater than 0.", "width");
+            if (string.IsNullOrEmpty(line)) throw new ArgumentNullException(nameof(line));
+            if (width <= 0) throw new ArgumentException("Width must be greater than 0.", nameof(width));
 
             line = Straighten(line);
-            int numberOfSpacesToInsert = width - line.Length;
-            string[] wordArray = line.Split(' ');
+            var numberOfSpacesToInsert = width - line.Length;
+            var wordArray = line.Split(' ');
             if (wordArray.Length == 1)
             {
                 return line;
@@ -36,17 +36,17 @@ namespace NCmdLiner
                 return line; //Do not justify line if shorter that half of the requested width         
 
             //Create an array of the spaces and justify by adding spaces with highest weight on the middle of the line.
-            int numberOfSpaces = wordArray.Length - 1;
-            SpaceWeight[] spaceArray = new SpaceWeight[numberOfSpaces];
+            var numberOfSpaces = wordArray.Length - 1;
+            var spaceArray = new SpaceWeight[numberOfSpaces];
             InitSpaceArray(spaceArray);
-            for (int i = 0; i < numberOfSpacesToInsert; i++)
+            for (var i = 0; i < numberOfSpacesToInsert; i++)
             {
                 AddSpace(spaceArray);
             }
 
             //Rebuild the line with the justified spaces.
-            StringBuilder justifiedLine = new StringBuilder();
-            for (int i = 0; i < wordArray.Length; i++)
+            var justifiedLine = new StringBuilder();
+            for (var i = 0; i < wordArray.Length; i++)
             {
                 justifiedLine.Append(wordArray[i]);
                 if (i < wordArray.Length - 1)
@@ -66,8 +66,8 @@ namespace NCmdLiner
             }
             //Find space with highest weight (i.e closer to the center and not allready expanded)
             double maxWeight = 0;
-            int maxWeigthIndex = spaceArray.Length - 1;
-            for (int i = spaceArray.Length - 1; i >= 0; i--)
+            var maxWeigthIndex = spaceArray.Length - 1;
+            for (var i = spaceArray.Length - 1; i >= 0; i--)
             {
                 if (spaceArray[i].Weight > maxWeight)
                 {
@@ -80,7 +80,7 @@ namespace NCmdLiner
 
         private void InitSpaceArray(SpaceWeight[] spaceArray)
         {
-            for (int i = 0; i < spaceArray.Length; i++)
+            for (var i = 0; i < spaceArray.Length; i++)
             {
                 spaceArray[i] = new SpaceWeight {Spaces = " ", DistanceFromEnd = Math.Min(i, spaceArray.Length - 1 - i)};
             }
@@ -93,7 +93,7 @@ namespace NCmdLiner
 
             public double Weight
             {
-                get { return (double) DistanceFromEnd + 10/(double) Spaces.Length; }
+                get { return DistanceFromEnd + 10/(double) Spaces.Length; }
             }
         }
 
@@ -106,14 +106,14 @@ namespace NCmdLiner
 
         public List<string> BreakIntoLines(string description, int width)
         {
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
             description = Straighten(description);
-            string[] wordArray = description.Split(' ');
-            StringBuilder line = new StringBuilder();
+            var wordArray = description.Split(' ');
+            var line = new StringBuilder();
             line.Length = 0;
-            for (int i = 0; i < wordArray.Length; i++)
+            for (var i = 0; i < wordArray.Length; i++)
             {
-                string word = wordArray[i];
+                var word = wordArray[i];
                 if (line.Length + 1 + word.Length < width)
                 {
                     //It is room for the word on the line, append it

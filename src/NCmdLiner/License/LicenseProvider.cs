@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using NCmdLiner.Resources;
 
@@ -28,27 +27,26 @@ namespace NCmdLiner.License
         public List<ILicenseInfo> GetLicenses(Assembly assembly = null)
         {
             assembly = GetAssembly(assembly);
-            List<Assembly> assemblies = new List<Assembly>();
-            assemblies.Add(assembly);
-            AssemblyName[] referencedAssemblies = assembly.GetReferencedAssemblies();
+            var assemblies = new List<Assembly> {assembly};
+            var referencedAssemblies = assembly.GetReferencedAssemblies();
             foreach (var assemblyName in referencedAssemblies)
             {
-                Assembly referencedAssembly = Assembly.Load(assemblyName);
+                var referencedAssembly = Assembly.Load(assemblyName);
                 assemblies.Add(referencedAssembly);
             }
-            List<ILicenseInfo> licenses = new List<ILicenseInfo>();
-            foreach (Assembly a in assemblies)
+            var licenses = new List<ILicenseInfo>();
+            foreach (var a in assemblies)
             {
-                string[] resourceNames = a.GetManifestResourceNames();
-                IEmbeddedResource embeddedResource = new EmbeddedResource();
-                List<string> resourceNameList = new List<string>(resourceNames.Length);
+                var resourceNames = a.GetManifestResourceNames();
+                var embeddedResource = new EmbeddedResource();
+                var resourceNameList = new List<string>(resourceNames.Length);
                 resourceNameList.AddRange(resourceNames);
                 resourceNameList.Sort();
-                foreach (string resourceName in resourceNameList)
+                foreach (var resourceName in resourceNameList)
                 {
                     if (resourceName.ToLower().EndsWith("license.xml"))
                     {
-                        using (Stream resourceStream = embeddedResource.ExtractToStream(resourceName, a))
+                        using (var resourceStream = embeddedResource.ExtractToStream(resourceName, a))
                         {
                             try
                             {

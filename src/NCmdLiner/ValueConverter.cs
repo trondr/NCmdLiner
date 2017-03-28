@@ -9,12 +9,12 @@ namespace NCmdLiner
         {
             if (objectValue is Array)
             {
-                StringBuilder arrayString = new StringBuilder();
-                Array array = (Array)objectValue;
+                var arrayString = new StringBuilder();
+                var array = (Array)objectValue;
                 arrayString.Append("[");
-                for (int i = 0; i < array.Length; i++)
+                for (var i = 0; i < array.Length; i++)
                 {
-                    object value = array.GetValue(i);
+                    var value = array.GetValue(i);
                     if (value is string || value is char)
                         arrayString.Append("'");
                     arrayString.Append(array.GetValue(i));

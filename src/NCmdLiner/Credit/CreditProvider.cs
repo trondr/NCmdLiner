@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using NCmdLiner.Resources;
 
@@ -28,27 +27,27 @@ namespace NCmdLiner.Credit
         public List<ICreditInfo> GetCredits(Assembly assembly = null)
         {
             assembly = GetAssembly(assembly);
-            List<Assembly> assemblies = new List<Assembly>();
+            var assemblies = new List<Assembly>();
             assemblies.Add(assembly);
-            AssemblyName[] referencedAssemblies = assembly.GetReferencedAssemblies();
+            var referencedAssemblies = assembly.GetReferencedAssemblies();
             foreach (var assemblyName in referencedAssemblies)
             {
-                Assembly referencedAssembly = Assembly.Load(assemblyName);
+                var referencedAssembly = Assembly.Load(assemblyName);
                 assemblies.Add(referencedAssembly);
             }
-            List<ICreditInfo> credits = new List<ICreditInfo>();
-            foreach (Assembly a in assemblies)
+            var credits = new List<ICreditInfo>();
+            foreach (var a in assemblies)
             {
-                string[] resourceNames = a.GetManifestResourceNames();
+                var resourceNames = a.GetManifestResourceNames();
                 IEmbeddedResource embeddedResource = new EmbeddedResource();
-                List<string> resourceNameList = new List<string>(resourceNames.Length);
+                var resourceNameList = new List<string>(resourceNames.Length);
                 resourceNameList.AddRange(resourceNames);
                 resourceNameList.Sort();
-                foreach (string resourceName in resourceNameList)
+                foreach (var resourceName in resourceNameList)
                 {
                     if (resourceName.ToLower().EndsWith("credit.xml"))
                     {
-                        using (Stream resourceStream = embeddedResource.ExtractToStream(resourceName, a))
+                        using (var resourceStream = embeddedResource.ExtractToStream(resourceName, a))
                         {
                             try
                             {

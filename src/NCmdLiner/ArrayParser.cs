@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Specialized;
-using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using NCmdLiner.Exceptions;
@@ -36,7 +35,7 @@ namespace NCmdLiner
             char delimiter;
             char quote;
             GetDelimiterAndQuote(value, out delimiter, out quote);
-            string[] array = String2Array(value, delimiter, quote);
+            var array = String2Array(value, delimiter, quote);
             return array;
         }
 
@@ -55,26 +54,26 @@ namespace NCmdLiner
         /// <returns>  . </returns>
         private static string[] String2Array(string value, char delimiter, char quote)
         {
-            StringCollection resultList = new StringCollection();
+            var resultList = new StringCollection();
             if (!value.Contains(quote.ToString()))
             {
                 //Quotes is not beeing used, just split on delimiter
-                return value.Split(new[] {delimiter});
+                return value.Split(delimiter);
             }
 
             //Quotes is beeing used, use regular expression to parse the csv format.
-            string delimiterString = Regex.Escape(delimiter.ToString());
-            string quoteString = Regex.Escape(quote.ToString());
-            StringBuilder pattern = new StringBuilder();
+            var delimiterString = Regex.Escape(delimiter.ToString());
+            var quoteString = Regex.Escape(quote.ToString());
+            var pattern = new StringBuilder();
             pattern.Append("([" + quoteString + "]{0,1})"); //Match 0 or 1 starting quote character
             pattern.Append("([^" + quoteString + "]{0,})"); //Match everything in between quote charchters
             pattern.Append("\\1"); //Match 0 or 1 quote charchter if that was found in the first match
             pattern.Append("(" + delimiterString + "|$)"); //Match 1 delimter or end of line
 
             //string pattern = string.Format("{1}([^{1}]+){1}{0}", delimiter, quote) + "{0,1}";
-            Regex regexObj = new Regex(pattern.ToString());
-            Match matchResult = regexObj.Match(value);
-            int expectedNexMatchIndex = 0;
+            var regexObj = new Regex(pattern.ToString());
+            var matchResult = regexObj.Match(value);
+            var expectedNexMatchIndex = 0;
             while (matchResult.Success)
             {
                 if (matchResult.Index != expectedNexMatchIndex)
@@ -96,7 +95,7 @@ namespace NCmdLiner
                 resultList.Add(matchResult.Groups[2].Value);
                 matchResult = matchResult.NextMatch();
             }
-            string[] array = new string[resultList.Count];
+            var array = new string[resultList.Count];
             resultList.CopyTo(array, 0);
             return array;
         }
@@ -106,25 +105,25 @@ namespace NCmdLiner
             if (value.Length == 0) return value;
             if ((value[0] == '{') && (value[value.Length - 1] == '}'))
             {
-                return value.Trim(new[] {'{', '}'});
+                return value.Trim('{', '}');
             }
 
             if ((value[0] == '[') && (value[value.Length - 1] == ']'))
             {
-                return value.Trim(new[] {'[', ']'});
+                return value.Trim('[', ']');
             }
             return value;
         }
 
         private static void GetDelimiterAndQuote(string value, out char delimiter, out char quote)
         {
-            char[] supportedDelimiters = new[] {';', '+', '|'};
-            char[] supportedQuotes = new[] {'\''};
-            foreach (char q in supportedQuotes)
+            var supportedDelimiters = new[] {';', '+', '|'};
+            var supportedQuotes = new[] {'\''};
+            foreach (var q in supportedQuotes)
             {
-                foreach (char d in supportedDelimiters)
+                foreach (var d in supportedDelimiters)
                 {
-                    string compare = string.Format("{0}{1}{0}", q, d); //Example: ";"
+                    var compare = string.Format("{0}{1}{0}", q, d); //Example: ";"
                     if (value.Contains(compare))
                     {
                         delimiter = d;
@@ -133,9 +132,9 @@ namespace NCmdLiner
                     }
                 }
             }
-            foreach (char d in supportedDelimiters)
+            foreach (var d in supportedDelimiters)
             {
-                string compare = string.Format("{0}", d); //Example: ;
+                var compare = string.Format("{0}", d); //Example: ;
                 if (value.Contains(compare))
                 {
                     delimiter = d;

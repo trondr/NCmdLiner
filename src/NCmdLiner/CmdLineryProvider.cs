@@ -29,13 +29,13 @@ namespace NCmdLiner
                 helpProvider.ShowHelp(commandRules, null, applicationInfo);
                 throw new MissingCommandException("Command not specified.");
             }
-            string commandName = args[0];
+            var commandName = args[0];
             if (helpProvider.IsHelpRequested(commandName))
             {
                 CommandRule helpForCommandRule = null;
                 if (args.Length > 1)
                 {
-                    string helpForCommandName = args[1];
+                    var helpForCommandName = args[1];
                     helpForCommandRule = commandRules.Find(rule => rule.Command.Name == helpForCommandName);
                 }
                 helpProvider.ShowHelp(commandRules, helpForCommandRule, applicationInfo);
@@ -52,13 +52,13 @@ namespace NCmdLiner
                 return 0;
             }
 
-            CommandRule commandRule = commandRules.Find(rule => rule.Command.Name == commandName);
+            var commandRule = commandRules.Find(rule => rule.Command.Name == commandName);
             if (commandRule == null) throw new UnknownCommandException("Unknown command: " + commandName);
             _commandRuleValidator.Validate(args, commandRule);
-            object[] parameterArrray =  _methodParameterBuilder.BuildMethodParameters(commandRule);
+            var parameterArrray =  _methodParameterBuilder.BuildMethodParameters(commandRule);
             try
             {
-                object returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrray);
+                var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrray);
                 if (returnValue is int)
                 {
                     return (int)returnValue;
@@ -69,28 +69,8 @@ namespace NCmdLiner
             {
                 if (ex.InnerException != null)
                 {
-                    var innerException = ex.InnerException;
-                    //var preparedException = ex.InnerException.PrepForRemoting();
-                    //throw preparedException;
-                    //MethodInfo prepForRemoting = typeof(Exception).GetMethodEx("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
-                    //if (prepForRemoting != null)
-                    //{
-                    //    //Preserve stack trace before re-throwing inner exception
-                    //    prepForRemoting.Invoke(ex.InnerException, new object[0]);                    
-                    //    throw ex.InnerException;
-                    //}
-                    innerException.PrepForRemotingAndThrow();
-                    //var prepForRemoting = typeof(Exception).GetMethodEx("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
-                    //if (prepForRemoting != null)
-                    //{
-                    //    prepForRemoting.Invoke(innerException, new object[0]);
-                    //    throw innerException;
-                    //}
-                    //else
-                    //{
-                    //    var exceptionDispatchInfo = ExceptionDispatchInfo.Capture(innerException);
-                    //    exceptionDispatchInfo.Throw();
-                    //}
+                    var innerException = ex.InnerException;                    
+                    innerException.PrepForRemotingAndThrow();                    
                 }
                 throw;
             }

@@ -105,16 +105,6 @@ namespace NCmdLiner
 #endif
         }
         
-        public static IEnumerable<Attribute> GetCustomAttributes(this Type type)
-        {
-#if NETSTANDARD1_6
-            return type.GetTypeInfo().GetCustomAttributes();
-#else
-            return type.GetCustomAttributes();
-#endif
-        }
-
-
         public static IEnumerable<Attribute> GetCustomAttributes(this Type type, Type attributeType, bool inherit)
         {
 #if NETSTANDARD1_6

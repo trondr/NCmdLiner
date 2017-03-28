@@ -7,19 +7,19 @@
 // All rights reserved.
 
 using System;
-using System.Linq;
 
 namespace NCmdLiner
 {
     public class OptionalCommandParameter : CommandParameter
     {
+        // ReSharper disable once UnusedMember.Local
         private OptionalCommandParameter()
         {
         }
 
         public OptionalCommandParameter(object defaultValue)
         {
-            if(defaultValue == null) throw new ArgumentNullException("defaultValue","Default value is null");
+            if(defaultValue == null) throw new ArgumentNullException(nameof(defaultValue),"Default value is null");
             DefaultValue = defaultValue;
         }
 
@@ -31,14 +31,8 @@ namespace NCmdLiner
             {
                 if (_value == null)
                 {
-                    if (DefaultValue is Array)
-                    {
-                        var array = (Array)DefaultValue;
-                        var stringArray = array.OfType<object>().Select(o => o.ToString()).ToArray();
-                        var defaultValue = "['" + string.Join("';'", stringArray) + "']";
-                        return defaultValue;
-                    }
-                    return DefaultValue.ToString();
+                    var valueConverter = new ValueConverter();
+                    _value = valueConverter.ObjectValue2String(DefaultValue);                    
                 }
                 return _value;
             }

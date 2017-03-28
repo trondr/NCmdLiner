@@ -20,6 +20,7 @@ namespace NCmdLiner
     {
         private readonly Func<IMessenger> _messengerFactory;
         private int _commandColumnWidth;
+        // ReSharper disable once UnusedMember.Local
         private HelpProvider() { }
         public HelpProvider(Func<IMessenger> messengerFactory)
         {
@@ -140,14 +141,14 @@ namespace NCmdLiner
                     new CommandRule { Command = new Command { Description = "Display credits", Name = "Credits" } }, false,
                     applicationInfo);
 
-                foreach (CommandRule commandRule in commandRules)
+                foreach (var commandRule in commandRules)
                 {
                     ShowCommandRuleHelp(commandRule, false, applicationInfo);
                 }
                 messenger.WriteLine(string.Empty);
                 messenger.WriteLine("Commands and parameters:");
                 messenger.WriteLine("------------------------");
-                foreach (CommandRule commandRule in commandRules)
+                foreach (var commandRule in commandRules)
                 {
                     ShowCommandRuleHelp(commandRule, true, applicationInfo);
                 }
@@ -202,17 +203,17 @@ namespace NCmdLiner
         /// <returns>   . </returns>
         private static string BuildCreditsText()
         {
-            StringBuilder creditsText = new StringBuilder();
-            creditsText.Append(string.Format("Credits:") + Environment.NewLine);
+            var creditsText = new StringBuilder();
+            creditsText.Append("Credits:" + Environment.NewLine);
             creditsText.Append(
-                string.Format("-------------------------------------------------------------------------------") +
+                "-------------------------------------------------------------------------------" +
                 Environment.NewLine);
             ICreditProvider creditProvider = new CreditProvider();
-            List<ICreditInfo> creditInfos = creditProvider.GetCredits(Assembly.GetEntryAssembly());
-            AssemblyName[] referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
-            foreach (AssemblyName referencedAssembly in referencedAssemblies)
+            var creditInfos = creditProvider.GetCredits(Assembly.GetEntryAssembly());
+            var referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
+            foreach (var referencedAssembly in referencedAssemblies)
             {
-                List<ICreditInfo> referencedCreditInfos = creditProvider.GetCredits(Assembly.Load(referencedAssembly));
+                var referencedCreditInfos = creditProvider.GetCredits(Assembly.Load(referencedAssembly));
                 creditInfos.AddRange(referencedCreditInfos);
             }
             foreach (var creditInfo in creditInfos)
@@ -234,17 +235,17 @@ namespace NCmdLiner
         /// <returns>   . </returns>
         private string BuildLicenseText()
         {
-            StringBuilder licenseText = new StringBuilder();
+            var licenseText = new StringBuilder();
             var messenger = _messengerFactory.Invoke();
             messenger.WriteLine("License summary:");
             licenseText.Append(
-                string.Format("-------------------------------------------------------------------------------") +
+                "-------------------------------------------------------------------------------" +
                 Environment.NewLine);
             ILicenseProvider licenseProvider = new LicenseProvider();
-            OrderedDictionary uniqueLicenseInfos = new OrderedDictionary();
+            var uniqueLicenseInfos = new OrderedDictionary();
 
-            List<ILicenseInfo> licenseInfos = licenseProvider.GetLicenses(Assembly.GetEntryAssembly());
-            foreach (ILicenseInfo licenseInfo in licenseInfos)
+            var licenseInfos = licenseProvider.GetLicenses(Assembly.GetEntryAssembly());
+            foreach (var licenseInfo in licenseInfos)
             {
                 if (!uniqueLicenseInfos.Contains(licenseInfo.ProductName))
                 {
@@ -252,12 +253,12 @@ namespace NCmdLiner
                 }
             }
 
-            AssemblyName[] referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
-            foreach (AssemblyName referencedAssembly in referencedAssemblies)
+            var referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
+            foreach (var referencedAssembly in referencedAssemblies)
             {
                 IList<ILicenseInfo> referencedLicenseInfos =
                     licenseProvider.GetLicenses(Assembly.Load(referencedAssembly));
-                foreach (ILicenseInfo licenseInfo in referencedLicenseInfos)
+                foreach (var licenseInfo in referencedLicenseInfos)
                 {
                     if (!uniqueLicenseInfos.Contains(licenseInfo.ProductName))
                     {
@@ -272,13 +273,13 @@ namespace NCmdLiner
                                   licenseInfo.License) + Environment.NewLine);
             }
             licenseText.Append(
-                string.Format("-------------------------------------------------------------------------------") +
+                "-------------------------------------------------------------------------------" +
                 Environment.NewLine);
-            licenseText.Append(string.Format("License details:") + Environment.NewLine);
+            licenseText.Append("License details:" + Environment.NewLine);
             licenseText.Append(
-                string.Format("-------------------------------------------------------------------------------") +
+                "-------------------------------------------------------------------------------" +
                 Environment.NewLine);
-            int count = 0;
+            var count = 0;
             foreach (ILicenseInfo licenseInfo in uniqueLicenseInfos.Values)
             {
                 count++;
@@ -289,7 +290,7 @@ namespace NCmdLiner
                 if (count < uniqueLicenseInfos.Values.Count)
                 {
                     licenseText.Append(
-                        string.Format("-------------------------------------------------------------------------------") +
+                        "-------------------------------------------------------------------------------" +
                         Environment.NewLine);
                 }
             }
@@ -305,21 +306,21 @@ namespace NCmdLiner
         /// <returns>   The calculated command column witdth. </returns>
         private int CalculateCommandColumnWitdth(List<CommandRule> commandRules)
         {
-            int maxCommandNameLength = 0;
-            foreach (CommandRule commandRule in commandRules)
+            var maxCommandNameLength = 0;
+            foreach (var commandRule in commandRules)
             {
                 if (commandRule.Command.Name.Length > maxCommandNameLength)
                 {
                     maxCommandNameLength = commandRule.Command.Name.Length;
                 }
-                foreach (RequiredCommandParameter requiredCommandParameter in commandRule.Command.RequiredParameters)
+                foreach (var requiredCommandParameter in commandRule.Command.RequiredParameters)
                 {
                     if (requiredCommandParameter.Name.Length > maxCommandNameLength)
                     {
                         maxCommandNameLength = requiredCommandParameter.Name.Length;
                     }
                 }
-                foreach (OptionalCommandParameter optionalCommandParameter in commandRule.Command.OptionalParameters)
+                foreach (var optionalCommandParameter in commandRule.Command.OptionalParameters)
                 {
                     if (optionalCommandParameter.Name.Length > maxCommandNameLength)
                     {
@@ -340,9 +341,9 @@ namespace NCmdLiner
         private void ShowCommandRuleHelp(CommandRule commandRule, bool includeParameters, IApplicationInfo applicationInfo)
         {
             IValueConverter valueConverter = new ValueConverter();
-            StringBuilder helpString = new StringBuilder();
-            StringBuilder exampleString = new StringBuilder();
-            StringBuilder alternativeExampleString = new StringBuilder();
+            var helpString = new StringBuilder();
+            var exampleString = new StringBuilder();
+            var alternativeExampleString = new StringBuilder();
             helpString.Append(FormatCommand(commandRule.Command.Name));
             if(!includeParameters)
                 helpString.Append(FormatCommandDescription(commandRule.Command.Summary, _commandColumnWidth, MaxWidth - _commandColumnWidth));
@@ -354,7 +355,7 @@ namespace NCmdLiner
                 exampleString.Append(applicationInfo.ExeFileName + " ");
                 exampleString.Append(commandRule.Command.Name + " ");
                 alternativeExampleString.Append(exampleString);
-                foreach (RequiredCommandParameter requiredCommandParameter in commandRule.Command.RequiredParameters)
+                foreach (var requiredCommandParameter in commandRule.Command.RequiredParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + requiredCommandParameter.Name));
                     var commandParameterDescription = GetRequiredCommandParameterDescription(requiredCommandParameter.Description, requiredCommandParameter.AlternativeName);
@@ -369,7 +370,7 @@ namespace NCmdLiner
                         alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
                     }
                 }
-                foreach (OptionalCommandParameter optionalCommandParameter in commandRule.Command.OptionalParameters)
+                foreach (var optionalCommandParameter in commandRule.Command.OptionalParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + optionalCommandParameter.Name));
                     var optionalCommandParameterDescription = GetOptionalCommandParameterDescription(optionalCommandParameter.Description, optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.DefaultValue));
@@ -454,17 +455,17 @@ namespace NCmdLiner
         /// <returns>   The formatted command description. </returns>
         private string FormatCommandDescription(string description, int indent, int width)
         {
-            TextFormater textFormater = new TextFormater();
+            var textFormater = new TextFormater();
             if (description.Length <= width)
             {
-                return JustifyText(description, width) + Environment.NewLine;
+                return JustifyText(description) + Environment.NewLine;
             }
-            List<string> lines = textFormater.BreakIntoLines(description, width);
-            StringBuilder sb = new StringBuilder();
-            sb.Append(JustifyText(lines[0], width) + Environment.NewLine);
-            for (int i = 1; i < lines.Count; i++)
+            var lines = textFormater.BreakIntoLines(description, width);
+            var sb = new StringBuilder();
+            sb.Append(JustifyText(lines[0]) + Environment.NewLine);
+            for (var i = 1; i < lines.Count; i++)
             {
-                sb.Append("".PadLeft(indent) + JustifyText(lines[i], width) + Environment.NewLine);
+                sb.Append("".PadLeft(indent) + JustifyText(lines[i]) + Environment.NewLine);
             }
             return sb.ToString();
         }
@@ -485,21 +486,15 @@ namespace NCmdLiner
             return commandName.PadRight(commandName.Length + 3);
         }
 
-        /// <summary>   Justify text. </summary>
-        ///
-        /// <remarks>   trond, 2013-05-01. </remarks>
-        ///
+        ///  <summary>   Justify text. </summary>
+        /// 
+        ///  <remarks>   trond, 2013-05-01. </remarks>
         /// <param name="text">     The text. </param>
-        /// <param name="width">    The width. </param>
-        ///
         /// <returns>   . </returns>
-        private string JustifyText(string text, int width)
+        private string JustifyText(string text)
         {
-            return text; //Justifying text did not look good, so just return the text without modification.
-            //TextFormater textFormater = new TextFormater();
-            //return textFormater.Justify(text, width);            
+            return text;          
         }
-
         #endregion
     }
 }

@@ -7,10 +7,7 @@
 // All rights reserved.
 
 using System;
-using System.IO;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace NCmdLiner.License
 {
@@ -40,11 +37,6 @@ namespace NCmdLiner.License
     #endif
     public class LicenseInfo : ILicenseInfo
     {
-        #region Implementation of ILicenseInfo
-
-        /// <summary>
-        /// Get/set product name
-        /// </summary>        
         public string ProductName
         {
             get { return _productName; }
@@ -52,9 +44,6 @@ namespace NCmdLiner.License
         }
         private string _productName;
 
-        /// <summary>
-        /// Get/set product url
-        /// </summary>
         public string ProductHome
         {
             get { return _productHome; }
@@ -62,9 +51,6 @@ namespace NCmdLiner.License
         }
         private string _productHome;
 
-        /// <summary> 
-        /// Get/set credit text.
-        /// </summary>      
         public string CreditText
         {
             get { return _creditText; }
@@ -72,9 +58,6 @@ namespace NCmdLiner.License
         }
         private string _creditText;
 
-        /// <summary> 
-        /// Get/set license.
-        /// </summary>      
         public string License
         {
             get { return _license; }
@@ -82,10 +65,6 @@ namespace NCmdLiner.License
         }
         private string _license;
 
-        /// <summary> 
-        /// Get/set license text.
-        /// </summary>
-        /// <value> The text. </value>
         public string LicenseText
         {
             get { return _licenseText; }
@@ -93,24 +72,12 @@ namespace NCmdLiner.License
         }
         private string _licenseText;
 
-        #endregion
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String" /> that represents the current
-        /// <see cref="T:System.Object" />.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
-        /// </returns>
-        ///
-        /// <seealso cref="System.Object.ToString()"/>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.ProductName + Environment.NewLine);
+            var sb = new StringBuilder();
+            sb.Append(ProductName + Environment.NewLine);
             sb.Append("".PadLeft(40, '-') + Environment.NewLine);
-            sb.Append(this.LicenseText + Environment.NewLine);
+            sb.Append(LicenseText + Environment.NewLine);
             sb.Append("".PadLeft(40, '-') + Environment.NewLine + Environment.NewLine);
             return sb.ToString();
         }

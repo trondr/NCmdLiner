@@ -27,7 +27,7 @@ namespace NCmdLiner.Attributes
             {
                 if (!_defaultValueHasBeenSet)
                 {
-                    throw new MissingDefaultValueException(string.Format("Missing default value for optional parameter with alternative name '{0}'",this.AlternativeName));
+                    throw new MissingDefaultValueException(string.Format("Missing default value for optional parameter with alternative name '{0}'",AlternativeName));
                 }
                 return _defaultValue;
             }

@@ -21,12 +21,11 @@ namespace NCmdLiner
         /// <returns> The command line parameters. </returns>
         public Dictionary<string, CommandLineParameter> GetCommandLineParameters(string[] args)
         {
-            Dictionary<string, CommandLineParameter> commandLineParameters =
-                new Dictionary<string, CommandLineParameter>();
+            var commandLineParameters = new Dictionary<string, CommandLineParameter>();
             if (args.Length >= 2)
             {
                 var parameterRegex = new Regex("[/-](.+?)=(.+)");
-                for (int i = 1; i < args.Length; i++)
+                for (var i = 1; i < args.Length; i++)
                 {
                     var match = parameterRegex.Match(args[i]);
                     if (!match.Success)

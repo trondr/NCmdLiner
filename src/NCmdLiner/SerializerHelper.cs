@@ -14,9 +14,9 @@ namespace NCmdLiner
         {
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
-                using (StreamWriter streamWriter = new StreamWriter(fs, Encoding.UTF8))
+                using (var streamWriter = new StreamWriter(fs, Encoding.UTF8))
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+                    var xmlSerializer = new XmlSerializer(typeof(T));
                     xmlSerializer.Serialize(streamWriter, info);
                 }
             }
@@ -31,9 +31,9 @@ namespace NCmdLiner
         {
             using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
-                using (StreamReader streamReader = new StreamReader(fs, Encoding.UTF8))
+                using (var streamReader = new StreamReader(fs, Encoding.UTF8))
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+                    var xmlSerializer = new XmlSerializer(typeof(T));
                     return (T)xmlSerializer.Deserialize(streamReader);
                 }
             }
@@ -46,7 +46,7 @@ namespace NCmdLiner
         /// <returns></returns>
         internal static T DeSerialize(Stream stream)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            var xmlSerializer = new XmlSerializer(typeof(T));
             return (T)xmlSerializer.Deserialize(stream);
         }
     }

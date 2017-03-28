@@ -16,9 +16,7 @@ namespace NCmdLiner.Resources
     ///
     /// <seealso cref="IEmbeddedResource"/>
     public class EmbeddedResource : IEmbeddedResource
-    {
-        #region Implementation of IEmbededResource
-
+    {        
         /// <summary>
         /// Extract embeded resource
         /// </summary>
@@ -26,19 +24,19 @@ namespace NCmdLiner.Resources
         /// <param name="assembly">Assembly where resource is embedded</param>      
         public Stream ExtractToStream(string name, Assembly assembly)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            Stream resourceStream = assembly.GetManifestResourceStream(name);
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            var resourceStream = assembly.GetManifestResourceStream(name);
             if (resourceStream == null)
             {
-                string msg = string.Format("Failed to extract embedded resource '{0}' from assembly '{1}'.", name,
+                var msg = string.Format("Failed to extract embedded resource '{0}' from assembly '{1}'.", name,
                                            assembly.FullName);
 #if DEBUG
                 Console.WriteLine(msg);
-                string[] resourceNames = assembly.GetManifestResourceNames();
+                var resourceNames = assembly.GetManifestResourceNames();
                 Console.WriteLine("Assembly '{0}' has {1} embedded resources.", assembly.GetName(), resourceNames.Length);
 
-                foreach (string manifestResourceName in resourceNames)
+                foreach (var manifestResourceName in resourceNames)
                 {
                     Console.WriteLine("Embedded resource: {0}", manifestResourceName);
                 }
@@ -56,13 +54,11 @@ namespace NCmdLiner.Resources
         /// <param name="fileName">   Filename of the file. </param>
         public void ExtractToFile(string name, Assembly assembly, string fileName)
         {
-            using (
-                FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite,
-                                                       FileShare.None))
+            using (var fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
             {
-                using (Stream stream = ExtractToStream(name, assembly))
+                using (var stream = ExtractToStream(name, assembly))
                 {
-                    byte[] buffer = new byte[stream.Length];
+                    var buffer = new byte[stream.Length];
                     stream.Read(buffer, 0, buffer.Length);
                     fileStream.Write(buffer, 0, buffer.Length);
                 }
@@ -72,7 +68,5 @@ namespace NCmdLiner.Resources
                 throw new FileNotFoundException("Failed to extract embeded resource to file.", fileName);
             }
         }
-
-        #endregion
     }
 }

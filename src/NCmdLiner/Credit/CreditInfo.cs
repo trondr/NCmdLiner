@@ -7,9 +7,7 @@
 // All rights reserved.
 
 using System;
-using System.IO;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace NCmdLiner.Credit
 {
@@ -39,11 +37,6 @@ namespace NCmdLiner.Credit
     #endif
     public class CreditInfo : ICreditInfo
     {
-        #region Implementation of ICreditInfo
-
-        /// <summary>
-        /// Get/set product name
-        /// </summary>
         public string ProductName
         {
             get { return _productName; }
@@ -52,9 +45,6 @@ namespace NCmdLiner.Credit
 
         private string _productName;
 
-        /// <summary>
-        /// Get/set product url
-        /// </summary>
         public string ProductHome
         {
             get { return _productHome; }
@@ -63,9 +53,6 @@ namespace NCmdLiner.Credit
 
         private string _productHome;
 
-        /// <summary> 
-        /// Get/set credit text.
-        /// </summary>      
         public string CreditText
         {
             get { return _creditText; }
@@ -74,24 +61,12 @@ namespace NCmdLiner.Credit
 
         private string _creditText;
 
-        #endregion
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String" /> that represents the current
-        /// <see cref="T:System.Object" />.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
-        /// </returns>
-        ///
-        /// <seealso cref="System.Object.ToString()"/>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.ProductName + Environment.NewLine);
+            var sb = new StringBuilder();
+            sb.Append(ProductName + Environment.NewLine);
             sb.Append("".PadLeft(40, '-') + Environment.NewLine);
-            sb.Append(this.CreditText + Environment.NewLine);
+            sb.Append(CreditText + Environment.NewLine);
             sb.Append("".PadLeft(40, '-') + Environment.NewLine + Environment.NewLine);
             return sb.ToString();
         }

@@ -24,13 +24,11 @@ namespace NCmdLiner
             var parameterValues = new List<object>();
             var methodParameters = commandRule.Method.GetParameters();
 
-            //var stringToObject = new StringToObject(new ArrayParser());
-
-            for (int i = 0; i < commandRule.Command.RequiredParameters.Count; i++)
+            for (var i = 0; i < commandRule.Command.RequiredParameters.Count; i++)
             {
                 parameterValues.Add(_stringToObject.ConvertValue(commandRule.Command.RequiredParameters[i].Value, methodParameters[i].ParameterType));
             }
-            for (int i = 0; i < commandRule.Command.OptionalParameters.Count; i++)
+            for (var i = 0; i < commandRule.Command.OptionalParameters.Count; i++)
             {
                 parameterValues.Add(_stringToObject.ConvertValue(commandRule.Command.OptionalParameters[i].Value, methodParameters[i + commandRule.Command.RequiredParameters.Count].ParameterType));
             }

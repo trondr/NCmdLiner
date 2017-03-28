@@ -33,7 +33,7 @@ namespace NCmdLiner
             if (argumentType.IsArray)
             {
                 var arrayItemType = argumentType.GetElementType();
-                string[] array = _arrayParser.Parse(value);
+                var array = _arrayParser.Parse(value);
                 if (arrayItemType != null)
                 {
                     var valuesArray = Array.CreateInstance(arrayItemType, array.Length);
@@ -73,7 +73,10 @@ namespace NCmdLiner
 
             // The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32,
             // UInt32, Int64, UInt64, Char, Double, and Single
-            if (argumentType.IsPrimitive() || argumentType == typeof (decimal) || argumentType.IsEnum())
+            if (argumentType != null && (
+                argumentType.IsPrimitive() || 
+                argumentType == typeof (decimal) || 
+                argumentType.IsEnum()))
             {
                 var converter = TypeDescriptor.GetConverter(argumentType);
                 try
@@ -121,7 +124,7 @@ namespace NCmdLiner
                     throw;
                 }
             }
-            throw new UnknownTypeException("Unknown type is used in your method: " + argumentType.FullName);
+            throw new UnknownTypeException("Unknown type is used in your method: " + argumentType?.FullName);
         }
 
         private DateTime ConvertToDateTime(string parameter)

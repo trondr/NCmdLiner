@@ -44,7 +44,7 @@ namespace NCmdLiner
 
         public override bool Equals(object obj)
         {
-            return ToString().Equals(obj.ToString());
+            return ToString().Equals(obj?.ToString());
         }
 
         public override string ToString()
