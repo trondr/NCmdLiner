@@ -32,9 +32,9 @@ namespace NCmdLiner.License
     /// ILicenseInfo licenseInfo = new LicenseInfo();
     /// Console.WriteLine(licenseInfo);
     /// </summary>
-    #if !NETSTANDARD1_6
+#if !NETSTANDARD1_6 && !NETCOREAPP1_0 && !NETCOREAPP1_1 && !NETCOREAPP2_0
     [Serializable]
-    #endif
+#endif
     public class LicenseInfo : ILicenseInfo
     {
         public string ProductName

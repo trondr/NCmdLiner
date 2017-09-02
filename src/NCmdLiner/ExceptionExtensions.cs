@@ -20,7 +20,7 @@ namespace NCmdLiner
             obj.Throw();
             #endif
             
-//#if NETSTANDARD1_6
+//#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
 //            return type.GetTypeInfo().IsClass;
 //#else
 //            return type.IsClass;

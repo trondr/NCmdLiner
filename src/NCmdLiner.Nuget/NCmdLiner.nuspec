@@ -39,9 +39,17 @@
     <file src="net462\NCmdLiner.dll" target="lib\net462" />
     <file src="net462\NCmdLiner.pdb" target="lib\net462" />
 	
-	<file src="netstandard1.6\ncmdliner.dll" target="lib\netstandard1.6" />
-    <file src="netstandard1.6\ncmdliner.pdb" target="lib\netstandard1.6" />
-	<file src="netstandard1.6\ncmdliner.deps.json" target="lib\netstandard1.6" />
+	<file src="netcoreapp1.0\ncmdliner.dll" target="lib\netcoreapp1.0" />
+    <file src="netcoreapp1.0\ncmdliner.pdb" target="lib\netcoreapp1.0" />
+	<file src="netcoreapp1.0\ncmdliner.deps.json" target="lib\netcoreapp1.0" />
+	
+	<file src="netcoreapp1.1\ncmdliner.dll" target="lib\netcoreapp1.1" />
+    <file src="netcoreapp1.1\ncmdliner.pdb" target="lib\netcoreapp1.1" />
+	<file src="netcoreapp1.1\ncmdliner.deps.json" target="lib\netcoreapp1.1" />
+	
+	<file src="netcoreapp2.0\ncmdliner.dll" target="lib\netcoreapp2.0" />
+    <file src="netcoreapp2.0\ncmdliner.pdb" target="lib\netcoreapp2.0" />
+	<file src="netcoreapp2.0\ncmdliner.deps.json" target="lib\netcoreapp2.0" />
  		
 	<file src="**\*.cs" target="src" />
 	    

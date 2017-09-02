@@ -2,21 +2,19 @@
 Set ProductName=NCmdLiner
 
 IF EXIST "%VSDEVCMD%" goto Build
-IF EXIST "%MSBUILDPATH%" goto Build
 
 :VSEnv
-Set VSDEVCMD=%VS140COMNTOOLS%VsDevCmd.bat
-Echo Checking to see if Visual Studio 2015 is installed ("%VS140COMNTOOLS%")
-IF NOT EXIST "%VSDEVCMD%" set BuildMessage="Visual Studio 2015 do not seem to be installed, trying MSBuild instead..." & goto MSBuildEnv
-Echo Preparing build environment...
-call "%VSDEVCMD%"
+SET VSWHEREEXE="%~dp0tools\vswhere\vswhere.exe"
+for /f "usebackq tokens=1* delims=: " %%i in (`%VSWHEREEXE% -latest -requires Microsoft.Component.MSBuild`) do (
+if /i "%%i"=="installationPath" set dir=%%j
+)
+Set VSDEVCMDTEST=%dir%\Common7\Tools\VsDevCmd.bat
+Echo Checking to see if Visual Studio 2017 is installed ("%VSDEVCMDTEST%")
+IF NOT EXIST "%VSDEVCMDTEST%" set BuildMessage="Visual Studio 2017 or later do not seem to be installed (Could not find '%VSDEVCMDTEST%')" & goto End
+Echo Visual Studio 2017 seems to be installed, preparing build environment...
+Set VSDEVCMD=%VSDEVCMDTEST%
+Call "%VSDEVCMD%"
 goto Build
-
-:MSBuildEnv
-Set MSBUILDPATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin
-Echo Checking to see if MSBuild is installed ("%MSBUILDPATH%")
-IF NOT EXIST "%MSBUILDPATH%" set BuildMessage="Neither Visual Studio 2015 or MSBuild  seem to be installed. Terminating." & goto end
-Set Path=%Path%;%MSBUILDPATH%
 
 :Build
 Echo Building %ProductName%...

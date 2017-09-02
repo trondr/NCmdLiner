@@ -64,7 +64,7 @@
 #define USE_OBJECT_CONSTRUCTOR
 #endif
 
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
 #undef APPDOMAIN_GETASSEMBLIES
 #endif
 
@@ -3954,7 +3954,7 @@ namespace TinyIoC
     {
         public static bool IsClass(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsClass;
 #else
             return type.IsClass;
@@ -3963,7 +3963,7 @@ namespace TinyIoC
 
         public static bool IsGenericTypeDefinition(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsGenericTypeDefinition;
 #else
             return type.IsGenericTypeDefinition;
@@ -3972,7 +3972,7 @@ namespace TinyIoC
 
         public static bool IsInterface(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsInterface;
 #else
             return type.IsInterface;
@@ -3981,7 +3981,7 @@ namespace TinyIoC
 
         public static bool IsAbstract(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsAbstract;
 #else
             return type.IsAbstract;
@@ -3990,7 +3990,7 @@ namespace TinyIoC
 
         public static bool IsPrimitive(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsPrimitive;
 #else
             return type.IsPrimitive;
@@ -3999,7 +3999,7 @@ namespace TinyIoC
 
         public static bool IsGenericType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsGenericType;
 #else
             return type.IsGenericType;
@@ -4008,7 +4008,7 @@ namespace TinyIoC
 
         public static bool IsValueType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsValueType;
 #else
             return type.IsValueType;
@@ -4017,7 +4017,7 @@ namespace TinyIoC
         
         public static Assembly GetAssembly(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().Assembly;
 #else
             return type.Assembly;
@@ -4026,7 +4026,7 @@ namespace TinyIoC
         
         public static Type[] FindInterfacesEx(this Type type, TypeFilter filter,object filterCriteria)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().FindInterfaces(filter,filterCriteria);
 #else
             return type.FindInterfaces(filter,filterCriteria);
@@ -4035,7 +4035,7 @@ namespace TinyIoC
 
          public static Type BaseType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().BaseType;
 #else
             return type.BaseType;
