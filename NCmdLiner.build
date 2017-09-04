@@ -258,7 +258,7 @@
   </ItemGroup>
   
   <ItemGroup>	
-<!-- 	<NetCoreAppFrameWorkName Include="NETCOREAPP1.1">
+ 	<NetCoreAppFrameWorkName Include="NETCOREAPP1.1">
 	  <Project>NETCOREAPP11</Project>
       <Version>v1.1</Version>
       <Profile></Profile>
@@ -269,10 +269,16 @@
 	  <Project>NETCOREAPP10</Project>
       <Profile></Profile>
       <Identifier>.NETCoreAppFramework</Identifier>
-    </NetCoreAppFrameWorkName> -->
+    </NetCoreAppFrameWorkName>
 	<NetCoreAppFrameWorkName Include="NETCOREAPP2.0">
       <Version>v2.0</Version>
 	  <Project>NETCOREAPP20</Project>
+      <Profile></Profile>
+      <Identifier>.NETCoreAppFramework</Identifier>
+    </NetCoreAppFrameWorkName>
+	<NetCoreAppFrameWorkName Include="NETSTANDARD1.6">
+      <Version>v1.6</Version>
+	  <Project>NETSTANDARD16</Project>
       <Profile></Profile>
       <Identifier>.NETCoreAppFramework</Identifier>
     </NetCoreAppFrameWorkName>
@@ -344,19 +350,22 @@
   <Target Name="CompileTestsNetCoreApp" DependsOnTargets="Version;RestoreTestsNetCoreApp;CompileNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
     <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
-	<!-- <Delete Files="$(TestDirectory)\$(ProductProjectName).Tests\obj\project.assets.json"/> -->
-	<!-- <DeleteTree Directories="$(TestDirectory)\$(ProductProjectName).Tests\obj\"/> -->
-	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />	
-	<MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj" Properties="Configuration=$(Configuration)" BuildInParallel="false"/>
+	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />
+	<MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj" Properties="Configuration=$(Configuration)" />
   </Target>
   
-  <Target Name="TestsNetCoreApp" DependsOnTargets="Version;RestoreNetCoreApp;CompileTestsNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
+  <Target Name="TestsNetCoreApp" DependsOnTargets="Version;RestoreNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
     <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Testing %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
-	<!-- <xunit Assemblies="$(BinDirectory)\$(ProductProjectName).Tests\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).Tests.dll" /> -->
+	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />
+	<Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />
 	<Exec Command="dotnet.exe test &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot;" />
   </Target>
-  
+
+	<Target Name="Temp">
+		<Exec Command="dotnet.exe restore &quot;$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />
+		<Exec Command="dotnet.exe build &quot;$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetCoreAppFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />
+	</Target>
   
   <Target Name="CompileExamplesCore" DependsOnTargets="Version">
     <Message Text="Compiling .NET Core example" />
