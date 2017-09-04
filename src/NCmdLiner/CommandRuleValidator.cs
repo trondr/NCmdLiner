@@ -4,7 +4,7 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    internal class CommandRuleValidator : ICommandRuleValidator
+    public class CommandRuleValidator : ICommandRuleValidator
     {
         public void Validate(string[] args, CommandRule commandRule)
         {

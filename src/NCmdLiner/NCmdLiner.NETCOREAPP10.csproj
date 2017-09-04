@@ -18,6 +18,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Credit\0.NConsoler-Credit.xml" />
+    <None Remove="Credit\1.TinyIoC-Credit.xml" />
+    <None Remove="License\0.NCmdLiner-License.xml" />
+    <None Remove="License\1.NConsoler-License.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
+    <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
+    <EmbeddedResource Include="License\1.NConsoler-License.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />

@@ -33,7 +33,9 @@
     <ProductProjectNugetSrcDirectory>$(SrcDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetSrcDirectory>
     <ProductProjectNugetBuildOutputDirectory>$(BuildOutputDirectory)\$(ProductProjectName).Nuget</ProductProjectNugetBuildOutputDirectory>
 
-    <NunitVersion>3.4.1</NunitVersion>
+	<NunitVersionMajor>3.7</NunitVersionMajor>
+    <NunitVersion>3.7.0</NunitVersion>
+	<NunitZipArchive>NUnit.Console-$(NunitVersion)</NunitZipArchive>
 
   </PropertyGroup>
 
@@ -90,6 +92,12 @@
     </Otherwise>
   </Choose>
 
+  <!-- Including XUnit Runner for testing .NET Core versions of the library -->
+  
+  <UsingTask
+    AssemblyFile="$(ToolsDirectory)\XUnit\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit"/>  
+  
   <!-- Verify if current solution is in a .git repository-->
 
   <Choose>
@@ -249,19 +257,19 @@
     </NetFrameWorkName>
   </ItemGroup>
   
-  <ItemGroup>
-    <NetCoreAppFrameWorkName Include="NETCOREAPP1.0">
-      <Version>v1.0</Version>
-	  <Project>NETCOREAPP10</Project>
-      <Profile></Profile>
-      <Identifier>.NETCoreAppFramework</Identifier>
-    </NetCoreAppFrameWorkName>
-	<NetCoreAppFrameWorkName Include="NETCOREAPP1.1">
+  <ItemGroup>	
+<!-- 	<NetCoreAppFrameWorkName Include="NETCOREAPP1.1">
 	  <Project>NETCOREAPP11</Project>
       <Version>v1.1</Version>
       <Profile></Profile>
       <Identifier>.NETCoreAppFramework</Identifier>
     </NetCoreAppFrameWorkName>
+    <NetCoreAppFrameWorkName Include="NETCOREAPP1.0">
+      <Version>v1.0</Version>
+	  <Project>NETCOREAPP10</Project>
+      <Profile></Profile>
+      <Identifier>.NETCoreAppFramework</Identifier>
+    </NetCoreAppFrameWorkName> -->
 	<NetCoreAppFrameWorkName Include="NETCOREAPP2.0">
       <Version>v2.0</Version>
 	  <Project>NETCOREAPP20</Project>
@@ -321,18 +329,34 @@
   <Target Name="CompileNetCoreApp" DependsOnTargets="Version;RestoreNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
     <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
-	<Exec Command="dotnet.exe build &quot;$(SrcDirectory)\$(ProductProjectName)\NCmdLiner.%(NetCoreAppFrameWorkName.Project).csproj&quot; --output &quot;$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)&quot; --configuration $(Configuration) --framework %(NetCoreAppFrameWorkName.Identity)" />
-    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).dll"/>
-    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).pdb"/>
-    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).deps.json" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).deps.json"/>
+	<MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetCoreAppFrameWorkName.Project).csproj" Properties="Configuration=$(Configuration)" />
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).dll"/>
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).pdb" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).pdb"/>
+    <Copy SourceFiles="$(BinDirectory)\$(ProductProjectName)\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).deps.json" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).deps.json"/>
   </Target>
   
-  <Target Name="CompileTestsCore" DependsOnTargets="ActivateProjectJson">
-    <Message Text="Compiling .NET Core" />
-    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
-    <Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests&quot; --output &quot;$(BinDirectory)\$(ProductProjectName).Tests\bin.netcoreapp1.0\$(Configuration)&quot; --build-base-path &quot;$(BinDirectory)\$(ProductProjectName).Tests\obj.netstandard1.6\$(Configuration)&quot; --configuration $(Configuration) --framework netcoreapp1.0 " />
-  </Target> 
+  <Target Name="RestoreTestsNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
+    <Message Text="Restoring .NET Core dependencies" />
+    <CallTarget Targets="DeActivateProjectJson"/>	
+    <Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; " />    
+  </Target>
+  
+  <Target Name="CompileTestsNetCoreApp" DependsOnTargets="Version;RestoreTestsNetCoreApp;CompileNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
+    <CallTarget Targets="DeActivateProjectJson"/>
+	<Message Text="Compiling %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
+	<!-- <Delete Files="$(TestDirectory)\$(ProductProjectName).Tests\obj\project.assets.json"/> -->
+	<!-- <DeleteTree Directories="$(TestDirectory)\$(ProductProjectName).Tests\obj\"/> -->
+	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />	
+	<MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj" Properties="Configuration=$(Configuration)" BuildInParallel="false"/>
+  </Target>
+  
+  <Target Name="TestsNetCoreApp" DependsOnTargets="Version;RestoreNetCoreApp;CompileTestsNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
+    <CallTarget Targets="DeActivateProjectJson"/>
+	<Message Text="Testing %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
+	<!-- <xunit Assemblies="$(BinDirectory)\$(ProductProjectName).Tests\bin.%(NetCoreAppFrameWorkName.Identity)\$(Configuration)\%(NetCoreAppFrameWorkName.Identity)\$(ProductProjectName).Tests.dll" /> -->
+	<Exec Command="dotnet.exe test &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot;" />
+  </Target>
+  
   
   <Target Name="CompileExamplesCore" DependsOnTargets="Version">
     <Message Text="Compiling .NET Core example" />
@@ -355,18 +379,18 @@
 
   <Target Name="DownloadNunit" Condition=" '$(NUnitIsAvailable)' == 'false' ">
     <Message Text="Downloading NUnit..." Importance="normal" />
-    <MakeDir Directories="$(BinDirectory)\Download"/>
-    <WebDownload FileUri="https://github.com/nunit/nunit/releases/download/$(NunitVersion)/NUnit-$(NunitVersion).zip" FileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" />
+    <MakeDir Directories="$(BinDirectory)\Download"/>	
+    <WebDownload FileUri="https://github.com/nunit/nunit-console/releases/download/$(NunitVersionMajor)/$(NunitZipArchive).zip" FileName="$(BinDirectory)\Download\$(NunitZipArchive).zip" />
     <Message Text="Extracting NUnit..." Importance="normal" />
-    <Unzip ZipFileName="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip" TargetDirectory="$(BinDirectory)\Download"/>
+    <Unzip ZipFileName="$(BinDirectory)\Download\$(NunitZipArchive).zip" TargetDirectory="$(BinDirectory)\Download\$(NunitZipArchive)"/>
     <ItemGroup>
-      <NUnitFiles Include="$(BinDirectory)\Download\NUnit-$(NunitVersion)\bin\**\**"/>
+      <NUnitFiles Include="$(BinDirectory)\Download\$(NunitZipArchive)\**\**"/>
     </ItemGroup>
     <Message Text="Copying NUnit to tools folder..." Importance="normal" />
     <Copy SourceFiles="@(NUnitFiles)" DestinationFolder="$(ToolsDirectory)\NUnit\%(RecursiveDir)"/>
-    <Copy SourceFiles="$(BinDirectory)\Download\NUnit-$(NunitVersion)\license.txt" DestinationFiles="$(ToolsDirectory)\NUnit\license.txt"/>
-    <Delete Files="$(BinDirectory)\Download\NUnit-$(NunitVersion).zip"/>
-    <DeleteTree Directories="$(BinDirectory)\Download\NUnit-$(NunitVersion)"/>
+    <Copy SourceFiles="$(BinDirectory)\Download\$(NunitZipArchive)\license.txt" DestinationFiles="$(ToolsDirectory)\NUnit\license.txt"/>
+    <Delete Files="$(BinDirectory)\Download\$(NunitZipArchive).zip"/>
+    <DeleteTree Directories="$(BinDirectory)\Download\$(NunitZipArchive)"/>
   </Target>
 
   <!-- Run Unit tests -->
@@ -404,7 +428,7 @@
     <Exec Command="&quot;$(MSBuildProjectDirectory)\tools\NuGet\nuget.exe&quot; pack &quot;$(ProductProjectNugetBuildOutputDirectory)\$(ProductName).nuspec&quot; -OutputDirectory &quot;$(NuGetPackagesDirectory)&quot; -exclude *.tmp -Symbols" />
   </Target>
 
-  <Target Name="Deploy" DependsOnTargets="UpdateRevisionVersion;Tests;CompileExamples;CompileNetCoreApp;ZipSource;NugetPack">
+  <Target Name="Deploy" DependsOnTargets="UpdateRevisionVersion;Tests;TestsNetCoreApp;CompileExamples;CompileNetCoreApp;ZipSource;NugetPack">
 
   </Target>
 

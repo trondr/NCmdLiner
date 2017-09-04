@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace NCmdLiner
 {
-    internal static class TypeExtender
+    public static class TypeExtender
     {
         public static bool IsClass(this Type type)
         {

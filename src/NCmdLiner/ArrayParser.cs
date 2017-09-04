@@ -17,7 +17,7 @@ namespace NCmdLiner
     /// <summary>
     /// 
     /// </summary>
-    internal class ArrayParser : IArrayParser
+    public class ArrayParser : IArrayParser
     {
         #region Implementation of IArrayParser
         /// <summary>

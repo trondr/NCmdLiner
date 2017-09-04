@@ -1,6 +1,6 @@
 ﻿namespace NCmdLiner
 {
-    internal interface ICommandRuleValidator
+    public interface ICommandRuleValidator
     {
         void Validate(string[] args, CommandRule commandRule);
     }
