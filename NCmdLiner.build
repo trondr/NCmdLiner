@@ -287,20 +287,8 @@
     </NetStandardFrameWorkName>
   </ItemGroup>
   
-  <Target Name="DeActivateProjectJson" BeforeTargets="Compile;CompileTests;ZipSource;NugetPack;Tests;Deploy" AfterTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore;Deploy;ZipSource;NugetPack">
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
-  </Target>
-  
-  <Target Name="ActivateProjectJson" BeforeTargets="RestoreCore;CompileCore;CompileTestsCore;TestsCore">
-    <ActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <ActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
-  </Target>
-  
   <Target Name="RestoreNugetPackages" DependsOnTargets="">
     <Message Text="Restoring NuGet packages" />
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Exec Command="&quot;$(ToolsDirectory)\NuGet\nuget.exe&quot; restore &quot;$(MSBuildProjectDirectory)\$(ProductProjectName).sln&quot; " />    
 	<Exec Command="&quot;$(ToolsDirectory)\NuGet\nuget.exe&quot; restore &quot;$(MSBuildProjectDirectory)\examples\MyUtil.sln&quot; " />
   </Target> 
@@ -313,8 +301,6 @@
   
   <Target Name="CompileNetFramework" DependsOnTargets="Version;RestoreNugetPackages" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
     <Message Text="Compiling %(NetFrameWorkName.Identity) targets" />
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <MSBuild Projects="$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)" />
     <MakeDir Directories="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)"/>
     <Copy SourceFiles="$(ProductProjectBuildOutputDirectory)\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductProjectName).dll" DestinationFiles="$(ProductProjectNugetBuildOutputDirectory)\%(NetFrameWorkName.Identity)\$(ProductProjectName).dll"/>
@@ -322,7 +308,6 @@
   </Target>
 
   <Target Name="CompileNetCoreApp" DependsOnTargets="Version" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
 	
 	<Exec Command="dotnet.exe restore &quot;$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetCoreAppFrameWorkName.Project).csproj&quot; " />    
@@ -334,7 +319,6 @@
   </Target>
   
   <Target Name="CompileNetStandard" DependsOnTargets="Version" Inputs="@(NetStandardFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetStandardFrameWorkName.Identity) targets. Version: %(NetStandardFrameWorkName.Version) Project: %(NetStandardFrameWorkName.Project)" />
 
 	<Exec Command="dotnet.exe restore &quot;$(ProductProjectSrcDirectory)\$(ProductProjectName).%(NetStandardFrameWorkName.Project).csproj&quot; " />    
@@ -355,10 +339,9 @@
    </Target>
   
    <Target Name="CompileNetCoreAppExamples" DependsOnTargets="Version" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling net core examples %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
 	<Exec Command="dotnet.exe restore &quot;$(MSBuildProjectDirectory)\examples\MyUtil.%(NetCoreAppFrameWorkName.Project)\MyUtil.%(NetCoreAppFrameWorkName.Project).csproj&quot; " />    
-	<Exec Command="dotnet.exe build &quot;$(MSBuildProjectDirectory)\examples\MyUtil.%(NetCoreAppFrameWorkName.Project)\MyUtil.%(NetCoreAppFrameWorkName.Project).csproj&quot; " />    
+	<Exec Command="dotnet.exe build &quot;$(MSBuildProjectDirectory)\examples\MyUtil.%(NetCoreAppFrameWorkName.Project)\MyUtil.%(NetCoreAppFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />    
    </Target>
    
    <Target Name="CompileTests" DependsOnTargets="CompileTestsNetFramework;CompileTestsNetCoreApp;CompileTestsNetStandard" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
@@ -367,20 +350,16 @@
    
   <Target Name="CompileTestsNetFramework" DependsOnTargets="CompileNetFramework" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
      <Message Text="Compiling %(NetFrameWorkName.Identity) tests targets" />
-     <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-     <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
      <MSBuild Projects="$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetFrameWorkName.Identity).csproj" Properties="Configuration=$(Configuration)"/>
   </Target>
   
   <Target Name="CompileTestsNetCoreApp" DependsOnTargets="Version;CompileNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
 	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />
 	<Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />	
   </Target>
   
   <Target Name="CompileTestsNetStandard" DependsOnTargets="Version;CompileNetStandard" Inputs="@(NetStandardFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Compiling %(NetStandardFrameWorkName.Identity) targets. Version: %(NetStandardFrameWorkName.Version) Project: %(NetStandardFrameWorkName.Project)" />
 	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetStandardFrameWorkName.Project).csproj&quot; --force" />
 	<Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetStandardFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />
@@ -411,8 +390,6 @@
   </Target>
   
   <Target Name="TestsNetFramework" DependsOnTargets="CompileTestsNetFramework;TestsNetCoreApp" Inputs="@(NetFrameWorkName)" Outputs="%(Identity).Dummy">
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <CreateItem Include="$(BinDirectory)\$(ProductProjectName).Tests\bin.%(NetFrameWorkName.Identity)\$(Configuration)\$(ProductName).Tests.dll">
       <Output TaskParameter="Include" ItemName="TestAssembly" />
     </CreateItem>
@@ -421,7 +398,6 @@
   </Target>
 
   <Target Name="TestsNetCoreApp" DependsOnTargets="Version;CompileTestsNetCoreApp" Inputs="@(NetCoreAppFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Testing %(NetCoreAppFrameWorkName.Identity) targets. Version: %(NetCoreAppFrameWorkName.Version) Project: %(NetCoreAppFrameWorkName.Project)" />
 	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --force" />
 	<Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetCoreAppFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />
@@ -429,7 +405,6 @@
   </Target>
   
   <Target Name="TestsNetStandard" DependsOnTargets="Version;CompileTestsNetStandard" Inputs="@(NetStandardFrameWorkName)" Outputs="%(Identity).Dummy">
-    <CallTarget Targets="DeActivateProjectJson"/>
 	<Message Text="Testing %(NetStandardFrameWorkName.Identity) targets. Version: %(NetStandardFrameWorkName.Version) Project: %(NetStandardFrameWorkName.Project)" />
 	<Exec Command="dotnet.exe restore &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetStandardFrameWorkName.Project).csproj&quot; --force" />
 	<Exec Command="dotnet.exe build &quot;$(TestDirectory)\$(ProductProjectName).Tests\$(ProductProjectName).Tests.%(NetStandardFrameWorkName.Project).csproj&quot; --configuration $(Configuration)" />
@@ -437,8 +412,6 @@
   </Target>
   
   <Target Name="ZipSource" DependsOnTargets="Version">
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <Zip Files="@(SourceFiles)"
          WorkingDirectory="$(SrcDirectory)"
          ZipFileName="$(BuildOutputDirectory)\$(ProductProjectName)\bin\$(ProductProjectName).Source.$(AssemblyVersion).zip"
@@ -448,8 +421,6 @@
   </Target>
 
   <Target Name="NugetPack" >
-    <DeActivateProjectJson ProjectFolder="$(SrcDirectory)\$(ProductProjectName)" />
-    <DeActivateProjectJson ProjectFolder="$(TestDirectory)\$(ProductProjectName).Tests" />
     <MakeDir Directories="$(NuGetPackagesDirectory)"/>
 
     <!-- Create NCmdLiner nuget package-->

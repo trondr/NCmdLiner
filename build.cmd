@@ -20,7 +20,6 @@ goto Build
 Echo Building %ProductName%...
 Echo msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
 msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
-msbuild.exe %ProductName%.build /target:DeActivateProjectJson
 Set BuildErrorLevel=%ERRORLEVEL%
 IF %BuildErrorLevel%==0 Set BuildMessage=Sucessfully build %ProductName%
 IF NOT %BuildErrorLevel% == 0 Set BuildMessage=Failed to build %ProductName%
