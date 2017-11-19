@@ -43,6 +43,12 @@ using System.Runtime.CompilerServices;
 	[assembly: AssemblyTitle("NCmdLiner for .NET Framework 4.6.2")]
 #elif NETSTANDARD1_6
 	[assembly: AssemblyTitle("NCmdLiner for .NET Standard Library 1.6")]
+#elif NETCOREAPP1_0
+    [assembly: AssemblyTitle("NCmdLiner for .NET Core 1.0")]
+#elif NETCOREAPP1_1
+    [assembly: AssemblyTitle("NCmdLiner for .NET Core 1.1")]
+#elif NETCOREAPP2_0
+    [assembly: AssemblyTitle("NCmdLiner for .NET Core 2.0")]
 #else
 #error Unknown target framework found in AssemblyInfo.cs
 #endif

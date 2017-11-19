@@ -16,10 +16,18 @@
     <references>
       <reference file="NCmdLiner.dll" />
     </references>
-	<dependencies>
-      <group targetFramework=".NETStandard1.6">
-        <dependency id="NETStandard.Library" version="1.6.0" />    
+	<dependencies>      
+      <group targetFramework=".NETFramework4.5-Mono" />
+	  <group targetFramework=".NETFramework3.5" />
+      <group targetFramework=".NETFramework4.5.2" />
+	  <group targetFramework=".NETFramework4.6.1" />
+	  <group targetFramework=".NETFramework4.6.2" />
+	  <group targetFramework=".NETStandard1.6">
+        <dependency id="NETStandard.Library" version="1.6.1" />
       </group>
+	  <group targetFramework=".NETCoreApp1.0" />      
+	  <group targetFramework=".NETCoreApp1.1" />
+	  <group targetFramework=".NETCoreApp2.0" />
     </dependencies>
   </metadata>
   <files>
@@ -38,10 +46,22 @@
 
     <file src="net462\NCmdLiner.dll" target="lib\net462" />
     <file src="net462\NCmdLiner.pdb" target="lib\net462" />
-	
+
 	<file src="netstandard1.6\ncmdliner.dll" target="lib\netstandard1.6" />
     <file src="netstandard1.6\ncmdliner.pdb" target="lib\netstandard1.6" />
 	<file src="netstandard1.6\ncmdliner.deps.json" target="lib\netstandard1.6" />
+	
+	<file src="netcoreapp1.0\ncmdliner.dll" target="lib\netcoreapp1.0" />
+    <file src="netcoreapp1.0\ncmdliner.pdb" target="lib\netcoreapp1.0" />
+	<file src="netcoreapp1.0\ncmdliner.deps.json" target="lib\netcoreapp1.0" />
+	
+	<file src="netcoreapp1.1\ncmdliner.dll" target="lib\netcoreapp1.1" />
+    <file src="netcoreapp1.1\ncmdliner.pdb" target="lib\netcoreapp1.1" />
+	<file src="netcoreapp1.1\ncmdliner.deps.json" target="lib\netcoreapp1.1" />
+	
+	<file src="netcoreapp2.0\ncmdliner.dll" target="lib\netcoreapp2.0" />
+    <file src="netcoreapp2.0\ncmdliner.pdb" target="lib\netcoreapp2.0" />
+	<file src="netcoreapp2.0\ncmdliner.deps.json" target="lib\netcoreapp2.0" />
  		
 	<file src="**\*.cs" target="src" />
 	    

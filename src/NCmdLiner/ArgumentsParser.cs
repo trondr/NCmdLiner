@@ -4,7 +4,7 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    internal class ArgumentsParser : IArgumentsParser
+    public class ArgumentsParser : IArgumentsParser
     {
         /// <summary> Gets a command line parameters. </summary>
         ///

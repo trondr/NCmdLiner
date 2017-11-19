@@ -32,9 +32,9 @@ namespace NCmdLiner.Credit
     /// ICreditInfo creditInfo = new CreditInfo();
     /// Console.WriteLine(creditInfo);
     /// </summary>
-    #if !NETSTANDARD1_6
+#if !NETSTANDARD1_6 && !NETCOREAPP1_0 && !NETCOREAPP1_1 && !NETCOREAPP2_0
     [Serializable]
-    #endif
+#endif
     public class CreditInfo : ICreditInfo
     {
         public string ProductName

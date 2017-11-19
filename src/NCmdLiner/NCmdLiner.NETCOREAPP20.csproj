@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>NCmdLiner</AssemblyName>
+    <RootNamespace>NCmdLiner</RootNamespace>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Credit\0.NConsoler-Credit.xml" />
+    <None Remove="Credit\1.TinyIoC-Credit.xml" />
+    <None Remove="License\0.NCmdLiner-License.xml" />
+    <None Remove="License\1.NConsoler-License.xml" />
+    <None Remove="License\2.TinyIoC-License.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
+    <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
+    <EmbeddedResource Include="License\1.NConsoler-License.xml" />
+    <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

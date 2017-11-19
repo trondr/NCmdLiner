@@ -2,24 +2,26 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configurations>Debug;Release</Configurations>
+	<Platforms>AnyCPU</Platforms>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4AEC4830-2AD8-4525-A1BD-3A1C89E475BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NCmdLiner.Tests</RootNamespace>
     <AssemblyName>NCmdLiner.Tests</AssemblyName>
-    <TargetFramework>NET35</TargetFramework>
+    <TargetFramework>NET452</TargetFramework>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.NET35\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.NET35\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>$(BuildOutputDirectory)\$(AssemblyName)\bin.NET35\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

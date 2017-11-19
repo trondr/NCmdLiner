@@ -4,11 +4,11 @@ using System.Reflection;
 
 namespace NCmdLiner
 {
-    internal static class TypeExtender
+    public static class TypeExtender
     {
         public static bool IsClass(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsClass;
 #else
             return type.IsClass;
@@ -17,7 +17,7 @@ namespace NCmdLiner
 
         public static bool IsGenericTypeDefinition(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsGenericTypeDefinition;
 #else
             return type.IsGenericTypeDefinition;
@@ -26,7 +26,7 @@ namespace NCmdLiner
 
         public static bool IsInterface(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsInterface;
 #else
             return type.IsInterface;
@@ -35,7 +35,7 @@ namespace NCmdLiner
 
         public static bool IsAbstract(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsAbstract;
 #else
             return type.IsAbstract;
@@ -44,7 +44,7 @@ namespace NCmdLiner
 
         public static bool IsPrimitive(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsPrimitive;
 #else
             return type.IsPrimitive;
@@ -53,7 +53,7 @@ namespace NCmdLiner
 
         public static bool IsGenericType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsGenericType;
 #else
             return type.IsGenericType;
@@ -62,7 +62,7 @@ namespace NCmdLiner
 
         public static bool IsValueType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsValueType;
 #else
             return type.IsValueType;
@@ -71,7 +71,7 @@ namespace NCmdLiner
 
         public static bool IsEnum(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().IsEnum;
 #else
             return type.IsEnum;
@@ -80,7 +80,7 @@ namespace NCmdLiner
         
         public static Assembly GetAssembly(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().Assembly;
 #else
             return type.Assembly;
@@ -89,7 +89,7 @@ namespace NCmdLiner
         
         public static Type[] FindInterfacesEx(this Type type, TypeFilter filter,object filterCriteria)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().FindInterfaces(filter,filterCriteria);
 #else
             return type.FindInterfaces(filter,filterCriteria);
@@ -98,7 +98,7 @@ namespace NCmdLiner
 
          public static Type BaseType(this Type type)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().BaseType;
 #else
             return type.BaseType;
@@ -107,7 +107,7 @@ namespace NCmdLiner
         
         public static IEnumerable<Attribute> GetCustomAttributes(this Type type, Type attributeType, bool inherit)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1
             return type.GetTypeInfo().GetCustomAttributes(attributeType, inherit);
 #else
             return (IEnumerable<Attribute>)type.GetCustomAttributes(attributeType, inherit);
@@ -116,7 +116,7 @@ namespace NCmdLiner
 
         public static MethodInfo GetMethodEx(this Type type, string methodName)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().GetMethod(methodName);
 #else
             return type.GetMethod(methodName);
@@ -125,7 +125,7 @@ namespace NCmdLiner
 
         public static MethodInfo GetMethodEx(this Type type, string methodName, BindingFlags bindingFlags)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP2_0
             return type.GetTypeInfo().GetMethod(methodName, bindingFlags);
 #else
             return type.GetMethod(methodName, bindingFlags);

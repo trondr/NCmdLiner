@@ -8,7 +8,7 @@
 
 namespace NCmdLiner
 {
-    internal interface IArrayParser
+    public interface IArrayParser
     {
         string[] Parse(string value);
     }

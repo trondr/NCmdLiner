@@ -3,7 +3,7 @@ using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
-    internal interface IArgumentsParser
+    public interface IArgumentsParser
     {
         /// <summary> Gets a command line parameters. </summary>
         ///

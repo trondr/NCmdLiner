@@ -11,7 +11,7 @@ namespace NCmdLiner.Exceptions
     /// <summary>  Exception for signalling NCmdLiner date time format errors. </summary>
     ///
     /// <remarks>  Trond, 03.10.2012. </remarks>
-    internal sealed class InvalidArrayParseException : NCmdLinerException
+    public sealed class InvalidArrayParseException : NCmdLinerException
     {
         public InvalidArrayParseException(string message) : base(message)
         {
