@@ -13,6 +13,7 @@ Echo Checking to see if Visual Studio 2017 is installed ("%VSDEVCMDTEST%")
 IF NOT EXIST "%VSDEVCMDTEST%" set BuildMessage="Visual Studio 2017 or later do not seem to be installed (Could not find '%VSDEVCMDTEST%')" & goto End
 Echo Visual Studio 2017 seems to be installed, preparing build environment...
 Set VSDEVCMD=%VSDEVCMDTEST%
+set VSCMD_START_DIR=%CD%
 Call "%VSDEVCMD%"
 goto Build
 
