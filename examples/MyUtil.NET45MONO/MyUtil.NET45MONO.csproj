@@ -11,18 +11,18 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyUtil</RootNamespace>
     <AssemblyName>MyUtil</AssemblyName>
-    <TargetFramework>NET45MONO</TargetFramework>
+    <TargetFrameworkCode>NET45MONO</TargetFrameworkCode>
     <TargetFrameworkProfile>Mono</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFrameworkCode)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

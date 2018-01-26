@@ -1,5 +1,5 @@
-Put the contents of the Mono\lib\mono\4.0 folder in this folder:
-C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Mono
+Put the contents of the Mono\lib\mono\4.5 folder in this folder:
+C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Profile\Mono
 
 Add the RedistList\FrameworkList.xml to the same folder.
 
