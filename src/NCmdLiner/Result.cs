@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
 {
@@ -123,7 +124,6 @@ namespace NCmdLiner
             return Combine(untyped);
         }
     }
-
 
     public struct Result<T> 
     {
