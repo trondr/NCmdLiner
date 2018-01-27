@@ -117,10 +117,7 @@
     <Folder Include="ManualTests\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NCmdLiner\NCmdLiner.NET452.csproj">
-      <Project>{165a427b-649d-4c35-b7e7-b19a8bee94ba}</Project>
-      <Name>NCmdLiner.NET452</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCmdLiner\NCmdLiner.NET452.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

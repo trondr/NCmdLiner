@@ -2,6 +2,6 @@
 {
     public interface ICommandRuleValidator
     {
-        void Validate(string[] args, CommandRule commandRule);
+        Result<int> Validate(string[] args, CommandRule commandRule);
     }
 }

@@ -17,14 +17,12 @@ namespace NCmdLiner
 {
     public class CommandRuleProvider : ICommandRuleProvider
     {
-
-
-        public CommandRule GetCommandRule(MethodInfo methodInfo)
+        public Result<CommandRule> GetCommandRule(MethodInfo methodInfo)
         {
             return GetCommandRule(methodInfo, null);
         }
         
-        public CommandRule GetCommandRule(MethodInfo methodInfo, object targetObject)
+        public Result<CommandRule> GetCommandRule(MethodInfo methodInfo, object targetObject)
         {
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
             var customAttributes = methodInfo.GetCustomAttributes(false);
@@ -38,8 +36,7 @@ namespace NCmdLiner
                 }
             }
             if (commandAttribute == null)
-                throw new MissingCommandAttributeException("Method is not decorate with the [Command] attribute: " +
-                                                           methodInfo.Name);
+                return Result.Fail<CommandRule>(new MissingCommandAttributeException("Method is not decorate with the [Command] attribute: " + methodInfo.Name));
             var commandRule = new CommandRule
             {
                 Method = methodInfo,
@@ -57,39 +54,25 @@ namespace NCmdLiner
                 var attributes = parameter.GetCustomAttributes(typeof (CommandParameterAttribute), false).ToList();
                 if (attributes.Count == 0)
                 {
-                    throw new MissingCommandParameterAttributeException(
-                        string.Format(
-                            "Command parameter attribute is not decorating the parameter '{0}' in the method '{1}'",
-                            parameter.Name, methodInfo.Name));
+                    return Result.Fail<CommandRule>(new MissingCommandParameterAttributeException($"Command parameter attribute is not decorating the parameter '{parameter.Name}' in the method '{methodInfo.Name}'"));
                 }
                 if (attributes.Count > 1)
                 {
-                    throw new DuplicateCommandParameterAttributeException(
-                        string.Format(
-                            "More than one command parameter attribute decorates the parameter '{0}' in the method '{1}'.",
-                            parameter.Name, methodInfo.Name));
+                    return Result.Fail<CommandRule>(new DuplicateCommandParameterAttributeException($"More than one command parameter attribute decorates the parameter '{parameter.Name}' in the method '{methodInfo.Name}'."));
                 }
                 var attribute = attributes[0] as OptionalCommandParameterAttribute;
                 if (attribute != null)
                 {
+                    var optionalCommandParameterResult = GetOptionalCommandParameterAttribute(parameter.Name,attribute);
+                    if (optionalCommandParameterResult.IsFailure)
+                        return Result.Fail<CommandRule>(optionalCommandParameterResult.Exception);
                     optionalParamterFound = true;
-                    var optionalCommandParameterAttribute = attribute;        
-                    commandRule.Command.OptionalParameters.Add(
-                        new OptionalCommandParameter(optionalCommandParameterAttribute.DefaultValue)
-                            {
-                                Name = parameter.Name,
-                                Description = optionalCommandParameterAttribute.Description,
-                                ExampleValue = optionalCommandParameterAttribute.ExampleValue,
-                                AlternativeName = optionalCommandParameterAttribute.AlternativeName
-                            });
+                    commandRule.Command.OptionalParameters.Add(optionalCommandParameterResult.Value);
                 }
                 else if (attributes[0] is RequiredCommandParameterAttribute)
                 {
                     if (optionalParamterFound)
-                        throw new RequiredParameterFoundAfterOptionalParameterExecption(
-                            string.Format(
-                                "Required parameter '{0}' in method '{1}' must be defined before any optional parameters.",
-                                parameter.Name, methodInfo.Name));
+                        return Result.Fail<CommandRule>(new RequiredParameterFoundAfterOptionalParameterExecption($"Required parameter '{parameter.Name}' in method '{methodInfo.Name}' must be defined before any optional parameters."));
                     var requiredCommandParameterAttribute =
                         (RequiredCommandParameterAttribute) attributes[0];
 
@@ -102,37 +85,62 @@ namespace NCmdLiner
                         });
                 }
             }
-            return commandRule;
+            return Result.Ok(commandRule);
         }
 
-        public List<CommandRule> GetCommandRules(Type targetType)
+        private Result<OptionalCommandParameter> GetOptionalCommandParameterAttribute(string parameterName, OptionalCommandParameterAttribute optionalCommandParameterAttribute)
+        {
+            try
+            {
+                var optionalCommandParameter = new OptionalCommandParameter(optionalCommandParameterAttribute.DefaultValue)
+                {
+                    Name = parameterName,
+                    Description = optionalCommandParameterAttribute.Description,
+                    ExampleValue = optionalCommandParameterAttribute.ExampleValue,
+                    AlternativeName = optionalCommandParameterAttribute.AlternativeName
+                };
+                return Result.Ok(optionalCommandParameter);
+            }
+            catch (MissingDefaultValueException ex)
+            {
+                return Result.Fail<OptionalCommandParameter>(ex);
+            }
+        }
+
+        public Result<List<CommandRule>> GetCommandRules(Type targetType)
         {
             return GetCommandRules(new[] {targetType});
         }
 
-        public List<CommandRule> GetCommandRules(object[] targetObjects)
+        public Result<List<CommandRule>> GetCommandRules(object[] targetObjects)
         {
             var commandRules = new List<CommandRule>();
             foreach (var targetObject in targetObjects)
             {
                 var methods = targetObject.GetType().GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
-                GetCommandRulesFromMethods(methods, targetObject, commandRules);
+                var commandRulesResult = GetCommandRulesFromMethods(methods, targetObject, commandRules);
+                if (commandRulesResult.IsFailure)
+                    return commandRulesResult;
+                commandRules= commandRulesResult.Value;
             }
-            return commandRules;
+            return Result.Ok(commandRules);
         }
 
-        public List<CommandRule> GetCommandRules(Type[] targetTypes)
+        public Result<List<CommandRule>> GetCommandRules(Type[] targetTypes)
         {
-            var commandRules = new List<CommandRule>();
+            List<CommandRule> commandRules = new List<CommandRule>();
             foreach (var targetType in targetTypes)
             {
-                var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);                
-                GetCommandRulesFromMethods(methods, null, commandRules);
+                var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+                var commandRulesResult = GetCommandRulesFromMethods(methods, null, commandRules);
+                if (commandRulesResult.IsFailure)
+                    return commandRulesResult;
+                commandRules = commandRulesResult.Value;
             }
-            return commandRules;
+            return Result.Ok(commandRules);
         }
 
-        private void GetCommandRulesFromMethods(IEnumerable<MethodInfo> methods, object targetObject, List<CommandRule> commandRules)
+        private Result<List<CommandRule>> GetCommandRulesFromMethods(IEnumerable<MethodInfo> methods, object targetObject, List<CommandRule> commandRules)
         {
             foreach (var method in methods)
             {
@@ -141,16 +149,19 @@ namespace NCmdLiner
                 {
                     if (customAttribute is CommandAttribute)
                     {
-                        var newCommandRule = GetCommandRule(method, targetObject);
-                        var existingCommandRule = commandRules.Find(rule => rule.Command.Name == newCommandRule.Command.Name);
+                        var newCommandRuleResult = GetCommandRule(method, targetObject);
+                        if (newCommandRuleResult.IsFailure)
+                            return Result.Fail <List < CommandRule >> (newCommandRuleResult.Exception);
+                        var existingCommandRule = commandRules.Find(rule => rule.Command.Name == newCommandRuleResult.Value.Command.Name);
                         if (existingCommandRule != null)
                         {
-                            throw new DuplicateCommandException("A duplicate command has been defined: " + newCommandRule.Command.Name);
+                            return Result.Fail<List<CommandRule>>(new DuplicateCommandException("A duplicate command has been defined: " + newCommandRuleResult.Value.Command.Name));
                         }
-                        commandRules.Add(newCommandRule);
+                        commandRules.Add(newCommandRuleResult.Value);
                     }
                 }
             }
+            return Result.Ok(commandRules);
         }
 
     }

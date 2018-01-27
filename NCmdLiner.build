@@ -230,11 +230,11 @@
   </Target>
 
   <ItemGroup>
-    <NetFrameWorkName Include="NET35">
-      <Version>v3.5</Version>
-      <Profile></Profile>
-      <Identifier>.NETFramework</Identifier>
-    </NetFrameWorkName>
+    <!-- <NetFrameWorkName Include="NET35"> -->
+      <!-- <Version>v3.5</Version> -->
+      <!-- <Profile></Profile> -->
+      <!-- <Identifier>.NETFramework</Identifier> -->
+    <!-- </NetFrameWorkName> -->
     <NetFrameWorkName Include="NET45MONO">
       <Version>v4.5</Version>
       <Profile>Mono</Profile>

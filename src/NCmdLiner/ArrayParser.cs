@@ -25,18 +25,17 @@ namespace NCmdLiner
         /// </summary>
         /// <param name="value">"["","","",""]" or "{"","","",""}" or "";"";"";"";"" or ""+""+""+"" or '';'';'';''</param>
         /// <returns></returns>
-        public string[] Parse(string value)
+        public Result<string[]> Parse(string value)
         {
             value = TrimArrayString(value);
             if (string.IsNullOrEmpty(value))
             {
-                return new string[] {};
+                return Result.Ok(new string[] {});
             }
-            char delimiter;
-            char quote;
-            GetDelimiterAndQuote(value, out delimiter, out quote);
-            var array = String2Array(value, delimiter, quote);
-            return array;
+
+            GetDelimiterAndQuote(value, out char delimiter, out var quote);
+            var arrayResult = String2Array(value, delimiter, quote);
+            return arrayResult;
         }
 
         #endregion
@@ -52,13 +51,13 @@ namespace NCmdLiner
         /// <param name="quote">      The quote. </param>
         ///
         /// <returns>  . </returns>
-        private static string[] String2Array(string value, char delimiter, char quote)
+        private static Result<string[]> String2Array(string value, char delimiter, char quote)
         {
             var resultList = new StringCollection();
             if (!value.Contains(quote.ToString()))
             {
                 //Quotes is not beeing used, just split on delimiter
-                return value.Split(delimiter);
+                return Result.Ok(value.Split(delimiter));
             }
 
             //Quotes is beeing used, use regular expression to parse the csv format.
@@ -78,7 +77,7 @@ namespace NCmdLiner
             {
                 if (matchResult.Index != expectedNexMatchIndex)
                 {
-                    throw new InvalidArrayParseException("Array format seems to be corrupt: " + value);
+                    return Result.Fail<string[]>(new InvalidArrayParseException("Array format seems to be corrupt: " + value));
                 }
                 expectedNexMatchIndex = matchResult.Index + matchResult.Length;
 #if DEBUG
@@ -97,7 +96,7 @@ namespace NCmdLiner
             }
             var array = new string[resultList.Count];
             resultList.CopyTo(array, 0);
-            return array;
+            return Result.Ok(array);
         }
 
         private static string TrimArrayString(string value)

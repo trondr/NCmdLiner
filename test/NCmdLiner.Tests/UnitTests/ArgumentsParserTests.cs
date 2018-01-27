@@ -27,10 +27,11 @@ namespace NCmdLiner.Tests.UnitTests
             {
                 string[] args = { "12;13;14;15", "12" };
                 var target = new ArgumentsParser();
-                Assert.Throws<InvalidCommandParameterFormatException>(() =>
-                {
-                    var actual = target.GetCommandLineParameters(args);
-                });
+
+                var actual = target.GetCommandLineParameters(args);
+                Assert.IsFalse(actual.IsSuccess);
+                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), actual.Exception.GetType());
+
             }
         }
 
@@ -48,14 +49,14 @@ namespace NCmdLiner.Tests.UnitTests
                     {"name2", new CommandLineParameter() {Name = "name2", Value = "value2"}}
                 };
 
-                Assert.AreEquivalent(expected.Keys, actual.Keys);
-                Assert.AreEquivalent(expected.Values, actual.Values);
+                Assert.AreEquivalent(expected.Keys, actual.Value.Keys);
+                Assert.AreEquivalent(expected.Values, actual.Value.Values);
 
-                Assert.IsTrue(actual.ContainsKey("name1"));
+                Assert.IsTrue(actual.Value.ContainsKey("name1"));
                 Assert.AreEqual("name1", expected["name1"].Name);
                 Assert.AreEqual("value1", expected["name1"].Value);
 
-                Assert.IsTrue(actual.ContainsKey("name2"));
+                Assert.IsTrue(actual.Value.ContainsKey("name2"));
                 Assert.AreEqual("name2", expected["name2"].Name);
                 Assert.AreEqual("value2", expected["name2"].Value);
 
@@ -77,7 +78,7 @@ namespace NCmdLiner.Tests.UnitTests
                             {"name2", new CommandLineParameter() {Name = "name2", Value = "value2=2=2"}}
                         };
 
-                Assert.AreEquivalent(expected,actual);
+                Assert.AreEquivalent(expected,actual.Value);
 
                 Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
                 Assert.AreEqual("name1", expected["name1"].Name);

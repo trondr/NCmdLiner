@@ -4,6 +4,6 @@ namespace NCmdLiner
 {
     internal interface ICmdLineryProvider
     {
-        int Run(List<CommandRule> commandRules, string[] args);
+        Result<int> Run(List<CommandRule> commandRules, string[] args);
     }
 }

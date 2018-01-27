@@ -6,10 +6,10 @@ namespace NCmdLiner
 {
     public interface ICommandRuleProvider
     {
-        CommandRule GetCommandRule(MethodInfo methodInfo);
-        CommandRule GetCommandRule(MethodInfo methodInfo, object targetObject);
-        List<CommandRule> GetCommandRules(Type[] targetTypes);
-        List<CommandRule> GetCommandRules(Type targetType);
-        List<CommandRule> GetCommandRules(object[] targetObjects);
+        Result<CommandRule> GetCommandRule(MethodInfo methodInfo);
+        Result<CommandRule> GetCommandRule(MethodInfo methodInfo, object targetObject);
+        Result<List<CommandRule>> GetCommandRules(Type[] targetTypes);
+        Result<List<CommandRule>> GetCommandRules(Type targetType);
+        Result<List<CommandRule>> GetCommandRules(object[] targetObjects);
     }
 }

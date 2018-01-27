@@ -13,7 +13,7 @@ namespace NCmdLiner
             _stringToObject = stringToObject;
         }
 
-        public object[] BuildMethodParameters(CommandRule commandRule)
+        public Result<object[]> BuildMethodParameters(CommandRule commandRule)
         {
             if (!commandRule.IsValid)
             {
@@ -26,13 +26,21 @@ namespace NCmdLiner
 
             for (var i = 0; i < commandRule.Command.RequiredParameters.Count; i++)
             {
-                parameterValues.Add(_stringToObject.ConvertValue(commandRule.Command.RequiredParameters[i].Value, methodParameters[i].ParameterType));
+                var valueResult = _stringToObject.ConvertValue(commandRule.Command.RequiredParameters[i].Value,
+                    methodParameters[i].ParameterType);
+                if (valueResult.IsFailure)
+                    return Result.Fail<object[]>(valueResult.Exception);
+                parameterValues.Add(valueResult.Value.Value);
             }
             for (var i = 0; i < commandRule.Command.OptionalParameters.Count; i++)
             {
-                parameterValues.Add(_stringToObject.ConvertValue(commandRule.Command.OptionalParameters[i].Value, methodParameters[i + commandRule.Command.RequiredParameters.Count].ParameterType));
+                var valueResult = _stringToObject.ConvertValue(commandRule.Command.OptionalParameters[i].Value,
+                    methodParameters[i + commandRule.Command.RequiredParameters.Count].ParameterType);
+                if (valueResult.IsFailure)
+                    return Result.Fail<object[]>(valueResult.Exception);
+                parameterValues.Add(valueResult.Value.HasNoValue ? null : valueResult.Value.Value);
             }
-            return parameterValues.ToArray();
+            return Result.Ok(parameterValues.ToArray());
         }
     }
 }

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -59,6 +60,7 @@
     <Compile Include="Attributes\CommandsAttribute.cs" />
     <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
     <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="CmdLinery.cs" />
     <Compile Include="CmdLineryProvider.cs" />
     <Compile Include="Command.cs" />
@@ -130,9 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
     <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
     <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
     <EmbeddedResource Include="License\1.NConsoler-License.xml" />
+    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
     <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

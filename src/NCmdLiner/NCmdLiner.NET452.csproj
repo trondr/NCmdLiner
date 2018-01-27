@@ -120,12 +120,19 @@
     <Compile Include="RequiredCommandParameter.cs" />
     <Compile Include="Resources\EmbeddedResource.cs" />
     <Compile Include="Resources\IEmbeddedResource.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="SerializerHelper.cs" />
     <Compile Include="StringToObject.cs" />
     <Compile Include="TextFormater.cs" />
     <Compile Include="TinyIoC.cs" />
     <Compile Include="TypeExtender.cs" />
     <Compile Include="ValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NCmdLiner.pfx" />

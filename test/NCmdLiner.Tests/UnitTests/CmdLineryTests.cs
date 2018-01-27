@@ -40,21 +40,23 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
-        [Test]        
+        [Test]
         public static void RunCommandWithNoParametersThrowingException()
         {
             var testLoggerMoc = new Mock<ITestLogger>();
             TestCommands1.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running CommandWithNoParametersThrowingException";
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<NCmdLinerException>(() =>
-            {
-                CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithNoParametersThrowingException" }, new TestApplicationInfo());
-            });
+
+            var result = CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithNoParametersThrowingException" }, new TestApplicationInfo());
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual(typeof(NCmdLinerException), result.Exception.GetType());
+            Assert.Contains("Concoler test exception message", result.Exception.Message);
+
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
-        [Test]        
+        [Test]
         public static void RunCommandWithNoParametersThrowingExceptionCheckStackTrace()
         {
             var testLoggerMoc = new Mock<ITestLogger>();
@@ -63,12 +65,12 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             try
             {
-                CmdLinery.Run(typeof(TestCommands1), new string[] {"CommandWithNoParametersThrowingException"}, new TestApplicationInfo());
+                CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithNoParametersThrowingException" }, new TestApplicationInfo());
             }
             catch (Exception ex)
             {
                 Assert.Contains("TestCommands1.CommandWithNoParametersThrowingException", ex.StackTrace);
-            }            
+            }
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -79,19 +81,19 @@ namespace NCmdLiner.Tests.UnitTests
             TestCommands1.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running CommandWithRequiredStringParameter(\"required parameter1 value\")";
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-                        CmdLinery.Run(typeof(TestCommands1),
-                          new string[] { "CommandWithRequiredStringParameter", "/parameter1=\"required parameter1 value\"" },
-                          new TestApplicationInfo());
+            CmdLinery.Run(typeof(TestCommands1),
+              new string[] { "CommandWithRequiredStringParameter", "/parameter1=\"required parameter1 value\"" },
+              new TestApplicationInfo());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
         [Test]
         public static void RunCommandWithRequiredStringParameterNotSet()
         {
-            Assert.Throws<MissingCommandParameterException>(() =>
-            {
-                CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithRequiredStringParameter" },new TestApplicationInfo());
-            });
+            var result = CmdLinery.Run(typeof(TestCommands1), new string[] { "CommandWithRequiredStringParameter" }, new TestApplicationInfo());
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Required parameter is missing: parameter1", result.Exception.Message);
+
         }
 
         [Test]
@@ -101,9 +103,9 @@ namespace NCmdLiner.Tests.UnitTests
             TestCommands1.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running CommandWithOptionalStringParameter(\"optional parameter1 value\")";
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-                        CmdLinery.Run(typeof(TestCommands1),
-                          new string[] { "CommandWithOptionalStringParameter", "/parameter1=\"optional parameter1 value\"" },
-                          new TestApplicationInfo());
+            CmdLinery.Run(typeof(TestCommands1),
+              new string[] { "CommandWithOptionalStringParameter", "/parameter1=\"optional parameter1 value\"" },
+              new TestApplicationInfo());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -114,9 +116,9 @@ namespace NCmdLiner.Tests.UnitTests
             TestCommands1.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running CommandWithOptionalStringParameter(\"parameter1 default value\")";
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-                        CmdLinery.Run(typeof(TestCommands1),
-                          new string[] { "CommandWithOptionalStringParameter" },
-                          new TestApplicationInfo());
+            CmdLinery.Run(typeof(TestCommands1),
+              new string[] { "CommandWithOptionalStringParameter" },
+              new TestApplicationInfo());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -188,11 +190,13 @@ namespace NCmdLiner.Tests.UnitTests
                                           "/parameter1=\"parameter 1 value\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<MissingExampleValueException>(() =>
-            {
-                CmdLinery.Run(typeof(TestCommands2), commandString, new TestApplicationInfo());
-            });
-            
+
+            var result = CmdLinery.Run(typeof(TestCommands2), commandString, new TestApplicationInfo());
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual(typeof(MissingExampleValueException),result.Exception.GetType());
+            Assert.AreEqual("Example vaue has not been specified for parameter 'parameter1' in command 'CommandWithOneRequiredStringParameterWithoutExampleValue'", result.Exception.Message);
+
+
         }
 
         [Test]
@@ -207,10 +211,12 @@ namespace NCmdLiner.Tests.UnitTests
                                           "/parameter1=\"parameter 1 value\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<MissingExampleValueException>(() =>
-            {
-                CmdLinery.Run(typeof(TestCommands3), commandString, new TestApplicationInfo());
-            });
+
+            var result = CmdLinery.Run(typeof(TestCommands3), commandString, new TestApplicationInfo());
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual(typeof(MissingExampleValueException), result.Exception.GetType());
+            Assert.AreEqual("Example vaue has not been specified for parameter 'parameter1' in command 'CommandWithOneOptionalStringParameterWithoutExampleValue'", result.Exception.Message);
+
         }
 
         [Test]
@@ -225,10 +231,12 @@ namespace NCmdLiner.Tests.UnitTests
                                           "/parameter1=\"parameter 1 value\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<MissingDefaultValueException>(() =>
-            {
-                CmdLinery.Run(typeof(TestCommands5), commandString, new TestApplicationInfo());
-            });
+
+            var result = CmdLinery.Run(typeof(TestCommands5), commandString, new TestApplicationInfo());
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual(typeof(MissingDefaultValueException), result.Exception.GetType());
+            Assert.AreEqual("Missing default value for optional parameter with alternative name 'p2'", result.Exception.Message);
+
         }
 
         //        //[ExpectedException(typeof(MissingDefaultValueException))]
@@ -246,7 +254,7 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             CmdLinery.Run(typeof(TestCommands6), commandString, new TestApplicationInfo());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
-            
+
         }
 
         [Test]
@@ -259,7 +267,7 @@ namespace NCmdLiner.Tests.UnitTests
         public static void CommandWithReturnValueTest()
         {
             const int expected = 10;
-             var testLoggerMoc = new Mock<ITestLogger>();
+            var testLoggerMoc = new Mock<ITestLogger>();
             TestCommands4.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running CommandWithReturnValue(\"parameter 1 value\")";
             var commandString = new string[]
@@ -268,8 +276,8 @@ namespace NCmdLiner.Tests.UnitTests
                                   "/parameter1=\"parameter 1 value\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            int actual = CmdLinery.Run(typeof(TestCommands4), commandString, new TestApplicationInfo());
-            Assert.AreEqual(expected, actual);
+            var actual = CmdLinery.Run(typeof(TestCommands4), commandString, new TestApplicationInfo());
+            Assert.AreEqual(expected, actual.Value);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -277,7 +285,7 @@ namespace NCmdLiner.Tests.UnitTests
         public static void CommandsFromMultipleNamespaces()
         {
             const int expected = 10;
-             var testLoggerMoc = new Mock<ITestLogger>();
+            var testLoggerMoc = new Mock<ITestLogger>();
             TestCommandsMulti2.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running SecondCommand()";
             var commandString = new string[]
@@ -285,8 +293,8 @@ namespace NCmdLiner.Tests.UnitTests
                                    "SecondCommand"
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            int actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1), typeof(TestCommandsMulti2) }, commandString, new TestApplicationInfo());
-            Assert.AreEqual(expected, actual);
+            var actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1), typeof(TestCommandsMulti2) }, commandString, new TestApplicationInfo());
+            Assert.AreEqual(expected, actual.Value);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -301,12 +309,10 @@ namespace NCmdLiner.Tests.UnitTests
                                             "FirstCommand"
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<DuplicateCommandException>(() =>
-            {
-                CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1Duplicate), typeof(TestCommandsMulti2Duplicate) }, commandString, new TestApplicationInfo());
-            });
-
-
+            var actual = CmdLinery.Run(new Type[] { typeof(TestCommandsMulti1Duplicate), typeof(TestCommandsMulti2Duplicate) }, commandString, new TestApplicationInfo());
+            Assert.IsFalse(actual.IsSuccess);
+            Assert.AreEqual(typeof(DuplicateCommandException),actual.Exception.GetType());
+            Assert.AreEqual("A duplicate command has been defined: FirstCommand", actual.Exception.Message);
         }
 
         [Test]
@@ -314,7 +320,7 @@ namespace NCmdLiner.Tests.UnitTests
         {
             var nonStaticTestCommands = new NonStaticTestCommands7();
             const int expected = 10;
-             var testLoggerMoc = new Mock<ITestLogger>();
+            var testLoggerMoc = new Mock<ITestLogger>();
             nonStaticTestCommands.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running NonStaticCommand(\"parameter 1 value\")";
             var commandString = new string[]
@@ -323,8 +329,8 @@ namespace NCmdLiner.Tests.UnitTests
                                 "/parameter1=\"parameter 1 value\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            int actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.AreEqual(expected, actual);
+            var actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
+            Assert.AreEqual(expected, actual.Value);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -339,23 +345,23 @@ namespace NCmdLiner.Tests.UnitTests
             const string logMessage2 = "Running StaticCommand(\"parameter 1 value\")";
             testLoggerMoc.Setup(logger => logger.Write(logMessage1));
             testLoggerMoc.Setup(logger => logger.Write(logMessage2));
-            
-            int nonStaticResult = CmdLinery.Run(new object[] { nonStaticAndStaticCommands },
+
+            var nonStaticResult = CmdLinery.Run(new object[] { nonStaticAndStaticCommands },
                           new string[]
                               {
                                           "NonStaticCommand",
                                           "/parameter1=\"parameter 1 value\""
                               }, new TestApplicationInfo(), new ConsoleMessenger());
 
-            int staticResult = CmdLinery.Run(new object[] { nonStaticAndStaticCommands },
+            var staticResult = CmdLinery.Run(new object[] { nonStaticAndStaticCommands },
                           new string[]
                               {
                                           "StaticCommand",
                                           "/parameter1=\"parameter 1 value\""
                               }, new TestApplicationInfo(), new ConsoleMessenger());
 
-            Assert.AreEqual(1, nonStaticResult);
-            Assert.AreEqual(2, staticResult);
+            Assert.AreEqual(1, nonStaticResult.Value);
+            Assert.AreEqual(2, staticResult.Value);
             testLoggerMoc.Verify(logger => logger.Write(logMessage1), Times.Once);
 
         }
@@ -374,13 +380,13 @@ namespace NCmdLiner.Tests.UnitTests
                                 "/parameter1=\"LDAP://OU=TST,OU=Groups,DC=tst,DC=local\""
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            int actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.AreEqual(expected, actual);
+            var actual = CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
+            Assert.AreEqual(expected, actual.Value);
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
 
         }
 
-        [Test]        
+        [Test]
         public static void RunHelpCommandWithCustomMessenger()
         {
             var nonStaticTestCommands = new NonStaticTestCommands7();
@@ -394,8 +400,8 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             Assert.Throws<CustomTestMessengerException>(() =>
             {
-                CmdLinery.Run(new object[] {nonStaticTestCommands}, commandString, new TestApplicationInfo(), new CustomTestMessenger(), new HelpProvider(() => new CustomTestMessenger()));
-            });            
+                CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new CustomTestMessenger(), new HelpProvider(() => new CustomTestMessenger()));
+            });
         }
 
         [Test]
@@ -412,7 +418,7 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             Assert.Throws<CustomTestApplicationInfoException>(() =>
             {
-                CmdLinery.Run(new object[] {nonStaticTestCommands}, commandString, new CustomTestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                CmdLinery.Run(new object[] { nonStaticTestCommands }, commandString, new CustomTestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
             });
         }
 

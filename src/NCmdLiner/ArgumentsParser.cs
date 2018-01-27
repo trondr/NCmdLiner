@@ -6,20 +6,7 @@ namespace NCmdLiner
 {
     public class ArgumentsParser : IArgumentsParser
     {
-        /// <summary> Gets a command line parameters. </summary>
-        ///
-        /// <remarks> Trond, 02.10.2012. </remarks>
-        ///
-        /// <exception cref="InvalidCommandParameterFormatException"> Thrown when an invalid command
-        ///                                                           parameter format error condition
-        ///                                                           occurs. </exception>
-        /// <exception cref="DuplicateCommandParameterException">     Thrown when a duplicate command
-        ///                                                           parameter error condition occurs. </exception>
-        ///
-        /// <param name="args">   The arguments. </param>
-        ///
-        /// <returns> The command line parameters. </returns>
-        public Dictionary<string, CommandLineParameter> GetCommandLineParameters(string[] args)
+        public Result<Dictionary<string, CommandLineParameter>> GetCommandLineParameters(string[] args)
         {
             var commandLineParameters = new Dictionary<string, CommandLineParameter>();
             if (args.Length >= 2)
@@ -30,23 +17,21 @@ namespace NCmdLiner
                     var match = parameterRegex.Match(args[i]);
                     if (!match.Success)
                     {
-                        throw new InvalidCommandParameterFormatException(
-                            string.Format(
-                                "Invalid command line parameter format: '{0}'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'",
-                                args[i]));
+                        return Result.Fail<Dictionary<string, CommandLineParameter>>(new InvalidCommandParameterFormatException(
+                            $"Invalid command line parameter format: '{args[i]}'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'"));
                     }
                     var commandLineParameter = new CommandLineParameter();
                     commandLineParameter.Name = match.Groups[1].Value;
                     commandLineParameter.Value = match.Groups[2].Value.Trim('"').Trim('\'');
                     if (commandLineParameters.ContainsKey(commandLineParameter.ToString()))
                     {
-                        throw new DuplicateCommandParameterException(
-                            "Command line parameter appeared more than once: " + commandLineParameter.Name);
+                        return Result.Fail<Dictionary<string, CommandLineParameter>>(new DuplicateCommandParameterException(
+                            "Command line parameter appeared more than once: " + commandLineParameter.Name));
                     }
                     commandLineParameters.Add(commandLineParameter.ToString(), commandLineParameter);
                 }
             }
-            return commandLineParameters;
+            return Result.Ok(commandLineParameters);
         }
     }
 }

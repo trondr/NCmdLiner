@@ -2,6 +2,6 @@
 {
     internal interface IMethodParameterBuilder
     {
-        object[] BuildMethodParameters(CommandRule commandRule);
+        Result<object[]> BuildMethodParameters(CommandRule commandRule);
     }
 }

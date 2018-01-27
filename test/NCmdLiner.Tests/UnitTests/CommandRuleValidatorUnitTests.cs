@@ -64,7 +64,7 @@ namespace NCmdLiner.Tests.UnitTests
             }
         }
 
-        [Test]        
+        [Test]
         public static void ValidateCommandNotInitializedThrowNullReferenceExceptionTest()
         {
             using (var testBootStrapper = new TestBootStrapper())
@@ -77,7 +77,7 @@ namespace NCmdLiner.Tests.UnitTests
             }
         }
 
-        [Test]        
+        [Test]
         public static void
             ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsIsEmptyListThrowMissingCommandExceptionTest()
         {
@@ -85,14 +85,15 @@ namespace NCmdLiner.Tests.UnitTests
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<MissingCommandException>(() =>
-                {
-                    target.Validate(new string[] { }, commandRule);
-                });
+                var result = target.Validate(new string[] { }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.AreEqual(typeof(MissingCommandException), result.Exception.GetType());
+                Assert.IsTrue(result.Exception.Message.StartsWith("Command not specified."));
+
             }
         }
 
-        [Test]        
+        [Test]
         public static void
             ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasUnknownCommandThrowInvalidCommandExceptionTest()
         {
@@ -100,26 +101,30 @@ namespace NCmdLiner.Tests.UnitTests
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<InvalidCommandException>(() =>
-                {
-                    target.Validate(new string[] { "SomeUnknownCommand", "/SomeUnknownRequiredParameter=\"SomeRequiredValue\"" }, commandRule);
-                });
+
+                var result = target.Validate(new string[] { "SomeUnknownCommand", "/SomeUnknownRequiredParameter=\"SomeRequiredValue\"" }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.AreEqual(typeof(InvalidCommandException), result.Exception.GetType());
+                Assert.IsTrue(result.Exception.Message.StartsWith("Invalid command: SomeUnknownCommand. Valid command is: SomeValidCommand"));
+
             }
         }
 
-        [Test]        
+        [Test]
         public static void
             ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndInvalidFormatedParameterThrowInvalidCommandParameterFormatExceptionTest
             ()
         {
             using (var testBootStrapper = new TestBootStrapper())
             {
-                var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();                
+                var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<InvalidCommandParameterFormatException>(() =>
-                {
-                    target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter" }, commandRule);
-                });
+
+                var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter" }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), result.Exception.GetType());
+                Assert.AreEqual("Invalid command line parameter format: '/SomeUnknownRequiredParameter'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'", result.Exception.Message);
+
             }
         }
 
@@ -130,14 +135,17 @@ namespace NCmdLiner.Tests.UnitTests
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<InvalidCommandParameterException>(() =>
-                {
-                    target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
-                });
+
+                var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.AreEqual(typeof(InvalidCommandParameterException), result.Exception.GetType());
+                Assert.IsTrue(result.Exception.Message.StartsWith("Invalid command line parameter"));
+
+
             }
         }
 
-        [Test]        
+        [Test]
         public static void
             ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndDuplicateParameterThrowDuplicateCommandParameterExceptionTest
             ()
@@ -146,25 +154,25 @@ namespace NCmdLiner.Tests.UnitTests
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<DuplicateCommandParameterException>(() =>
-                {
-                    target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
-                });
 
+                var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.AreEqual(typeof(DuplicateCommandParameterException), result.Exception.GetType());
+                Assert.AreEqual("Command line parameter appeared more than once: SomeUnknownRequiredParameter", result.Exception.Message);
             }
         }
 
-        [Test]        
+        [Test]
         public static void ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndMissingParameterThrowMissingCommandParameterExceptionTest()
         {
             using (var testBootStrapper = new TestBootStrapper())
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
                 var commandRule = GetTestCommandRule();
-                Assert.Throws<MissingCommandParameterException>(() =>
-                {
-                    target.Validate(new string[] { "SomeValidCommand" }, commandRule);
-                });
+
+                var result = target.Validate(new string[] { "SomeValidCommand" }, commandRule);
+                Assert.IsFalse(result.IsSuccess);
+                Assert.IsTrue(result.Exception.Message.StartsWith("Required parameter is missing"));
             }
         }
 
@@ -181,7 +189,8 @@ namespace NCmdLiner.Tests.UnitTests
             using (var testBootStrapper = new TestBootStrapper())
             {
                 var target = testBootStrapper.Container.Resolve<ICommandRuleValidator>();
-                target.Validate(new string[] { "SomeValidCommand", "/InputFile=\"c:\\temp\\input.txt\"", "/OutputFile=\"c:\\temp\\output.txt\"" }, commandRule);
+                var result = target.Validate(new string[] { "SomeValidCommand", "/InputFile=\"c:\\temp\\input.txt\"", "/OutputFile=\"c:\\temp\\output.txt\"" }, commandRule);
+                Assert.IsTrue(result.IsSuccess);
             }
 
             Assert.IsTrue(commandRule.Command.RequiredParameters.Count == 2, "Number of required parameters");
@@ -190,7 +199,7 @@ namespace NCmdLiner.Tests.UnitTests
             Assert.IsNotNull(commandRule.Command.RequiredParameters[1].Value);
             Assert.IsNotNull(commandRule.Command.OptionalParameters[0].Value);
         }
-        
+
         internal class TestBootStrapper : IDisposable
         {
             private TinyIoCContainer _container;

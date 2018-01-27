@@ -20,14 +20,14 @@ namespace NCmdLiner
             _commandRuleValidator = commandRuleValidator;
         }
 
-        public int Run(List<CommandRule> commandRules, string[] args)
+        public Result<int> Run(List<CommandRule> commandRules, string[] args)
         {
             var applicationInfo = _applicationInfoFactory.Invoke();
             var helpProvider = _helpProviderFactory.Invoke();
             if (args.Length == 0)
             {
                 helpProvider.ShowHelp(commandRules, null, applicationInfo);
-                throw new MissingCommandException("Command not specified.");
+                return Result.Fail<int>(new MissingCommandException("Command not specified."));
             }
             var commandName = args[0];
             if (helpProvider.IsHelpRequested(commandName))
@@ -39,40 +39,53 @@ namespace NCmdLiner
                     helpForCommandRule = commandRules.Find(rule => rule.Command.Name == helpForCommandName);
                 }
                 helpProvider.ShowHelp(commandRules, helpForCommandRule, applicationInfo);
-                return 0;
+                return Result.Ok(0);
             }
             if (helpProvider.IsLicenseRequested(commandName))
             {
                 helpProvider.ShowLicense(applicationInfo);
-                return 0;
+                return Result.Ok(0);
             }
             if (helpProvider.IsCreditsRequested(commandName))
             {
                 helpProvider.ShowCredits(applicationInfo);
-                return 0;
+                return Result.Ok(0);
             }
 
             var commandRule = commandRules.Find(rule => rule.Command.Name == commandName);
-            if (commandRule == null) throw new UnknownCommandException("Unknown command: " + commandName);
-            _commandRuleValidator.Validate(args, commandRule);
-            var parameterArrray =  _methodParameterBuilder.BuildMethodParameters(commandRule);
+            if (commandRule == null)
+                return Result.Fail<int>(new UnknownCommandException("Unknown command: " + commandName));
+            var validateResult = _commandRuleValidator.Validate(args, commandRule);
+            if (validateResult.IsFailure)
+                return validateResult;
+            
+            var parameterArrrayResult = _methodParameterBuilder.BuildMethodParameters(commandRule);
+            if (parameterArrrayResult.IsFailure)
+                return Result.Fail<int>(parameterArrrayResult.Exception);
             try
             {
-                var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrray);
-                if (returnValue is int)
+                var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrrayResult.Value);
+                if (returnValue is int i)
                 {
-                    return (int)returnValue;
+                    return Result.Ok(i);
                 }
-                return 0;
+                return Result.Ok(0);
             }
             catch (TargetInvocationException ex)
             {
                 if (ex.InnerException != null)
                 {
-                    var innerException = ex.InnerException;                    
-                    innerException.PrepForRemotingAndThrow();                    
+                    var innerException = ex.InnerException;
+                    try
+                    {
+                        innerException.PrepForRemotingAndThrow();
+                    }
+                    catch (Exception e)
+                    {
+                        return Result.Fail<int>(e);
+                    }
                 }
-                throw;
+                return Result.Fail<int>(ex);
             }
         }
     }
