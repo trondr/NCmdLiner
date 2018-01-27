@@ -60,6 +60,7 @@
     <Compile Include="Attributes\CommandsAttribute.cs" />
     <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
     <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
+    <Compile Include="Exceptions\AggregateException.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="CmdLinery.cs" />
     <Compile Include="CmdLineryProvider.cs" />
