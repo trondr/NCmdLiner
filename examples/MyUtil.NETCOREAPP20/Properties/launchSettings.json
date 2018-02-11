@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MyUtil.NETCOREAPP20": {
+      "commandName": "Project",
+      "commandLineArgs": "SomeUnknownCommand"
+    }
+  }
+}

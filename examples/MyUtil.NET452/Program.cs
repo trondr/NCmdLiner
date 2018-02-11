@@ -24,7 +24,7 @@ namespace MyUtil
                 //Set the optional authors property
                 exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
                 //Override the assembly info copyright property
-                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013";
+                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013-2018";
 
                 //Optional: Extend the default console messenger to show the help text in a form as well as the default console
                 IMessenger messenger = new MyDialogMessenger(new ConsoleMessenger());
@@ -43,11 +43,11 @@ namespace MyUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine(@"Error: " + ex.Message);
             }
             finally
             {
-                Console.WriteLine("Press ENTER to terminate...");
+                Console.WriteLine(@"Press ENTER to terminate...");
                 Console.ReadLine();
             }
         }

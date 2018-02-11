@@ -15,8 +15,9 @@ namespace MyUtil
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
+            var exitCode = 0;
             try
             {
                 //Optional: Override some application info to modify the header of the auto documentation
@@ -34,7 +35,18 @@ namespace MyUtil
                 //CmdLinery.Run(targetTypes, args, exampleApplicationInfo, messenger);
 
                 //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-                CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger);
+                var result = CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger);
+                result
+                    .OnFailure(() =>
+                    {
+                        Console.WriteLine($@"Error: {result.Exception.Message}");
+                        exitCode = 1;
+                    })
+                    .OnSuccess(i =>
+                    {
+                        Console.WriteLine($@"Success: {i}");
+                        exitCode = i;
+                    });
                 
                 //By default he application info will be exctracted from the executing assembly meta data (assembly info)
                 //and the help text will be output using the default ConsoleMessenger. If the default behaviour
@@ -43,13 +55,14 @@ namespace MyUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine(@"Error: " + ex.Message);
             }
             finally
             {
-                Console.WriteLine("Press ENTER to terminate...");
+                Console.WriteLine(@"Press ENTER to terminate...");
                 Console.ReadLine();
             }
+            return exitCode;
         }
     }
 }

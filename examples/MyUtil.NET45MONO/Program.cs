@@ -43,11 +43,11 @@ namespace MyUtil
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine(@"Error: " + ex.Message);
             }
             finally
             {
-                Console.WriteLine("Press ENTER to terminate...");
+                Console.WriteLine(@"Press ENTER to terminate...");
                 Console.ReadLine();
             }
         }
