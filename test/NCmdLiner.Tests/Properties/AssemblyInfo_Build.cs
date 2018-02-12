@@ -13,8 +13,8 @@
 [assembly: System.Reflection.AssemblyProduct("NCmdLiner.Tests")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright © github.com/trondr 2013-2018")]
 [assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyInformationalVersion("2.0.18027.327.7a1cf86")]
-[assembly: System.Reflection.AssemblyVersion("2.0.18027.327")]
-[assembly: System.Reflection.AssemblyFileVersion("2.0.18027.327")]
+[assembly: System.Reflection.AssemblyInformationalVersion("2.0.18043.330.1084389")]
+[assembly: System.Reflection.AssemblyVersion("2.0.18043.330")]
+[assembly: System.Reflection.AssemblyFileVersion("2.0.18043.330")]
 
 

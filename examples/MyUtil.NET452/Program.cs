@@ -15,8 +15,9 @@ namespace MyUtil
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
+            var exitCode = 0;
             try
             {
                 //Optional: Override some application info to modify the header of the auto documentation
@@ -24,7 +25,7 @@ namespace MyUtil
                 //Set the optional authors property
                 exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
                 //Override the assembly info copyright property
-                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013-2018";
+                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013";
 
                 //Optional: Extend the default console messenger to show the help text in a form as well as the default console
                 IMessenger messenger = new MyDialogMessenger(new ConsoleMessenger());
@@ -34,7 +35,12 @@ namespace MyUtil
                 //CmdLinery.Run(targetTypes, args, exampleApplicationInfo, messenger);
 
                 //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-                CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger);
+                CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger)
+                    .OnSuccess(i => exitCode = i)
+                    .OnFailure(exception => {
+                        exitCode = 1;
+                        Console.WriteLine($@"ERROR: {exception.GetType().Name}: {exception.Message}");
+                    });
                 
                 //By default he application info will be exctracted from the executing assembly meta data (assembly info)
                 //and the help text will be output using the default ConsoleMessenger. If the default behaviour
@@ -44,12 +50,14 @@ namespace MyUtil
             catch (Exception ex)
             {
                 Console.WriteLine(@"Error: " + ex.Message);
+                exitCode = 0x000002C9; //Fatal Application Exit
             }
             finally
             {
                 Console.WriteLine(@"Press ENTER to terminate...");
                 Console.ReadLine();
             }
+            return exitCode;
         }
     }
 }

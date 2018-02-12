@@ -34,7 +34,7 @@ namespace MyUtil
 
                 //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
                 
-                var result = CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
+                var result = CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
                 result.OnFailure(exception =>
                 {
                     Console.WriteLine($"ERROR: {exception.Message}");

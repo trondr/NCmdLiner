@@ -35,17 +35,11 @@ namespace MyUtil
                 //CmdLinery.Run(targetTypes, args, exampleApplicationInfo, messenger);
 
                 //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-                var result = CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger);
-                result
-                    .OnFailure(() =>
-                    {
-                        Console.WriteLine($@"Error: {result.Exception.Message}");
+                CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger)
+                    .OnSuccess(i => exitCode = i)
+                    .OnFailure(exception => {
                         exitCode = 1;
-                    })
-                    .OnSuccess(i =>
-                    {
-                        Console.WriteLine($@"Success: {i}");
-                        exitCode = i;
+                        Console.WriteLine($@"ERROR: {exception.GetType().Name}: {exception.Message}");
                     });
                 
                 //By default he application info will be exctracted from the executing assembly meta data (assembly info)
@@ -56,6 +50,7 @@ namespace MyUtil
             catch (Exception ex)
             {
                 Console.WriteLine(@"Error: " + ex.Message);
+                exitCode = 0x000002C9; //Fatal Application Exit
             }
             finally
             {
