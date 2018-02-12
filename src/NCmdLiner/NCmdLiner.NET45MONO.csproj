@@ -1,21 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configurations>Debug;Release</Configurations>
-	<Platforms>AnyCPU</Platforms>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D6FD8471-ADE1-4F89-84F2-1D0209133107}</ProjectGuid>
+    <ProjectGuid>{7C4530C3-D382-415B-81BD-A24AF7C1860E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NCmdLiner</RootNamespace>
     <AssemblyName>NCmdLiner</AssemblyName>
-    <TargetFrameworkCode>NET45MONO</TargetFrameworkCode>
-    <TargetFrameworkProfile>Mono</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	<TargetFrameworkProfile>Mono</TargetFrameworkProfile>
+	<TargetFrameworkCode>NET45MONO</TargetFrameworkCode>
     <FileAlignment>512</FileAlignment>
-    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
+	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\$(AssemblyName)\obj.$(TargetFrameworkCode)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,18 +33,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +68,7 @@
     <Compile Include="Credit\ICreditInfo.cs" />
     <Compile Include="Credit\ICreditProvider.cs" />
     <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="Exceptions\AggregateException.cs" />
     <Compile Include="Exceptions\CommandMehtodNotStaticException.cs" />
     <Compile Include="Exceptions\CommandRuleNotValidatedExption.cs" />
     <Compile Include="Exceptions\DuplicateCommandException.cs" />
@@ -128,27 +123,15 @@
     <Compile Include="ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
     <EmbeddedResource Include="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NCmdLiner.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
-    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
     <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
     <EmbeddedResource Include="License\1.NConsoler-License.xml" />
     <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
+    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
