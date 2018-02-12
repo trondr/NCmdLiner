@@ -10,6 +10,6 @@ namespace NCmdLiner
 {
     public interface IArrayParser
     {
-        string[] Parse(string value);
+        Result<string[]> Parse(string value);
     }
 }

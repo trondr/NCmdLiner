@@ -25,7 +25,7 @@ namespace NCmdLiner.Tests.UnitTests
         {
             var target = new LicenseProvider();
             var actual = target.GetLicenses(typeof(LicenseProvider).GetAssembly());
-            var expectedCount = 3;
+            var expectedCount = 4;
             Assert.AreEqual(expectedCount,actual.Count, "Number of embeded license xml is not " + expectedCount);
         }
     }

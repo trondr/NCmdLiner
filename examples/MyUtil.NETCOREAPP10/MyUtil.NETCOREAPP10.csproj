@@ -1,27 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
-    <AssemblyName>MyUtil</AssemblyName>
-    <RootNamespace>MyUtil</RootNamespace>
     <TargetFramework>netcoreapp1.0</TargetFramework>
 	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
     <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
-    <AssemblyName>MyUtil</AssemblyName>
-    <RootNamespace>MyUtil</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP10\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP10\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  
   <ItemGroup>
-    <PackageReference Include="NCmdLiner" Version="1.3.17323.304" />
+    <None Remove="Credit\0.NCmdLiner-Credit.xml" />
+    <None Remove="License\0.MyUtil-License.xml" />
+    <None Remove="License\1.NCmdLiner-License.xml" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NCmdLiner-Credit.xml" />
+    <EmbeddedResource Include="License\0.MyUtil-License.xml" />
+    <EmbeddedResource Include="License\1.NCmdLiner-License.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NCmdLiner" Version="2.0.18043.330" />
+  </ItemGroup>
+
 </Project>

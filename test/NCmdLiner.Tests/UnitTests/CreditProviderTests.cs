@@ -24,7 +24,7 @@ namespace NCmdLiner.Tests.UnitTests
         {
             var target = new CreditProvider();
             var actual = target.GetCredits(typeof(CreditProvider).GetAssembly());
-            var expectedCount = 2;
+            var expectedCount = 3;
             Assert.AreEqual(expectedCount,actual.Count, "Number of embeded credit xml is not " + expectedCount);
         }
     }

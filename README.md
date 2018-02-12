@@ -57,6 +57,18 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET Core 1.1
 * .NET Core 2.0
 
+## Supported runtimes NCmdLiner 2.0.*
+
+* Mono 4.5
+* .NET 3.5
+* .NET 4.5.2
+* .NET 4.6.1
+* .NET 4.6.2
+* .NETStandard 1.6
+* .NET Core 1.0
+* .NET Core 1.1
+* .NET Core 2.0
+
 ## Installation
 
 NCmdLiner is installed into your project by Nuget Package Manager
@@ -328,7 +340,7 @@ ExampleCommand3          ExampleCommand2 will do the same as ExampleCommand1
    Example (alternative): NCmdLiner.Example.exe ExampleCommand3 /p1="Some example parameter1 value" /ap2="['string1';'string2';'string3']" /ap3="[True;False;True]" /ap4="[11;21;32]" /ap5="[1,5678;23,425336;126,105]"
 ```
 
-## Building NCmdLiner 1.3.*
+## Building NCmdLiner 2.0.*
 
 * Install Visual Studio 2017
 * Install Mono 4.5 (http://www.mono-project.com/download/) + Run ..\tools\Mono Target\Mono Target.cmd

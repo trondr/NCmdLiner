@@ -1,51 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configurations>Debug;Release</Configurations>
-	<Platforms>AnyCPU</Platforms>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB15035E-74FB-4167-9E6D-3773307ABF79}</ProjectGuid>
+    <ProjectGuid>{C68DCE03-3FC3-4714-AE59-A7AD3F41B462}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyUtil</RootNamespace>
-    <AssemblyName>MyUtil</AssemblyName>
-    <TargetFramework>NET462</TargetFramework>
+    <RootNamespace>MyUtil.NET462</RootNamespace>
+    <AssemblyName>MyUtil.NET462</AssemblyName>
+    <TargetFrameworkCode>NET462</TargetFrameworkCode>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFrameworkCode)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET462</DefineConstants>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET462</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;NET462</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>NCmdLiner.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCmdLiner, Version=1.2.17086.228, Culture=neutral, PublicKeyToken=37f01c356c8e03d5, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.1.2.17086.228\lib\net462\NCmdLiner.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NCmdLiner, Version=2.0.18043.330, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.2.0.18043.330\lib\net462\NCmdLiner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,7 +44,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -70,8 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="NCmdLiner.pfx" />
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -86,11 +78,4 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

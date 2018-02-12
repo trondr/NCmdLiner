@@ -11,10 +11,10 @@
 [assembly: System.Reflection.AssemblyDescription("NCmdLiner features a command line parser with auto documentation capabilities.")]
 [assembly: System.Reflection.AssemblyCompany("github.com/trondr")]
 [assembly: System.Reflection.AssemblyProduct("NCmdLiner")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright © github.com/trondr 2013-2017")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright © github.com/trondr 2013-2018")]
 [assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyInformationalVersion("1.3.17323.304.5ce7079")]
-[assembly: System.Reflection.AssemblyVersion("1.3.17323.304")]
-[assembly: System.Reflection.AssemblyFileVersion("1.3.17323.304")]
+[assembly: System.Reflection.AssemblyInformationalVersion("2.0.18043.330.1084389")]
+[assembly: System.Reflection.AssemblyVersion("2.0.18043.330")]
+[assembly: System.Reflection.AssemblyFileVersion("2.0.18043.330")]
 
 

@@ -53,3 +53,6 @@ project.lock.json.deactivate
 
 _NCrunch_NCmdLiner/
 examples/.vs/
+_NCrunch_NCmdLiner.*/
+.vs/
+

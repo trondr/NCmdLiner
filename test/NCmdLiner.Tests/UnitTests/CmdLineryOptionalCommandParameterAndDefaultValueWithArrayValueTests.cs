@@ -24,7 +24,7 @@ namespace NCmdLiner.Tests.UnitTests
             var testCommand = new OptionalCommandParameterAndDefaultValueWithArrayTestCommand();
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "Help"                    
@@ -44,7 +44,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand(\"Default Value 1\")";
 
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "ExampleCommand"                    
@@ -61,7 +61,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand2(\"10\")";
 
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "ExampleCommand2"
@@ -78,7 +78,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand2(\"13\")";
 
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "ExampleCommand2",
