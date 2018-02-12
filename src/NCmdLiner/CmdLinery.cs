@@ -18,31 +18,43 @@ namespace NCmdLiner
     public class CmdLinery
     {
         #region Run from TargetType
-
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args)
+        public static Result<int> RunEx(Type targetType, string[] args)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
 
-
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
+        public static Result<int> RunEx(Type targetType, string[] args, IApplicationInfo applicationInfo)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -51,19 +63,33 @@ namespace NCmdLiner
             {
                 container.Register(applicationInfo);
 
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
 
-
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args, applicationInfo)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IMessenger messenger)
+        public static Result<int> RunEx(Type targetType, string[] args, IMessenger messenger)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -72,12 +98,26 @@ namespace NCmdLiner
             {
                 container.Register(messenger);
 
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
 
-
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
@@ -85,7 +125,7 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        public static Result<int> RunEx(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -96,19 +136,18 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(messenger);
 
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
-
-
+        
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Type targetType, string[] args, IHelpProvider helpProvider)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -117,12 +156,27 @@ namespace NCmdLiner
             {
                 container.Register(helpProvider);
 
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
 
-
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args, applicationInfo, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
         /// 
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
@@ -130,93 +184,150 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IApplicationInfo applicationInfo,
+        public static Result<int> RunEx(Type targetType, string[] args, IApplicationInfo applicationInfo,IHelpProvider helpProvider)
+        {
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
+            using (var container = GetContainer())
+            {
+                container.Register(applicationInfo);
+                container.Register(helpProvider);
+
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args, applicationInfo, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
+        /// 
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static Result<int> RunEx(Type targetType, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
+            using (var container = GetContainer())
+            {
+                container.Register(messenger);
+                container.Register(helpProvider);
+
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetType, args, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
+        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
+        ///  <param name="args">         The command line arguments. </param>
+        /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        public static Result<int> RunEx(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
             IHelpProvider helpProvider)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
             if (args == null) throw new ArgumentNullException(nameof(args));
             if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
-            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
-            using (var container = GetContainer())
-            {
-                container.Register(applicationInfo);
-                container.Register(helpProvider);
-
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
-                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
-            }
-        }
-
-
-        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
-        /// 
-        ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
-        ///  <param name="args">         The command line arguments. </param>
-        /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
-        /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IMessenger messenger, IHelpProvider helpProvider)
-        {
-            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
-            if (args == null) throw new ArgumentNullException(nameof(args));
             if (messenger == null) throw new ArgumentNullException(nameof(messenger));
             if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
             using (var container = GetContainer())
             {
+                container.Register(applicationInfo);
                 container.Register(messenger);
                 container.Register(helpProvider);
 
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
+                return RunEx(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
-
-
-        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>
-        /// 
+        
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on the target type. </summary>        
         ///  <param name="targetType">   A class with one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
-            IHelpProvider helpProvider)
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type targetType, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
-            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
-            if (args == null) throw new ArgumentNullException(nameof(args));
-            if (applicationInfo == null) throw new ArgumentNullException(nameof(applicationInfo));
-            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
-            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
-            using (var container = GetContainer())
-            {
-                container.Register(applicationInfo);
-                container.Register(messenger);
-                container.Register(helpProvider);
-
-                return Run(new[] {targetType}, args, container.Resolve<IApplicationInfo>(),
-                    container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
-            }
+            var exitCode = 0;
+            RunEx(targetType, args, applicationInfo, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
-
         #endregion
 
         #region Run from Assembly
-
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
         ///
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args)
+        public static Result<int> RunEx(Assembly assembly, string[] args)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -225,7 +336,7 @@ namespace NCmdLiner
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo)
+        public static Result<int> RunEx(Assembly assembly, string[] args, IApplicationInfo applicationInfo)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -234,9 +345,24 @@ namespace NCmdLiner
             {
                 container.Register(applicationInfo);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, applicationInfo)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -245,7 +371,7 @@ namespace NCmdLiner
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IMessenger messenger)
+        public static Result<int> RunEx(Assembly assembly, string[] args, IMessenger messenger)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -254,9 +380,24 @@ namespace NCmdLiner
             {
                 container.Register(messenger);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -266,7 +407,7 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        public static Result<int> RunEx(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -277,9 +418,25 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(messenger);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, applicationInfo, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -288,7 +445,7 @@ namespace NCmdLiner
         ///  <param name="args">         The command line arguments. </param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Assembly assembly, string[] args, IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -297,9 +454,24 @@ namespace NCmdLiner
             {
                 container.Register(helpProvider);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -309,7 +481,7 @@ namespace NCmdLiner
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo,
+        public static Result<int> RunEx(Assembly assembly, string[] args, IApplicationInfo applicationInfo,
             IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
@@ -321,9 +493,25 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(helpProvider);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo,IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, applicationInfo, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
@@ -333,7 +521,7 @@ namespace NCmdLiner
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Assembly assembly, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -344,20 +532,35 @@ namespace NCmdLiner
                 container.Register(messenger);
                 container.Register(helpProvider);
 
-                return Run(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(assembly, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
         }
 
-        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>
-        ///
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
         /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
+        public static Result<int> RunEx(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger,
             IHelpProvider helpProvider)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
@@ -372,29 +575,58 @@ namespace NCmdLiner
                 container.Register(helpProvider);
 
                 var targetTypes = GetTargetTypesFromAssembly(assembly);
-                return Run(targetTypes.ToArray(), args, container.Resolve<IApplicationInfo>(),
+                return RunEx(targetTypes.ToArray(), args, container.Resolve<IApplicationInfo>(),
                     container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
         }
 
+        /// <summary>Run command specified on the command line. The command is implemented by a static method on one of the target types in the specified assembly. </summary>        
+        /// <param name="assembly">An assembly with one or more classes decorated with the [Commands] attribute having one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Assembly assembly, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(assembly, args, applicationInfo, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
         #endregion
 
         #region Run from TargetTypes
-
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -403,7 +635,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -412,9 +644,24 @@ namespace NCmdLiner
             {
                 container.Register(applicationInfo);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, applicationInfo)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -423,7 +670,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IMessenger messenger)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IMessenger messenger)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -432,9 +679,24 @@ namespace NCmdLiner
             {
                 container.Register(messenger);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args,  messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -444,7 +706,7 @@ namespace NCmdLiner
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -455,9 +717,25 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(messenger);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, applicationInfo, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -466,7 +744,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IHelpProvider helpProvider)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -475,9 +753,24 @@ namespace NCmdLiner
             {
                 container.Register(helpProvider);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -487,8 +780,7 @@ namespace NCmdLiner
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo,
-            IHelpProvider helpProvider)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -499,9 +791,25 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(helpProvider);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, applicationInfo, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -511,7 +819,7 @@ namespace NCmdLiner
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -523,9 +831,25 @@ namespace NCmdLiner
                 container.Register(messenger);
                 container.Register(helpProvider);
 
-                return Run(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetTypes, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -536,7 +860,7 @@ namespace NCmdLiner
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         ///  <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        public static Result<int> RunEx(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
             if (targetTypes == null) throw new ArgumentNullException(nameof(targetTypes));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -558,23 +882,52 @@ namespace NCmdLiner
             }
         }
 
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetTypes">   An array of classes, each with one or more static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(Type[] targetTypes, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetTypes, args, applicationInfo, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
         #endregion
 
         #region Run from targetObjects
-
         /// <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         ///
         /// <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///  <param name="args">         The command line arguments. </param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args)
+        public static Result<int> RunEx(object[] targetObjects, string[] args)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
             using (var container = GetContainer())
             {
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -583,7 +936,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -593,9 +946,24 @@ namespace NCmdLiner
             {
                 container.Register(applicationInfo);
 
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, applicationInfo)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -604,7 +972,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IMessenger messenger)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IMessenger messenger)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -614,9 +982,24 @@ namespace NCmdLiner
             {
                 container.Register(messenger);
 
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -626,7 +1009,7 @@ namespace NCmdLiner
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -638,9 +1021,25 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(messenger);
 
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, applicationInfo, messenger)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -649,7 +1048,7 @@ namespace NCmdLiner
         ///   <param name="args">         The command line arguments. </param>
         /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IHelpProvider helpProvider)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IHelpProvider helpProvider)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -659,9 +1058,24 @@ namespace NCmdLiner
             {
                 container.Register(helpProvider);
 
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
+        }
+
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
@@ -671,7 +1085,7 @@ namespace NCmdLiner
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -683,42 +1097,73 @@ namespace NCmdLiner
                 container.Register(applicationInfo);
                 container.Register(helpProvider);
 
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(),
                     container.Resolve<IHelpProvider>());
             }
         }
 
-        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
-        /// 
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
-        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
-            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
-            if (args == null) throw new ArgumentNullException(nameof(args));
-            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
-            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
-
-            using (var container = GetContainer())
-            {
-                container.Register(messenger);
-                container.Register(helpProvider);
-                return Run(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
-            }
+            var exitCode = 0;
+            RunEx(targetObjects, args, applicationInfo, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
         }
         
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
-        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
         /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
-        public static Result<int> Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
+            if (args == null) throw new ArgumentNullException(nameof(args));
+            if (messenger == null) throw new ArgumentNullException(nameof(messenger));
+            if (helpProvider == null) throw new ArgumentNullException(nameof(helpProvider));
+
+            using (var container = GetContainer())
+            {
+                container.Register(messenger);
+                container.Register(helpProvider);
+                return RunEx(targetObjects, args, container.Resolve<IApplicationInfo>(), container.Resolve<IMessenger>(), container.Resolve<IHelpProvider>());
+            }
+        }
+        
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+            return exitCode;
+        }
+        
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> Result with the user defined return code. Typically 0 means success. In case of failure the result contains the exception information </returns>
+        public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
             if (targetObjects == null) throw new ArgumentNullException(nameof(targetObjects));
             if (args == null) throw new ArgumentNullException(nameof(args));
@@ -741,6 +1186,23 @@ namespace NCmdLiner
             }
         }
 
+        ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
+        ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
+        ///   <param name="args">         The command line arguments. </param>
+        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <returns> The user defined return code. Typically 0 means success. </returns>
+        [Obsolete("Run method is deprecated, please use RunEx method instead.")]
+        public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
+        {
+            var exitCode = 0;
+            RunEx(targetObjects, args, applicationInfo,messenger, helpProvider)
+                .OnSuccess(i => exitCode = i)
+                .OnFailure(exception => throw exception);
+                return exitCode;
+        }
+        
         private static TinyIoCContainer GetContainer()
         {
             var container = new TinyIoCContainer();

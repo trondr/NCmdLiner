@@ -28,7 +28,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "Help"
@@ -64,7 +64,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "Help"

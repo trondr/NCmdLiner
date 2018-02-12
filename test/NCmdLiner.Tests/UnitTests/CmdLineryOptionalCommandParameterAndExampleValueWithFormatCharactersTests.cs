@@ -26,7 +26,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand(\"{d}\")";
 
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "ExampleCommand",
@@ -44,7 +44,7 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand(\"{de}\")";
 
-            CmdLinery.Run(new object[] { testCommand },
+            CmdLinery.RunEx(new object[] { testCommand },
                 new string[]
                 {
                     "ExampleCommand"
