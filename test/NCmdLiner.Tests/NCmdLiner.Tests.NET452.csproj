@@ -99,6 +99,7 @@
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti1Duplicate.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti2.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommandsMulti2Duplicate.cs" />
+    <Compile Include="UnitTests\TestCommands\TestCommandThrowingCustomException.cs" />
     <Compile Include="UnitTests\TextFormaterTests.cs" />
     <Compile Include="UnitTests\ValueConverterTests.cs" />
   </ItemGroup>
