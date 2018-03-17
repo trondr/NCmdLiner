@@ -7,6 +7,7 @@
 //// All rights reserved.
 
 using System;
+using System.IO;
 using Moq;
 using NCmdLiner;
 using NCmdLiner.Exceptions;
@@ -471,6 +472,15 @@ namespace NCmdLiner.Tests.UnitTests
                               {
                                           "Credits",
                               }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+        }
+        [Test]
+        public static void RunCommandThatThrowsAnException()
+        {
+            string[] args = { "SomeCommandThrowingAnException" };
+            var result = CmdLinery.RunEx(typeof(TestCommandThrowingCustomException), args);
+            Assert.AreEqual(false, result.IsSuccess);
+            Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
+            Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
         }
     }
 }
