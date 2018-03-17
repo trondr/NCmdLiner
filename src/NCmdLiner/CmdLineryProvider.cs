@@ -65,6 +65,10 @@ namespace NCmdLiner
             try
             {
                 var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrrayResult.Value);
+                if (returnValue is Result<int> result)
+                {
+                    return result;
+                }
                 if (returnValue is int i)
                 {
                     return Result.Ok(i);

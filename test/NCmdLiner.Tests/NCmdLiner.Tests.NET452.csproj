@@ -87,6 +87,7 @@
     <Compile Include="UnitTests\ParseArrayTests.cs" />
     <Compile Include="UnitTests\TestCommands\NonStaticAndStaticTestCommands8.cs" />
     <Compile Include="UnitTests\TestCommands\NonStaticTestCommands7.cs" />
+    <Compile Include="UnitTests\TestCommands\TestCommandReturningFailureResult.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands0.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands1.cs" />
     <Compile Include="UnitTests\TestCommands\TestCommands2.cs" />

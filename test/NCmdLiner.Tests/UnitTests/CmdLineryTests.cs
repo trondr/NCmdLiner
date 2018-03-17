@@ -482,5 +482,16 @@ namespace NCmdLiner.Tests.UnitTests
             Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
             Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
         }
+
+
+        [Test]
+        public static void RunCommandReturnsFailureResult()
+        {
+            string[] args = { "SomeCommandReturningFailureResult" };
+            var result = CmdLinery.RunEx(typeof(TestCommandReturningFailureResult), args);
+            Assert.AreEqual(false, result.IsSuccess);
+            Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
+            Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
+        }
     }
 }
