@@ -19,6 +19,7 @@ goto Build
 
 :Build
 Echo Building %ProductName%...
+nuget restore .\examples\MyUtil.NET35\MyUtil.NET35.sln
 Echo msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
 msbuild.exe %ProductName%.build %1 %2 %3 %4 %5 %6 %7 %8 %9
 Set BuildErrorLevel=%ERRORLEVEL%
