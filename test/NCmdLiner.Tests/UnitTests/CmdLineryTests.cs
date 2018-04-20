@@ -8,8 +8,10 @@
 
 using System;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using Moq;
 using NCmdLiner;
+using NCmdLiner.Attributes;
 using NCmdLiner.Exceptions;
 using NCmdLiner.Tests.Common;
 using NCmdLiner.Tests.UnitTests.Custom;
@@ -492,6 +494,24 @@ namespace NCmdLiner.Tests.UnitTests
             Assert.AreEqual(false, result.IsSuccess);
             Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
             Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
+        }
+
+        [Test]
+        public static void RunCommandOnNonStaticCommandDefinitionClass()
+        {
+            var actualResult = CmdLinery.RunEx(typeof(NonStaticCommandDefinition), new []{ "NonStaticTestCommand" });
+            Assert.IsTrue(actualResult.IsFailure);
+            Assert.IsTrue(actualResult.Exception.Message.StartsWith("The command '"), "Exception message does not start with 'Command ''");
+            Assert.AreEqual(actualResult.Exception.GetType(), typeof(NCmdLinerException));
+        }
+
+        public class NonStaticCommandDefinition
+        {
+            [Command(Description = "Non static test command description", Summary = "Non static test command summary")]
+            public Result<int> NonStaticTestCommand()
+            {
+                return Result.Ok(15);
+            }
         }
     }
 }

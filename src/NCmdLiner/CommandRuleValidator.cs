@@ -16,6 +16,12 @@ namespace NCmdLiner
             var command = args[0];
             if (commandRule.Command.Name.ToLower() != command.ToLower())
                 return Result.Fail<int>(new InvalidCommandException( "Invalid command: " + command + ". Valid command is: " + commandRule.Command.Name));
+
+            if (commandRule.Instance == null && commandRule.Method != null && !commandRule.Method.IsStatic)
+            {
+                return Result.Fail<int>(new NCmdLinerException($"The command '{commandRule.Command.Name}' is defined as a non static method. Make the method static to fix the issue."));
+            }
+            
             if (!(commandRule.Command.RequiredParameters.Count == 0 && commandRule.Command.OptionalParameters.Count == 0))
             {
                 var commandLineParameters = new ArgumentsParser().GetCommandLineParameters(args);
