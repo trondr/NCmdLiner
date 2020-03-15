@@ -45,8 +45,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = target.GetCommandRule(typeof(TestCommands0).GetMethodEx("CommandWithoutCommandAttribute"));
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(MissingCommandAttributeException), result.Exception.GetType());
-            Assert.IsTrue(result.Exception.Message.StartsWith("Method is not decorate with the [Command] attribute: CommandWithoutCommandAttribute"));
+            Assert.AreEqual(typeof(MissingCommandAttributeException), result.ToException().GetType());
+            Assert.IsTrue(result.ToException().Message.StartsWith("Method is not decorate with the [Command] attribute: CommandWithoutCommandAttribute"));
 
 
         }
@@ -58,20 +58,20 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = target.GetCommandRule(typeof(TestCommands0).GetMethodEx("CommandWithOneParameterWithoutParameterAttribute"));
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(MissingCommandParameterAttributeException), result.Exception.GetType());
-            Assert.IsTrue(result.Exception.Message.StartsWith("Command parameter attribute is not decorating the parameter 'someParameter' in the method 'CommandWithOneParameterWithoutParameterAttribute'"));
+            Assert.AreEqual(typeof(MissingCommandParameterAttributeException), result.ToException().GetType());
+            Assert.IsTrue(result.ToException().Message.StartsWith("Command parameter attribute is not decorating the parameter 'someParameter' in the method 'CommandWithOneParameterWithoutParameterAttribute'"));
 
         }
 
         [Test]
-        public static void GetCommandRuleMetodHasCommandWithNonAllowedDuplicateAttributesParametersThrowDuplicateCommandParameterAttributeExceptionUnitTest()
+        public static void GetCommandRuleMethodHasCommandWithNonAllowedDuplicateAttributesParametersThrowDuplicateCommandParameterAttributeExceptionUnitTest()
         {
             CommandRuleProvider target = new CommandRuleProvider();
 
             var result = target.GetCommandRule(typeof(TestCommands0).GetMethodEx("CommandWithNonAllowedDuplicateAttributesParameters"));
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(DuplicateCommandParameterAttributeException), result.Exception.GetType());
-            Assert.IsTrue(result.Exception.Message.StartsWith("More than one command parameter attribute decorates the parameter 'someOptionalParameter' in the method 'CommandWithNonAllowedDuplicateAttributesParameters'."));
+            Assert.AreEqual(typeof(DuplicateCommandParameterAttributeException), result.ToException().GetType());
+            Assert.IsTrue(result.ToException().Message.StartsWith("More than one command parameter attribute decorates the parameter 'someOptionalParameter' in the method 'CommandWithNonAllowedDuplicateAttributesParameters'."));
 
         }
 
@@ -84,8 +84,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = target.GetCommandRule(typeof(TestCommands0).GetMethodEx("CommandWithIncorrectlyOrderedParameters"));
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(RequiredParameterFoundAfterOptionalParameterExecption), result.Exception.GetType());
-            Assert.IsTrue(result.Exception.Message.StartsWith("Required parameter 'someRequiredParameter' in method 'CommandWithIncorrectlyOrderedParameters' must be defined before any optional parameters."));
+            Assert.AreEqual(typeof(RequiredParameterFoundAfterOptionalParameterExecption), result.ToException().GetType());
+            Assert.IsTrue(result.ToException().Message.StartsWith("Required parameter 'someRequiredParameter' in method 'CommandWithIncorrectlyOrderedParameters' must be defined before any optional parameters."));
         }
 
         [Test]
@@ -94,9 +94,9 @@ namespace NCmdLiner.Tests.UnitTests
             CommandRuleProvider target = new CommandRuleProvider();
             string expectedCommandName = "CommandWithTwoRequiredParameterAndOneOptionalParameter";
             var commandRule = target.GetCommandRule(typeof(TestCommands0).GetMethodEx(expectedCommandName));
-            Assert.AreEqual(expectedCommandName, commandRule.Value.Command.Name);
-            Assert.AreEqual(2, commandRule.Value.Command.RequiredParameters.Count);
-            Assert.AreEqual(1, commandRule.Value.Command.OptionalParameters.Count);
+            Assert.AreEqual(expectedCommandName, commandRule.ToValue().Command.Name);
+            Assert.AreEqual(2, commandRule.ToValue().Command.RequiredParameters.Count);
+            Assert.AreEqual(1, commandRule.ToValue().Command.OptionalParameters.Count);
         }
 
         [Test]
@@ -104,18 +104,18 @@ namespace NCmdLiner.Tests.UnitTests
         {
             CommandRuleProvider target = new CommandRuleProvider();
             var actual = target.GetCommandRules(typeof(FiveTestCommands));
-            Assert.AreEqual(5, actual.Value.Count);
-            Assert.IsTrue(actual.Value[0].Command.Name == "Command1", "Name of command 1");
-            Assert.IsTrue(actual.Value[1].Command.Name == "Command2", "Name of command 2");
-            Assert.IsTrue(actual.Value[2].Command.Name == "Command3", "Name of command 3");
-            Assert.IsTrue(actual.Value[3].Command.Name == "Command4", "Name of command 4");
-            Assert.IsTrue(actual.Value[4].Command.Name == "Command5", "Name of command 5");
+            Assert.AreEqual(5, actual.ToValue().Count);
+            Assert.IsTrue(actual.ToValue()[0].Command.Name == "Command1", "Name of command 1");
+            Assert.IsTrue(actual.ToValue()[1].Command.Name == "Command2", "Name of command 2");
+            Assert.IsTrue(actual.ToValue()[2].Command.Name == "Command3", "Name of command 3");
+            Assert.IsTrue(actual.ToValue()[3].Command.Name == "Command4", "Name of command 4");
+            Assert.IsTrue(actual.ToValue()[4].Command.Name == "Command5", "Name of command 5");
 
-            Assert.IsTrue(actual.Value[0].Command.Description == "Command 1 description", "Description of command 1");
-            Assert.IsTrue(actual.Value[1].Command.Description == "Command 2 description", "Description of command 2");
-            Assert.IsTrue(actual.Value[2].Command.Description == "Command 3 description", "Description of command 3");
-            Assert.IsTrue(actual.Value[3].Command.Description == "Command 4 description", "Description of command 4");
-            Assert.IsTrue(actual.Value[4].Command.Description == "Command 5 description", "Description of command 5");
+            Assert.IsTrue(actual.ToValue()[0].Command.Description == "Command 1 description", "Description of command 1");
+            Assert.IsTrue(actual.ToValue()[1].Command.Description == "Command 2 description", "Description of command 2");
+            Assert.IsTrue(actual.ToValue()[2].Command.Description == "Command 3 description", "Description of command 3");
+            Assert.IsTrue(actual.ToValue()[3].Command.Description == "Command 4 description", "Description of command 4");
+            Assert.IsTrue(actual.ToValue()[4].Command.Description == "Command 5 description", "Description of command 5");
         }
 
         [Test]
@@ -124,13 +124,13 @@ namespace NCmdLiner.Tests.UnitTests
             var target = new CommandRuleProvider();
             string expectedCommandName = "CommandWithBothDescriptionAndSummaryDefined";
             var actualCommandRule = target.GetCommandRule(typeof(TestCommands9).GetMethodEx(expectedCommandName));
-            Assert.AreEqual(expectedCommandName, actualCommandRule.Value.Command.Name);
-            Assert.AreEqual(0, actualCommandRule.Value.Command.RequiredParameters.Count);
-            Assert.AreEqual(0, actualCommandRule.Value.Command.OptionalParameters.Count);
+            Assert.AreEqual(expectedCommandName, actualCommandRule.ToValue().Command.Name);
+            Assert.AreEqual(0, actualCommandRule.ToValue().Command.RequiredParameters.Count);
+            Assert.AreEqual(0, actualCommandRule.ToValue().Command.OptionalParameters.Count);
             var expectedDescription = "Command with both summary and description defined";
             var epectedSummary = "Summary of command";
-            Assert.AreEqual(expectedDescription, actualCommandRule.Value.Command.Description);
-            Assert.AreEqual(epectedSummary, actualCommandRule.Value.Command.Summary);
+            Assert.AreEqual(expectedDescription, actualCommandRule.ToValue().Command.Description);
+            Assert.AreEqual(epectedSummary, actualCommandRule.ToValue().Command.Summary);
         }
 
         [Test]
@@ -139,13 +139,13 @@ namespace NCmdLiner.Tests.UnitTests
             var target = new CommandRuleProvider();
             string expectedCommandName = "CommandWithOnlyDescriptionAndNoSummaryDefined";
             var actualCommandRule = target.GetCommandRule(typeof(TestCommands9).GetMethodEx(expectedCommandName));
-            Assert.AreEqual(expectedCommandName, actualCommandRule.Value.Command.Name);
-            Assert.AreEqual(0, actualCommandRule.Value.Command.RequiredParameters.Count);
-            Assert.AreEqual(0, actualCommandRule.Value.Command.OptionalParameters.Count);
+            Assert.AreEqual(expectedCommandName, actualCommandRule.ToValue().Command.Name);
+            Assert.AreEqual(0, actualCommandRule.ToValue().Command.RequiredParameters.Count);
+            Assert.AreEqual(0, actualCommandRule.ToValue().Command.OptionalParameters.Count);
             var expectedDescription = "Command with only description defined. Summary should the be set to the same as the description.";
             var epectedSummary = "Command with only description defined. Summary should the be set to the same as the description.";
-            Assert.AreEqual(expectedDescription, actualCommandRule.Value.Command.Description);
-            Assert.AreEqual(epectedSummary, actualCommandRule.Value.Command.Summary);
+            Assert.AreEqual(expectedDescription, actualCommandRule.ToValue().Command.Description);
+            Assert.AreEqual(epectedSummary, actualCommandRule.ToValue().Command.Summary);
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace NCmdLiner.Tests.UnitTests
             var actualCommandRules = target.GetCommandRules(typeof(TestCommands9));
             var messenger = new StringMessenger();
             var helpProvider = new HelpProvider(new Func<IMessenger>(() => messenger));
-            helpProvider.ShowHelp(actualCommandRules.Value, null, new ApplicationInfo());
+            helpProvider.ShowHelp(actualCommandRules.ToValue(), null, new ApplicationInfo());
             Assert.Contains("CommandWithBothDescriptionAndSummaryDefined              Summary of command", messenger.Message.ToString());
             Assert.Contains("CommandWithOnlyDescriptionAndNoSummaryDefined            Command with only", messenger.Message.ToString());
             Assert.Contains("CommandWithTwoRequiredParameterAndOneOptionalParameter   Summary of", messenger.Message.ToString());

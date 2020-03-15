@@ -109,7 +109,7 @@
     <Compile Include="RequiredCommandParameter.cs" />
     <Compile Include="Resources\EmbeddedResource.cs" />
     <Compile Include="Resources\IEmbeddedResource.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="ResultExtensions.cs" />
     <Compile Include="SerializerHelper.cs" />
     <Compile Include="StringToObject.cs" />
     <Compile Include="TextFormater.cs" />
@@ -135,5 +135,8 @@
     <EmbeddedResource Include="License\1.NConsoler-License.xml" />
     <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
     <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" Version="3.4.12" />
   </ItemGroup>
 </Project>

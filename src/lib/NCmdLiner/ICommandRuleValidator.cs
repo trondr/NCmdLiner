@@ -1,4 +1,6 @@
-﻿namespace NCmdLiner
+﻿using LanguageExt.Common;
+
+namespace NCmdLiner
 {
     public interface ICommandRuleValidator
     {

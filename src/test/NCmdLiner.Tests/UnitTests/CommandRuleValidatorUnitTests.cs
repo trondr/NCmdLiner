@@ -87,8 +87,8 @@ namespace NCmdLiner.Tests.UnitTests
                 var commandRule = GetTestCommandRule();
                 var result = target.Validate(new string[] { }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.AreEqual(typeof(MissingCommandException), result.Exception.GetType());
-                Assert.IsTrue(result.Exception.Message.StartsWith("Command not specified."));
+                Assert.AreEqual(typeof(MissingCommandException), result.ToException().GetType());
+                Assert.IsTrue(result.ToException().Message.StartsWith("Command not specified."));
 
             }
         }
@@ -104,8 +104,8 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var result = target.Validate(new string[] { "SomeUnknownCommand", "/SomeUnknownRequiredParameter=\"SomeRequiredValue\"" }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.AreEqual(typeof(InvalidCommandException), result.Exception.GetType());
-                Assert.IsTrue(result.Exception.Message.StartsWith("Invalid command: SomeUnknownCommand. Valid command is: SomeValidCommand"));
+                Assert.AreEqual(typeof(InvalidCommandException), result.ToException().GetType());
+                Assert.IsTrue(result.ToException().Message.StartsWith("Invalid command: SomeUnknownCommand. Valid command is: SomeValidCommand"));
 
             }
         }
@@ -122,8 +122,8 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter" }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), result.Exception.GetType());
-                Assert.AreEqual("Invalid command line parameter format: '/SomeUnknownRequiredParameter'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'", result.Exception.Message);
+                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), result.ToException().GetType());
+                Assert.AreEqual("Invalid command line parameter format: '/SomeUnknownRequiredParameter'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'", result.ToException().Message);
 
             }
         }
@@ -138,8 +138,8 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.AreEqual(typeof(InvalidCommandParameterException), result.Exception.GetType());
-                Assert.IsTrue(result.Exception.Message.StartsWith("Invalid command line parameter"));
+                Assert.AreEqual(typeof(InvalidCommandParameterException), result.ToException().GetType());
+                Assert.IsTrue(result.ToException().Message.StartsWith("Invalid command line parameter"));
 
 
             }
@@ -157,8 +157,8 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var result = target.Validate(new string[] { "SomeValidCommand", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"", "/SomeUnknownRequiredParameter=\"SomeUnknownValue\"" }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.AreEqual(typeof(DuplicateCommandParameterException), result.Exception.GetType());
-                Assert.AreEqual("Command line parameter appeared more than once: SomeUnknownRequiredParameter", result.Exception.Message);
+                Assert.AreEqual(typeof(DuplicateCommandParameterException), result.ToException().GetType());
+                Assert.AreEqual("Command line parameter appeared more than once: SomeUnknownRequiredParameter", result.ToException().Message);
             }
         }
 
@@ -172,7 +172,7 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var result = target.Validate(new string[] { "SomeValidCommand" }, commandRule);
                 Assert.IsFalse(result.IsSuccess);
-                Assert.IsTrue(result.Exception.Message.StartsWith("Required parameter is missing"));
+                Assert.IsTrue(result.ToException().Message.StartsWith("Required parameter is missing"));
             }
         }
 

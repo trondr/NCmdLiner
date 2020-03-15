@@ -10,6 +10,7 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Text.RegularExpressions;
+using LanguageExt.Common;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -30,7 +31,7 @@ namespace NCmdLiner
             value = TrimArrayString(value);
             if (string.IsNullOrEmpty(value))
             {
-                return Result.Ok(new string[] {});
+                return new Result<string[]>(new string[] {});
             }
 
             GetDelimiterAndQuote(value, out char delimiter, out var quote);
@@ -56,18 +57,18 @@ namespace NCmdLiner
             var resultList = new StringCollection();
             if (!value.Contains(quote.ToString()))
             {
-                //Quotes is not beeing used, just split on delimiter
-                return Result.Ok(value.Split(delimiter));
+                //Quotes is not being used, just split on delimiter
+                return new Result<string[]>(value.Split(delimiter));
             }
 
-            //Quotes is beeing used, use regular expression to parse the csv format.
+            //Quotes is being used, use regular expression to parse the csv format.
             var delimiterString = Regex.Escape(delimiter.ToString());
             var quoteString = Regex.Escape(quote.ToString());
             var pattern = new StringBuilder();
             pattern.Append("([" + quoteString + "]{0,1})"); //Match 0 or 1 starting quote character
-            pattern.Append("([^" + quoteString + "]{0,})"); //Match everything in between quote charchters
-            pattern.Append("\\1"); //Match 0 or 1 quote charchter if that was found in the first match
-            pattern.Append("(" + delimiterString + "|$)"); //Match 1 delimter or end of line
+            pattern.Append("([^" + quoteString + "]{0,})"); //Match everything in between quote characters
+            pattern.Append("\\1"); //Match 0 or 1 quote character if that was found in the first match
+            pattern.Append("(" + delimiterString + "|$)"); //Match 1 delimiter or end of line
 
             //string pattern = string.Format("{1}([^{1}]+){1}{0}", delimiter, quote) + "{0,1}";
             var regexObj = new Regex(pattern.ToString());
@@ -77,7 +78,7 @@ namespace NCmdLiner
             {
                 if (matchResult.Index != expectedNexMatchIndex)
                 {
-                    return Result.Fail<string[]>(new InvalidArrayParseException("Array format seems to be corrupt: " + value));
+                    return new Result<string[]>(new InvalidArrayParseException("Array format seems to be corrupt: " + value));
                 }
                 expectedNexMatchIndex = matchResult.Index + matchResult.Length;
 #if DEBUG
@@ -96,7 +97,7 @@ namespace NCmdLiner
             }
             var array = new string[resultList.Count];
             resultList.CopyTo(array, 0);
-            return Result.Ok(array);
+            return new Result<string[]>(array);
         }
 
         private static string TrimArrayString(string value)
@@ -133,7 +134,7 @@ namespace NCmdLiner
             }
             foreach (var d in supportedDelimiters)
             {
-                var compare = string.Format("{0}", d); //Example: ;
+                var compare = $"{d}"; //Example: ;
                 if (value.Contains(compare))
                 {
                     delimiter = d;

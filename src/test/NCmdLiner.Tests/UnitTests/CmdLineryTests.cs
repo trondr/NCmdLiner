@@ -9,6 +9,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using LanguageExt.Common;
 using Moq;
 using NCmdLiner;
 using NCmdLiner.Attributes;
@@ -53,8 +54,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = CmdLinery.RunEx(typeof(TestCommands1), new string[] { "CommandWithNoParametersThrowingException" }, new TestApplicationInfo());
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(NCmdLinerException), result.Exception.GetType());
-            Assert.Contains("Concoler test exception message", result.Exception.Message);
+            Assert.AreEqual(typeof(NCmdLinerException), result.ToException().GetType());
+            Assert.Contains("Concoler test exception message", result.ToException().Message);
 
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -95,7 +96,7 @@ namespace NCmdLiner.Tests.UnitTests
         {
             var result = CmdLinery.RunEx(typeof(TestCommands1), new string[] { "CommandWithRequiredStringParameter" }, new TestApplicationInfo());
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("Required parameter is missing: parameter1", result.Exception.Message);
+            Assert.AreEqual("Required parameter is missing: parameter1", result.ToException().Message);
 
         }
 
@@ -196,8 +197,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = CmdLinery.RunEx(typeof(TestCommands2), commandString, new TestApplicationInfo());
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(MissingExampleValueException),result.Exception.GetType());
-            Assert.AreEqual("Example vaue has not been specified for parameter 'parameter1' in command 'CommandWithOneRequiredStringParameterWithoutExampleValue'", result.Exception.Message);
+            Assert.AreEqual(typeof(MissingExampleValueException),result.ToException().GetType());
+            Assert.AreEqual("Example value has not been specified for parameter 'parameter1' in command 'CommandWithOneRequiredStringParameterWithoutExampleValue'", result.ToException().Message);
 
 
         }
@@ -217,8 +218,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = CmdLinery.RunEx(typeof(TestCommands3), commandString, new TestApplicationInfo());
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(MissingExampleValueException), result.Exception.GetType());
-            Assert.AreEqual("Example vaue has not been specified for parameter 'parameter1' in command 'CommandWithOneOptionalStringParameterWithoutExampleValue'", result.Exception.Message);
+            Assert.AreEqual(typeof(MissingExampleValueException), result.ToException().GetType());
+            Assert.AreEqual("Example value has not been specified for parameter 'parameter1' in command 'CommandWithOneOptionalStringParameterWithoutExampleValue'", result.ToException().Message);
 
         }
 
@@ -237,8 +238,8 @@ namespace NCmdLiner.Tests.UnitTests
 
             var result = CmdLinery.RunEx(typeof(TestCommands5), commandString, new TestApplicationInfo());
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual(typeof(MissingDefaultValueException), result.Exception.GetType());
-            Assert.AreEqual("Missing default value for optional parameter with alternative name 'p2'", result.Exception.Message);
+            Assert.AreEqual(typeof(MissingDefaultValueException), result.ToException().GetType());
+            Assert.AreEqual("Missing default value for optional parameter with alternative name 'p2'", result.ToException().Message);
 
         }
 
@@ -280,7 +281,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             var actual = CmdLinery.RunEx(typeof(TestCommands4), commandString, new TestApplicationInfo());
-            Assert.AreEqual(expected, actual.Value);
+            Assert.AreEqual(expected, actual.ToValue());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -297,7 +298,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             var actual = CmdLinery.RunEx(new Type[] { typeof(TestCommandsMulti1), typeof(TestCommandsMulti2) }, commandString, new TestApplicationInfo());
-            Assert.AreEqual(expected, actual.Value);
+            Assert.AreEqual(expected, actual.ToValue());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -314,8 +315,8 @@ namespace NCmdLiner.Tests.UnitTests
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             var actual = CmdLinery.RunEx(new Type[] { typeof(TestCommandsMulti1Duplicate), typeof(TestCommandsMulti2Duplicate) }, commandString, new TestApplicationInfo());
             Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(typeof(DuplicateCommandException),actual.Exception.GetType());
-            Assert.AreEqual("A duplicate command has been defined: FirstCommand", actual.Exception.Message);
+            Assert.AreEqual(typeof(DuplicateCommandException),actual.ToException().GetType());
+            Assert.AreEqual("A duplicate command has been defined: FirstCommand", actual.ToException().Message);
         }
 
         [Test]
@@ -333,7 +334,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             var actual = CmdLinery.RunEx(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.AreEqual(expected, actual.Value);
+            Assert.AreEqual(expected, actual.ToValue());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
 
@@ -363,8 +364,8 @@ namespace NCmdLiner.Tests.UnitTests
                                           "/parameter1=\"parameter 1 value\""
                               }, new TestApplicationInfo(), new ConsoleMessenger());
 
-            Assert.AreEqual(1, nonStaticResult.Value);
-            Assert.AreEqual(2, staticResult.Value);
+            Assert.AreEqual(1, nonStaticResult.ToValue());
+            Assert.AreEqual(2, staticResult.ToValue());
             testLoggerMoc.Verify(logger => logger.Write(logMessage1), Times.Once);
 
         }
@@ -384,7 +385,7 @@ namespace NCmdLiner.Tests.UnitTests
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
             var actual = CmdLinery.RunEx(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger());
-            Assert.AreEqual(expected, actual.Value);
+            Assert.AreEqual(expected, actual.ToValue());
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
 
         }
@@ -481,8 +482,8 @@ namespace NCmdLiner.Tests.UnitTests
             string[] args = { "SomeCommandThrowingAnException" };
             var result = CmdLinery.RunEx(typeof(TestCommandThrowingCustomException), args);
             Assert.AreEqual(false, result.IsSuccess);
-            Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
-            Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
+            Assert.AreEqual("Testing. Some example was not found.", result.ToException().Message);
+            Assert.AreEqual(typeof(FileNotFoundException), result.ToException().GetType());
         }
 
 
@@ -492,17 +493,17 @@ namespace NCmdLiner.Tests.UnitTests
             string[] args = { "SomeCommandReturningFailureResult" };
             var result = CmdLinery.RunEx(typeof(TestCommandReturningFailureResult), args);
             Assert.AreEqual(false, result.IsSuccess);
-            Assert.AreEqual("Testing. Some example was not found.", result.Exception.Message);
-            Assert.AreEqual(typeof(FileNotFoundException), result.Exception.GetType());
+            Assert.AreEqual("Testing. Some example was not found.", result.ToException().Message);
+            Assert.AreEqual(typeof(FileNotFoundException), result.ToException().GetType());
         }
 
         [Test]
         public static void RunCommandOnNonStaticCommandDefinitionClass()
         {
             var actualResult = CmdLinery.RunEx(typeof(NonStaticCommandDefinition), new []{ "NonStaticTestCommand" });
-            Assert.IsTrue(actualResult.IsFailure);
-            Assert.IsTrue(actualResult.Exception.Message.StartsWith("The command '"), "Exception message does not start with 'Command ''");
-            Assert.AreEqual(actualResult.Exception.GetType(), typeof(NCmdLinerException));
+            Assert.IsTrue(actualResult.IsFaulted);
+            Assert.IsTrue(actualResult.ToException().Message.StartsWith("The command '"), "Exception message does not start with 'Command ''");
+            Assert.AreEqual(actualResult.ToException().GetType(), typeof(NCmdLinerException));
         }
 
         public class NonStaticCommandDefinition
@@ -510,7 +511,7 @@ namespace NCmdLiner.Tests.UnitTests
             [Command(Description = "Non static test command description", Summary = "Non static test command summary")]
             public Result<int> NonStaticTestCommand()
             {
-                return Result.Ok(15);
+                return new Result<int>(15);
             }
         }
     }

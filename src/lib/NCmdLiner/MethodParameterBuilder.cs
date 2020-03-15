@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LanguageExt.Common;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -19,7 +20,7 @@ namespace NCmdLiner
             {
                 throw new CommandRuleNotValidatedExption("Unable to build parameter array before command rule has been validated.");
             }
-            if (commandRule.Method == null) throw new NullReferenceException("Method property has not been initialiazed.");
+            if (commandRule.Method == null) throw new NullReferenceException("Method property has not been initialized.");
 
             var parameterValues = new List<object>();
             var methodParameters = commandRule.Method.GetParameters();
@@ -28,19 +29,23 @@ namespace NCmdLiner
             {
                 var valueResult = _stringToObject.ConvertValue(commandRule.Command.RequiredParameters[i].Value,
                     methodParameters[i].ParameterType);
-                if (valueResult.IsFailure)
-                    return Result.Fail<object[]>(valueResult.Exception);
-                parameterValues.Add(valueResult.Value.Value);
+                if (valueResult.IsFaulted)
+                    return new Result<object[]>(valueResult.ToException());
+                var optionalValue = valueResult.ToValue();
+                optionalValue.IfSome(o => parameterValues.Add(o));
             }
             for (var i = 0; i < commandRule.Command.OptionalParameters.Count; i++)
             {
                 var valueResult = _stringToObject.ConvertValue(commandRule.Command.OptionalParameters[i].Value,
                     methodParameters[i + commandRule.Command.RequiredParameters.Count].ParameterType);
-                if (valueResult.IsFailure)
-                    return Result.Fail<object[]>(valueResult.Exception);
-                parameterValues.Add(valueResult.Value.HasNoValue ? null : valueResult.Value.Value);
+                if (valueResult.IsFaulted)
+                    return new Result<object[]>(valueResult.ToException());
+                var optionalValue = valueResult.ToValue();
+                optionalValue.Match(
+                    o => parameterValues.Add(o),
+                    ()=> parameterValues.Add(null));
             }
-            return Result.Ok(parameterValues.ToArray());
+            return new Result<object[]>(parameterValues.ToArray());
         }
     }
 }

@@ -6,6 +6,8 @@
 // Copyright © <github.com/trondr> 2013 
 // All rights reserved.
 
+using LanguageExt.Common;
+
 namespace NCmdLiner
 {
     public interface IArrayParser

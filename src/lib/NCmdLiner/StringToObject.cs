@@ -9,6 +9,8 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using LanguageExt;
+using LanguageExt.Common;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -24,7 +26,7 @@ namespace NCmdLiner
             _culture = CultureInfo.CurrentCulture;
         }
 
-        public Result<Maybe<object>> ConvertValue(string value, Type argumentType)
+        public Result<Option<object>> ConvertValue(string value, Type argumentType)
         {
 #if NET4_0
          Contract.Requires(value != null);
@@ -33,32 +35,36 @@ namespace NCmdLiner
             if (argumentType.IsArray)
             {
                 var arrayItemType = argumentType.GetElementType();
-                var array = _arrayParser.Parse(value);
-                if (array.IsFailure)
-                    return Result.Fail<Maybe<object>>(array.Exception);
+                var arrayParseResult = _arrayParser.Parse(value);
+                if (arrayParseResult.IsFaulted)
+                    return new Result<Option<object>>(arrayParseResult.ToException());
+
+                var array = arrayParseResult.ToValue();
                 if (arrayItemType != null)
                 {
-                    var valuesArray = Array.CreateInstance(arrayItemType, array.Value.Length);
-                    for (var i = 0; i < array.Value.Length; i++)
+                    var valuesArray = Array.CreateInstance(arrayItemType, array.Length);
+                    for (var i = 0; i < array.Length; i++)
                     {
-                        var arrayItemResult = ConvertSingleValue(array.Value[i], arrayItemType);
-                        if (arrayItemResult.IsFailure)
+                        var arrayItemResult = ConvertSingleValue(array[i], arrayItemType);
+                        if (arrayItemResult.IsFaulted)
                             return arrayItemResult;
 
-                        valuesArray.SetValue(arrayItemResult.Value.Value, i);
+                        var arrayItem = arrayItemResult.ToValue();
+                        var i1 = i;
+                        arrayItem.IfSome(o => valuesArray.SetValue(o, i1));
                     }
-                    return Result.Ok(Maybe<object>.From((object)valuesArray));
+                    return new Result<Option<object>>(valuesArray);
                 }
             }
 
             return ConvertSingleValue(value, argumentType);
         }
 
-        private Result<Maybe<object>> ConvertSingleValue(string value, Type argumentType)
+        private Result<Option<object>> ConvertSingleValue(string value, Type argumentType)
         {
             if (value == String.Empty)
             {
-               return Result.Ok(Maybe<object>.From(GetDefault(argumentType)));
+               return new Result<Option<object>>(GetDefault(argumentType));
             }
 
             if (IsNullableType(argumentType))
@@ -66,17 +72,17 @@ namespace NCmdLiner
                 argumentType = Nullable.GetUnderlyingType(argumentType);
             }
 
-            if (argumentType == typeof (String))
+            if (argumentType == typeof (string))
             {
-                return Result.Ok(Maybe<object>.From((object)value));
+                return new Result<Option<object>>(value);
             }
 
             if (argumentType == typeof (DateTime))
             {
                 var dateTimeResult = ConvertToDateTime(value);
-                if (dateTimeResult.IsFailure)
-                    return Result.Fail<Maybe<object>>(dateTimeResult.Exception);
-                return Result.Ok(Maybe<object>.From(dateTimeResult.Value));
+                if (dateTimeResult.IsFaulted)
+                    return new Result<Option<object>>(dateTimeResult.ToException());
+                return new Result<Option<object>>(dateTimeResult.ToValue());
             }
 
             // The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32,
@@ -90,7 +96,7 @@ namespace NCmdLiner
                 try
                 {
                     // ReSharper disable AssignNullToNotNullAttribute
-                    return Result.Ok(Maybe<object>.From(converter.ConvertFromString(null, _culture, value)));
+                    return new Result<Option<object>>(converter.ConvertFromString(null, _culture, value));
                     // ReSharper restore AssignNullToNotNullAttribute
                 }
                 catch (Exception ex)
@@ -99,7 +105,7 @@ namespace NCmdLiner
                     if (ex is OverflowException ||
                         (ex.InnerException != null & (ex.InnerException is OverflowException)))
                     {
-                        return Result.Fail<Maybe<object>>(new InvalidValueException($"Value '{value}' is too big or too small"));
+                        return new Result<Option<object>>(new InvalidValueException($"Value '{value}' is too big or too small"));
                     }
                     if (ex is FormatException || (ex.InnerException != null & (ex.InnerException is FormatException)))
                     {
@@ -107,7 +113,7 @@ namespace NCmdLiner
                         {
                             //Try a new convert with invariant culture
                             // ReSharper disable AssignNullToNotNullAttribute
-                            return Result.Ok(Maybe<object>.From(converter.ConvertFromString(null, CultureInfo.InvariantCulture, value)));
+                            return new Result<Option<object>>(converter.ConvertFromString(null, CultureInfo.InvariantCulture, value));
                             // ReSharper restore AssignNullToNotNullAttribute
                         }
                         catch (Exception ex2)
@@ -115,22 +121,22 @@ namespace NCmdLiner
                             if (ex2.InnerException != null &
                                 (ex2.InnerException is OverflowException | ex2 is OverflowException))
                             {
-                                return Result.Fail<Maybe<object>>(new InvalidValueException($"Value '{value}' is too big or too small"));
+                                return new Result<Option<object>>(new InvalidValueException($"Value '{value}' is too big or too small"));
                             }
                             if (ex2.InnerException != null &
                                 (ex2.InnerException is FormatException | ex2 is FormatException))
                             {
-                                return Result.Fail<Maybe<object>>(new InvalidConversionException($"Could not convert '{value}' to {argumentType}. {ex2.Message}"));
+                                return new Result<Option<object>>(new InvalidConversionException($"Could not convert '{value}' to {argumentType}. {ex2.Message}"));
                             }
-                            //Not a format or overflow exception, throw the orginal ex2 exception
-                            return Result.Fail<Maybe<object>>(ex2);
+                            //Not a format or overflow exception, throw the original ex2 exception
+                            return new Result<Option<object>>(ex2);
                         }
                     }
-                    //Not a format or overflow exception, throw the orginal ex exception
-                    return Result.Fail<Maybe<object>>(ex);
+                    //Not a format or overflow exception, throw the original ex exception
+                    return new Result<Option<object>>(ex);
                 }
             }
-            return Result.Fail<Maybe<object>>(new UnknownTypeException("Unknown type is used in your method: " + argumentType?.FullName));
+            return new Result<Option<object>>(new UnknownTypeException("Unknown type is used in your method: " + argumentType?.FullName));
         }
 
         private Result<object> ConvertToDateTime(string parameter)
@@ -140,17 +146,17 @@ namespace NCmdLiner
 #endif
             try
             {
-                return Result.Ok((object)DateTime.Parse(parameter, _culture, DateTimeStyles.AssumeLocal));
+                return new Result<object>(DateTime.Parse(parameter, _culture, DateTimeStyles.AssumeLocal));
             }
             catch (FormatException)
             {
                 try
                 {
-                    return Result.Ok((object)Convert.ToDateTime(parameter));
+                    return new Result<object>(Convert.ToDateTime(parameter));
                 }
                 catch (FormatException ex)
                 {
-                    return Result.Fail<object>(new InvalidDateTimeFormatException("Could not convert " + parameter + " to DateTime. " + ex.Message));
+                    return new Result<object>(new InvalidDateTimeFormatException("Could not convert " + parameter + " to DateTime. " + ex.Message));
                 }
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using LanguageExt.Common;
 using NCmdLiner.Exceptions;
 
 namespace NCmdLiner
@@ -17,7 +18,7 @@ namespace NCmdLiner
                     var match = parameterRegex.Match(args[i]);
                     if (!match.Success)
                     {
-                        return Result.Fail<Dictionary<string, CommandLineParameter>>(new InvalidCommandParameterFormatException(
+                        return new Result<Dictionary<string, CommandLineParameter>>(new InvalidCommandParameterFormatException(
                             $"Invalid command line parameter format: '{args[i]}'. Commandline parameter must be on the format '/ParameterName=ParameterValue' or '/ParameterName=\"Parameter Value\"'"));
                     }
                     var commandLineParameter = new CommandLineParameter();
@@ -25,13 +26,13 @@ namespace NCmdLiner
                     commandLineParameter.Value = match.Groups[2].Value.Trim('"').Trim('\'');
                     if (commandLineParameters.ContainsKey(commandLineParameter.ToString()))
                     {
-                        return Result.Fail<Dictionary<string, CommandLineParameter>>(new DuplicateCommandParameterException(
+                        return new Result<Dictionary<string, CommandLineParameter>>(new DuplicateCommandParameterException(
                             "Command line parameter appeared more than once: " + commandLineParameter.Name));
                     }
                     commandLineParameters.Add(commandLineParameter.ToString(), commandLineParameter);
                 }
             }
-            return Result.Ok(commandLineParameters);
+            return new Result<Dictionary<string, CommandLineParameter>>(commandLineParameters);
         }
     }
 }

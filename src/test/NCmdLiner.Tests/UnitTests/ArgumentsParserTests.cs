@@ -30,7 +30,7 @@ namespace NCmdLiner.Tests.UnitTests
 
                 var actual = target.GetCommandLineParameters(args);
                 Assert.IsFalse(actual.IsSuccess);
-                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), actual.Exception.GetType());
+                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), actual.ToException().GetType());
 
             }
         }
@@ -49,14 +49,14 @@ namespace NCmdLiner.Tests.UnitTests
                     {"name2", new CommandLineParameter() {Name = "name2", Value = "value2"}}
                 };
 
-                Assert.AreEquivalent(expected.Keys, actual.Value.Keys);
-                Assert.AreEquivalent(expected.Values, actual.Value.Values);
+                Assert.AreEquivalent(expected.Keys, actual.ToValue().Keys);
+                Assert.AreEquivalent(expected.Values, actual.ToValue().Values);
 
-                Assert.IsTrue(actual.Value.ContainsKey("name1"));
+                Assert.IsTrue(actual.ToValue().ContainsKey("name1"));
                 Assert.AreEqual("name1", expected["name1"].Name);
                 Assert.AreEqual("value1", expected["name1"].Value);
 
-                Assert.IsTrue(actual.Value.ContainsKey("name2"));
+                Assert.IsTrue(actual.ToValue().ContainsKey("name2"));
                 Assert.AreEqual("name2", expected["name2"].Name);
                 Assert.AreEqual("value2", expected["name2"].Value);
 
@@ -78,7 +78,7 @@ namespace NCmdLiner.Tests.UnitTests
                             {"name2", new CommandLineParameter() {Name = "name2", Value = "value2=2=2"}}
                         };
 
-                Assert.AreEquivalent(expected,actual.Value);
+                Assert.AreEquivalent(expected,actual.ToValue());
 
                 Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
                 Assert.AreEqual("name1", expected["name1"].Name);

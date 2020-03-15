@@ -33,7 +33,8 @@ namespace NCmdLiner.Tests.UnitTests.TestCommands
 
         [Command(Description = "Command with incorrectly ordered parameters description")]
         public static void CommandWithNonAllowedDuplicateAttributesParameters(
-            [OptionalCommandParameter(DefaultValue = "some default value", Description = "Some optional parameter")] [RequiredCommandParameter(Description = "Some required parameter description",
+            [OptionalCommandParameter(DefaultValue = "some default value", Description = "Some optional parameter")] 
+            [RequiredCommandParameter(Description = "Some required parameter description",
                 ExampleValue = "Some example value")] string someOptionalParameter,
             [RequiredCommandParameter(Description = "Some required parameter description",
                 ExampleValue = "Some example value")] string someRequiredParameter

@@ -12,6 +12,7 @@ using System.Reflection;
 using NCmdLiner.Attributes;
 using TinyIoC;
 using System.Linq;
+using LanguageExt.Common;
 
 namespace NCmdLiner
 {
@@ -43,8 +44,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -78,8 +78,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, applicationInfo)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -113,8 +112,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -172,8 +170,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, applicationInfo, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -211,8 +208,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, applicationInfo, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -250,8 +246,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
@@ -293,8 +288,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetType, args, applicationInfo, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         #endregion
@@ -325,8 +319,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -360,8 +353,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, applicationInfo)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -395,8 +387,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -434,8 +425,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, applicationInfo, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -469,8 +459,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -509,8 +498,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, applicationInfo, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -548,8 +536,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -592,8 +579,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(assembly, args, applicationInfo, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         #endregion
@@ -624,8 +610,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -659,8 +644,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, applicationInfo)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -694,8 +678,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args,  messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -733,8 +716,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, applicationInfo, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -768,8 +750,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -807,8 +788,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, applicationInfo, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -847,8 +827,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -876,9 +855,11 @@ namespace NCmdLiner
                 var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
                 var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();
                 var commandRulesResult = commandRuleProvider.GetCommandRules(targetTypes);
-                if (commandRulesResult.IsFailure)
-                    return Result.Fail<int>(commandRulesResult.Exception);
-                return cmdLineryProvider.Run(commandRulesResult.Value, args);
+                return commandRulesResult
+                    .Match(
+                        commandRules => cmdLineryProvider.Run(commandRules, args),
+                        exception => new Result<int>(exception)
+                        );
             }
         }
 
@@ -894,8 +875,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetTypes, args, applicationInfo, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         #endregion
@@ -925,8 +905,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetObjects, args)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -961,8 +940,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetObjects, args, applicationInfo)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -997,8 +975,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetObjects, args, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -1037,8 +1014,7 @@ namespace NCmdLiner
         {
             var exitCode = 0;
             RunEx(targetObjects, args, applicationInfo, messenger)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -1066,15 +1042,14 @@ namespace NCmdLiner
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         [Obsolete("Run method is deprecated, please use RunEx method instead.")]
         public static int Run(object[] targetObjects, string[] args, IHelpProvider helpProvider)
         {
             var exitCode = 0;
             RunEx(targetObjects, args, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
 
@@ -1083,7 +1058,7 @@ namespace NCmdLiner
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
@@ -1106,24 +1081,23 @@ namespace NCmdLiner
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         [Obsolete("Run method is deprecated, please use RunEx method instead.")]
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IHelpProvider helpProvider)
         {
             var exitCode = 0;
             RunEx(targetObjects, args, applicationInfo, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
-        
+
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         /// 
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         public static Result<int> RunEx(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
@@ -1144,24 +1118,23 @@ namespace NCmdLiner
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         [Obsolete("Run method is deprecated, please use RunEx method instead.")]
         public static int Run(object[] targetObjects, string[] args, IMessenger messenger, IHelpProvider helpProvider)
         {
             var exitCode = 0;
             RunEx(targetObjects, args, messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
             return exitCode;
         }
         
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
-        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="applicationInfo">A modified application info object for customization of the help output.</param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> Result with the user defined return code. Typically 0 means success. In case of failure the result contains the exception information </returns>
         public static Result<int> RunEx(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
@@ -1180,26 +1153,24 @@ namespace NCmdLiner
                 var commandRuleProvider = container.Resolve<ICommandRuleProvider>();
                 var cmdLineryProvider = container.Resolve<ICmdLineryProvider>();
                 var commandRulesResult = commandRuleProvider.GetCommandRules(targetObjects);
-                if (commandRulesResult.IsFailure)
-                    return Result.Fail<int>(commandRulesResult.Exception);
-                return cmdLineryProvider.Run(commandRulesResult.Value, args);
+                return commandRulesResult
+                    .Match(commandRules => cmdLineryProvider.Run(commandRules, args), ex => new Result<int>(ex));
             }
         }
 
         ///  <summary>   Run command specified on the command line. The command is implemented by a static method on one of the target types. </summary>        
         ///  <param name="targetObjects">   An array of object instances, each with one or more static or non static methods decorated with the [Command] attribute. </param>
         ///   <param name="args">         The command line arguments. </param>
-        ///  <param name="applicationInfo">A modified applicaton info object for customization of the help output.</param>
+        ///  <param name="applicationInfo">A modified application info object for customization of the help output.</param>
         ///  <param name="messenger">An alternative messenger for display of the help text. The default is to display the help text to the console.</param>
-        /// <param name="helpProvider">An alternative help provider. The default help provider produce formated text.</param>
+        /// <param name="helpProvider">An alternative help provider. The default help provider produce formatted text.</param>
         /// <returns> The user defined return code. Typically 0 means success. </returns>
         [Obsolete("Run method is deprecated, please use RunEx method instead.")]
         public static int Run(object[] targetObjects, string[] args, IApplicationInfo applicationInfo, IMessenger messenger, IHelpProvider helpProvider)
         {
             var exitCode = 0;
             RunEx(targetObjects, args, applicationInfo,messenger, helpProvider)
-                .OnSuccess(i => exitCode = i)
-                .OnFailure(exception => throw exception);
+                .Match(i => exitCode = i,exception => throw exception);
                 return exitCode;
         }
         
