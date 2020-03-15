@@ -69,6 +69,14 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET Core 1.1
 * .NET Core 2.0
 
+## Supported runtimes NCmdLiner 3.0.*
+
+* .NET 4.6.1
+* .NETStandard 2.0
+* .NETStandard 2.1
+* .NET Core 2.0
+* .NET Core 3.0
+
 ## Installation
 
 NCmdLiner is installed into your project by Nuget Package Manager
