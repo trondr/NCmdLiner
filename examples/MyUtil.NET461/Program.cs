@@ -35,13 +35,15 @@ namespace MyUtil
                 //CmdLinery.Run(targetTypes, args, exampleApplicationInfo, messenger);
 
                 //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-                CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger)
-                    .OnSuccess(i => exitCode = i)
-                    .OnFailure(exception => {
-                        exitCode = 1;
-                        Console.WriteLine($@"ERROR: {exception.GetType().Name}: {exception.Message}");
-                    });
-                
+                exitCode = CmdLinery
+                    .RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo, messenger)
+                    .Match(
+                        i => i,
+                        exception => {
+                            Console.WriteLine($@"ERROR: {exception.GetType().Name}: {exception.Message}");
+                            return 1;
+                        });
+
                 //By default he application info will be exctracted from the executing assembly meta data (assembly info)
                 //and the help text will be output using the default ConsoleMessenger. If the default behaviour
                 //is ok, the call to CmdLinery.Run(...) can be simplified to the following:

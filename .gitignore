@@ -65,3 +65,4 @@ examples/MyUtil.NET461/packages/
 examples/MyUtil.NET462/packages/
 packages/
 build.fsx.lock
+artifact/

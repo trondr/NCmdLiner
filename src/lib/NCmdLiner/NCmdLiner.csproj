@@ -9,7 +9,7 @@
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageVersion>3.0.0-alpha</PackageVersion>
+    <PackageVersion>3.0.3-alpha</PackageVersion>
     <PackageId>NCmdLiner</PackageId>
     <Title>NCmdLiner</Title>
     <Authors>github.com/trondr</Authors>
@@ -21,15 +21,14 @@
     <PackageProjectUrl>https://github.com/trondr/NCmdLiner/blob/master/README.md</PackageProjectUrl>
     <RepositoryUrl>https://github.com/trondr/NCmdLiner.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <TargetFrameworks>net461;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <OutputType>library</OutputType>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
     <LangVersion>8.0</LangVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.0.0-alpha</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Credit\0.NConsoler-Credit.xml" />
