@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using LanguageExt.Common;
 
 namespace NCmdLiner
 {
     internal interface ICmdLineryProvider
     {
-        Result<int> Run(List<CommandRule> commandRules, string[] args);
+        Task<Result<int>> Run(List<CommandRule> commandRules, string[] args);
     }
 }

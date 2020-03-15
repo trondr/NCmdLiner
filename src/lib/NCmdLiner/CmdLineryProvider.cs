@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using LanguageExt.Common;
 using NCmdLiner.Exceptions;
 
@@ -21,7 +22,7 @@ namespace NCmdLiner
             _commandRuleValidator = commandRuleValidator;
         }
 
-        public Result<int> Run(List<CommandRule> commandRules, string[] args)
+        public async Task<Result<int>> Run(List<CommandRule> commandRules, string[] args)
         {
             var applicationInfo = _applicationInfoFactory.Invoke();
             var helpProvider = _helpProviderFactory.Invoke();
@@ -60,12 +61,16 @@ namespace NCmdLiner
             if (validateResult.IsFaulted)
                 return validateResult;
             
-            var parameterArrrayResult = _methodParameterBuilder.BuildMethodParameters(commandRule);
-            if (parameterArrrayResult.IsFaulted)
-                return new Result<int>(parameterArrrayResult.ToException());
+            var parameterArrayResult = _methodParameterBuilder.BuildMethodParameters(commandRule);
+            if (parameterArrayResult.IsFaulted)
+                return new Result<int>(parameterArrayResult.ToException());
             try
             {
-                var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrrayResult.ToValue());
+                var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrayResult.ToValue());
+                if (returnValue is Task<Result<int>> taskResult)
+                {
+                    return await taskResult;
+                }
                 if (returnValue is Result<int> result)
                 {
                     return result;
