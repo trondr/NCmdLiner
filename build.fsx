@@ -116,12 +116,21 @@ let getNugetPackageFile () =
             Some artifactNugetPackageFile        
     nugetPackageFile
 
+Target.create "LocalPublish" (fun _ -> 
+    let nugetPackageFile = getNugetPackageFile()
+    match nugetPackageFile with
+    |None ->
+        Fake.Runtime.Trace.traceError ("Failed to publish Nuget package to local NuGet repository.")
+    |Some f ->
+        System.IO.File.Copy(f.FullName, System.IO.Path.Combine(@"E:\NugetRepository",f.Name),true)
+)
+
 Target.create "Publish" (fun _ ->
     Trace.trace "Publishing library to Nuget repository..."    
     let nugetPackageFile = getNugetPackageFile()
     match nugetPackageFile with
     |None ->
-        Fake.Runtime.Trace.traceError ("Failed to publish Nuget package to NuGet repository.")
+        Fake.Runtime.Trace.traceError ("Failed to publish Nuget package to remote NuGet repository.")
     |Some f ->
         let (project,version) = toProjectAndVersion libName f.Name    
         match NugetApiKey with
@@ -155,6 +164,7 @@ open Fake.Core.TargetOperators
     ==> "BuildLib"
     ==> "BuildTest"    
     ==> "Test"    
+    ==> "LocalPublish"
     ==> "Publish"
     ==> "Default"
 
