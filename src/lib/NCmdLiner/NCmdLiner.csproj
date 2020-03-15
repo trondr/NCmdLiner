@@ -14,7 +14,7 @@
     <Title>NCmdLiner</Title>
     <Authors>github.com/trondr</Authors>
     <Summary>Command line parser with auto documentation capabilities.</Summary>
-    <Copyright>Copyright © 2013-2020 github.com/trondr. All rights reserved.</Copyright>
+    <Copyright>Copyright © 2013-2020 github.com/trondr.</Copyright>
     <Description>NCmdLiner provides a command line parser with auto documentation capabilities.</Description>
     <PackageTags>command line parser parser automatic help syntax example commands switch options console application shell</PackageTags>
     <PackageIcon>NCmdLiner.png</PackageIcon>
