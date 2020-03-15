@@ -6,14 +6,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C68DCE03-3FC3-4714-AE59-A7AD3F41B462}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MyUtil.NET462</RootNamespace>
-    <AssemblyName>MyUtil.NET462</AssemblyName>
-    <TargetFrameworkCode>NET462</TargetFrameworkCode>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <RootNamespace>MyUtil.NET48</RootNamespace>
+    <AssemblyName>MyUtil.NET48</AssemblyName>
+    <TargetFrameworkCode>NET48</TargetFrameworkCode>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <BaseIntermediateOutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</BaseIntermediateOutputPath>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>    
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE;NET462</DefineConstants>
+    <DefineConstants>TRACE;NET48</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>

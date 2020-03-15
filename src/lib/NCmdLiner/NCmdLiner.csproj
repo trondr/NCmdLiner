@@ -1,0 +1,139 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(TargetFramework)' == 'net461'">
+    <DefineConstants>NETFX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETCORE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageVersion>3.0.0-alpha</PackageVersion>
+    <PackageId>NCmdLiner</PackageId>
+    <Title>NCmdLiner</Title>
+    <Authors>github.com/trondr</Authors>
+    <Summary>Command line parser with auto documentation capabilities.</Summary>
+    <Copyright>Copyright © 2013-2020 github.com/trondr. All rights reserved.</Copyright>
+    <Description>NCmdLiner provides a command line parser with auto documentation capabilities.</Description>
+    <PackageTags>command line parser parser automatic help syntax example commands switch options console application shell</PackageTags>
+    <PackageIcon>NCmdLiner.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/trondr/NCmdLiner/blob/master/README.md</PackageProjectUrl>
+    <RespositoryUrl>https://github.com/trondr/NCmdLiner.git</RespositoryUrl>
+    <RespositoryType>git</RespositoryType>
+    <TargetFrameworks>net461;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputType>library</OutputType>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+    <LangVersion>8.0</LangVersion>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>3.0.0-alpha</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Credit\0.NConsoler-Credit.xml" />
+    <None Remove="Credit\1.TinyIoC-Credit.xml" />
+    <None Remove="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
+    <None Remove="License\0.NCmdLiner-License.xml" />
+    <None Remove="License\1.NConsoler-License.xml" />
+    <None Remove="License\2.TinyIoC-License.xml" />
+    <None Remove="License\3.CSharpFunctionalExtensions-License.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationInfo.cs" />
+    <Compile Include="ApplicationInfoHelper.cs" />
+    <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="ArrayParser.cs" />
+    <Compile Include="AssemblyExtender.cs" />
+    <Compile Include="Attributes\CommandAttibute.cs" />
+    <Compile Include="Attributes\CommandParameterAttribute.cs" />
+    <Compile Include="Attributes\CommandsAttribute.cs" />
+    <Compile Include="Attributes\OptionalCommandParameterAttribute.cs" />
+    <Compile Include="Attributes\RequiredCommandParameterAttribute.cs" />
+    <Compile Include="CmdLinery.cs" />
+    <Compile Include="CmdLineryProvider.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandLineParameter.cs" />
+    <Compile Include="CommandParameter.cs" />
+    <Compile Include="CommandRule.cs" />
+    <Compile Include="CommandRuleProvider.cs" />
+    <Compile Include="CommandRuleValidator.cs" />
+    <Compile Include="ConsoleMessenger.cs" />
+    <Compile Include="Credit\CreditInfo.cs" />
+    <Compile Include="Credit\CreditProvider.cs" />
+    <Compile Include="Credit\ICreditInfo.cs" />
+    <Compile Include="Credit\ICreditProvider.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="Exceptions\AggregateException.cs" />
+    <Compile Include="Exceptions\CommandMehtodNotStaticException.cs" />
+    <Compile Include="Exceptions\CommandRuleNotValidatedExption.cs" />
+    <Compile Include="Exceptions\DuplicateCommandException.cs" />
+    <Compile Include="Exceptions\DuplicateCommandParameterAttributeException.cs" />
+    <Compile Include="Exceptions\DuplicateCommandParameterException.cs" />
+    <Compile Include="Exceptions\InvalidArrayParseException.cs" />
+    <Compile Include="Exceptions\InvalidCommandException.cs" />
+    <Compile Include="Exceptions\InvalidCommandParameterException.cs" />
+    <Compile Include="Exceptions\InvalidCommandParameterFormatException.cs" />
+    <Compile Include="Exceptions\InvalidConversionException.cs" />
+    <Compile Include="Exceptions\InvalidDateTimeFormatException.cs" />
+    <Compile Include="Exceptions\InvalidValueException.cs" />
+    <Compile Include="Exceptions\MissingCommandAttributeException.cs" />
+    <Compile Include="Exceptions\MissingCommandException.cs" />
+    <Compile Include="Exceptions\MissingCommandParameterAttributeException.cs" />
+    <Compile Include="Exceptions\MissingCommandParameterException.cs" />
+    <Compile Include="Exceptions\MissingDefaultValueException.cs" />
+    <Compile Include="Exceptions\MissingExampleValueException.cs" />
+    <Compile Include="Exceptions\NCmdLinerException.cs" />
+    <Compile Include="Exceptions\RequiredParameterFoundAfterOptionalParameterExecption.cs" />
+    <Compile Include="Exceptions\UnknownCommandException.cs" />
+    <Compile Include="Exceptions\UnknownTypeException.cs" />
+    <Compile Include="HelpProvider.cs" />
+    <Compile Include="IApplicationInfo.cs" />
+    <Compile Include="IArgumentsParser.cs" />
+    <Compile Include="IArrayParser.cs" />
+    <Compile Include="ICmdLineryProvider.cs" />
+    <Compile Include="ICommandRuleProvider.cs" />
+    <Compile Include="ICommandRuleValidator.cs" />
+    <Compile Include="IHelpProvider.cs" />
+    <Compile Include="IMessenger.cs" />
+    <Compile Include="IMethodParameterBuilder.cs" />
+    <Compile Include="IStringToObject.cs" />
+    <Compile Include="IValueConverter.cs" />
+    <Compile Include="License\ILicenseInfo.cs" />
+    <Compile Include="License\ILicenseProvider.cs" />
+    <Compile Include="License\LicenseInfo.cs" />
+    <Compile Include="License\LicenseProvider.cs" />
+    <Compile Include="MethodParameterBuilder.cs" />
+    <Compile Include="OptionalCommandParameter.cs" />
+    <Compile Include="RequiredCommandParameter.cs" />
+    <Compile Include="Resources\EmbeddedResource.cs" />
+    <Compile Include="Resources\IEmbeddedResource.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="SerializerHelper.cs" />
+    <Compile Include="StringToObject.cs" />
+    <Compile Include="TextFormater.cs" />
+    <Compile Include="TinyIoC.cs" />
+    <Compile Include="TypeExtender.cs" />
+    <Compile Include="ValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\graphics\NCmdLiner.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
+    <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
+    <EmbeddedResource Include="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
+    <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
+    <EmbeddedResource Include="License\1.NConsoler-License.xml" />
+    <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
+    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
+  </ItemGroup>
+</Project>

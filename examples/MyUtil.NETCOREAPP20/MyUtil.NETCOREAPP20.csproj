@@ -2,14 +2,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP20\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP20\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NCmdLiner" Version="2.0.18043.330" />
+    <PackageReference Include="NCmdLiner" Version="3.0.0-alpha" />
   </ItemGroup>
 
 </Project>
