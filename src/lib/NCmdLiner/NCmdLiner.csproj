@@ -9,7 +9,7 @@
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageVersion>3.0.3-alpha</PackageVersion>
+    <PackageVersion>3.0.5-alpha</PackageVersion>
     <PackageId>NCmdLiner</PackageId>
     <Title>NCmdLiner</Title>
     <Authors>github.com/trondr</Authors>

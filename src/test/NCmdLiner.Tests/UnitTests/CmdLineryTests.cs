@@ -505,13 +505,15 @@ namespace NCmdLiner.Tests.UnitTests
             Assert.AreEqual(actualResult.ToException().GetType(), typeof(NCmdLinerException));
         }
 
-        public class NonStaticCommandDefinition
+        [Test]
+        public static async Task RunAsyncCommand1()
         {
-            [Command(Description = "Non static test command description", Summary = "Non static test command summary")]
-            public Result<int> NonStaticTestCommand()
-            {
-                return new Result<int>(15);
-            }
+            var actualResult = await CmdLinery.RunEx(typeof(TestCommand10Async), new[] { "AsyncCommand1", "/parameter1=\"parameter 1 value\"" });
+            var actual = actualResult.Match(i => i,
+                exception => 1);
+            Assert.AreEqual(10, actual, "Exit code not expected");
         }
+
+
     }
 }

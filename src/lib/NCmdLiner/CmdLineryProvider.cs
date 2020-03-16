@@ -67,6 +67,10 @@ namespace NCmdLiner
             try
             {
                 var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrayResult.ToValue());
+                if (returnValue is Task<int> task)
+                {
+                    return await task;
+                }
                 if (returnValue is Task<Result<int>> taskResult)
                 {
                     return await taskResult;
