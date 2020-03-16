@@ -110,18 +110,11 @@ namespace NCmdLiner
             messenger.WriteLine("{0}", applicationInfo.Copyright);
             if (!string.IsNullOrEmpty(applicationInfo.Authors))
             {
-                if (applicationInfo.Authors.Contains(","))
-                {
-                    messenger.WriteLine("Authors: {0}", applicationInfo.Authors);
-                }
-                else
-                {
-                    messenger.WriteLine("Author: {0}", applicationInfo.Authors);
-                }
+                messenger.WriteLine(applicationInfo.Authors.Contains(",") ? "Authors: {0}" : "Author: {0}", applicationInfo.Authors);
             }
             messenger.WriteLine("Usage: {0} <command> [parameters]", applicationInfo.ExeFileName);
             messenger.WriteLine(string.Empty);
-            _commandColumnWidth = CalculateCommandColumnWitdth(commandRules);
+            _commandColumnWidth = CalculateCommandColumnWidth(commandRules);
             if (helpForCommandRule != null)
             {
                 ShowCommandRuleHelp(helpForCommandRule, true, applicationInfo);
@@ -220,9 +213,7 @@ namespace NCmdLiner
             {
                 if (!string.IsNullOrEmpty(creditInfo.CreditText))
                 {
-                    creditsText.Append(
-                        string.Format("  (*) For use of {0} ({1}) : {2}", creditInfo.ProductName, creditInfo.ProductHome,
-                                      creditInfo.CreditText) + Environment.NewLine);
+                    creditsText.Append($"  (*) For use of {creditInfo.ProductName} ({creditInfo.ProductHome}) : {creditInfo.CreditText}" + Environment.NewLine);
                 }
             }
             return creditsText.ToString();
@@ -268,9 +259,7 @@ namespace NCmdLiner
             }
             foreach (ILicenseInfo licenseInfo in uniqueLicenseInfos.Values)
             {
-                licenseText.Append(
-                    string.Format("  (*) {0}, {1}, {2}", licenseInfo.ProductName, licenseInfo.ProductHome,
-                                  licenseInfo.License) + Environment.NewLine);
+                licenseText.Append($"  (*) {licenseInfo.ProductName}, {licenseInfo.ProductHome}, {licenseInfo.License}" + Environment.NewLine);
             }
             licenseText.Append(
                 "-------------------------------------------------------------------------------" +
@@ -283,10 +272,10 @@ namespace NCmdLiner
             foreach (ILicenseInfo licenseInfo in uniqueLicenseInfos.Values)
             {
                 count++;
-                licenseText.Append(string.Format("Product: {0}", licenseInfo.ProductName) + Environment.NewLine);
-                licenseText.Append(string.Format("Home: {0}", licenseInfo.ProductHome) + Environment.NewLine);
-                licenseText.Append(string.Format("Lincence: {0}", licenseInfo.License) + Environment.NewLine);
-                licenseText.Append(string.Format("{0}", licenseInfo.LicenseText) + Environment.NewLine);
+                licenseText.Append($"Product: {licenseInfo.ProductName}" + Environment.NewLine);
+                licenseText.Append($"Home: {licenseInfo.ProductHome}" + Environment.NewLine);
+                licenseText.Append($"License: {licenseInfo.License}" + Environment.NewLine);
+                licenseText.Append($"{licenseInfo.LicenseText}" + Environment.NewLine);
                 if (count < uniqueLicenseInfos.Values.Count)
                 {
                     licenseText.Append(
@@ -297,14 +286,14 @@ namespace NCmdLiner
             return licenseText.ToString();
         }
 
-        /// <summary>   Calculates the command column witdth. </summary>
+        /// <summary>   Calculates the command column width. </summary>
         ///
         /// <remarks>   trond, 2013-05-01. </remarks>
         ///
         /// <param name="commandRules"> The command rules. </param>
         ///
-        /// <returns>   The calculated command column witdth. </returns>
-        private int CalculateCommandColumnWitdth(List<CommandRule> commandRules)
+        /// <returns>   The calculated command column width. </returns>
+        private int CalculateCommandColumnWidth(List<CommandRule> commandRules)
         {
             var maxCommandNameLength = 0;
             foreach (var commandRule in commandRules)
@@ -360,31 +349,22 @@ namespace NCmdLiner
                     helpString.Append(FormatCommandParameter("/" + requiredCommandParameter.Name));
                     var commandParameterDescription = GetRequiredCommandParameterDescription(requiredCommandParameter.Description, requiredCommandParameter.AlternativeName);
                     helpString.Append(commandParameterDescription);
-                    exampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
-                    if (!string.IsNullOrEmpty(requiredCommandParameter.AlternativeName))
-                    {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.AlternativeName, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
-                    }
-                    else
-                    {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", requiredCommandParameter.Name, valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)));
-                    }
+                    exampleString.Append($"/{requiredCommandParameter.Name}=\"{valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)}\" ");
+                    alternativeExampleString.Append(!string.IsNullOrEmpty(requiredCommandParameter.AlternativeName)
+                        ? $"/{requiredCommandParameter.AlternativeName}=\"{valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)}\" "
+                        : $"/{requiredCommandParameter.Name}=\"{valueConverter.ObjectValue2String(requiredCommandParameter.ExampleValue)}\" ");
                 }
                 foreach (var optionalCommandParameter in commandRule.Command.OptionalParameters)
                 {
                     helpString.Append(FormatCommandParameter("/" + optionalCommandParameter.Name));
                     var optionalCommandParameterDescription = GetOptionalCommandParameterDescription(optionalCommandParameter.Description, optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.DefaultValue));
                     helpString.Append(optionalCommandParameterDescription);
-                    exampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
-                    if (!string.IsNullOrEmpty(optionalCommandParameter.AlternativeName))
-                    {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ",
-                                                                      optionalCommandParameter.AlternativeName, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
-                    }
-                    else
-                    {
-                        alternativeExampleString.Append(string.Format("/{0}=\"{1}\" ", optionalCommandParameter.Name, valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)));
-                    }
+                    exampleString.Append(
+                        $"/{optionalCommandParameter.Name}=\"{valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)}\" ");
+                    alternativeExampleString.Append(
+                        !string.IsNullOrEmpty(optionalCommandParameter.AlternativeName)
+                            ? $"/{optionalCommandParameter.AlternativeName}=\"{valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)}\" "
+                            : $"/{optionalCommandParameter.Name}=\"{valueConverter.ObjectValue2String(optionalCommandParameter.ExampleValue)}\" ");
                 }
                 helpString.Append(Environment.NewLine);
                 helpString.Append("".PadLeft(3) + "Example: " + exampleString + Environment.NewLine);
@@ -402,29 +382,17 @@ namespace NCmdLiner
 
         private string GetOptionalCommandParameterDescription(string description, string alternativeName, string defaultValue)
         {
-            string optionalCommandParameterDescription;
-            if (!string.IsNullOrEmpty(alternativeName))
-            {
-                optionalCommandParameterDescription = FormatCommandDescription(string.Format("[Optional] {0}  Alternative parameter name: /{1}. Default value: {2} ", description, alternativeName, defaultValue), _commandColumnWidth, MaxWidth - _commandColumnWidth);
-            }
-            else
-            {
-                optionalCommandParameterDescription = FormatCommandDescription(string.Format("[Optional] {0}. Default value: {1} ", description, defaultValue), _commandColumnWidth, MaxWidth - _commandColumnWidth);
-            }
+            var optionalCommandParameterDescription = FormatCommandDescription(!string.IsNullOrEmpty(alternativeName) ? $"[Optional] {description}  Alternative parameter name: /{alternativeName}. Default value: {defaultValue} "
+                    : $"[Optional] {description}. Default value: {defaultValue} ", _commandColumnWidth, MaxWidth - _commandColumnWidth);
             return optionalCommandParameterDescription;
         }
 
         private string GetRequiredCommandParameterDescription(string description, string alternativeName)
         {
-            string requiredCommandParameterDescription;
-            if (!string.IsNullOrEmpty(alternativeName))
-            {
-                requiredCommandParameterDescription = FormatCommandDescription(string.Format("[Required] {0}  Alternative parameter name: /{1}", description, alternativeName), _commandColumnWidth, MaxWidth - _commandColumnWidth);
-            }
-            else
-            {
-                requiredCommandParameterDescription = FormatCommandDescription(string.Format("[Required] {0}", description), _commandColumnWidth, MaxWidth - _commandColumnWidth);
-            }
+            var requiredCommandParameterDescription = 
+                FormatCommandDescription(!string.IsNullOrEmpty(alternativeName) ? 
+                        $"[Required] {description}  Alternative parameter name: /{alternativeName}" : 
+                        $"[Required] {description}", _commandColumnWidth, MaxWidth - _commandColumnWidth);
             return requiredCommandParameterDescription;
         }
 
@@ -455,12 +423,12 @@ namespace NCmdLiner
         /// <returns>   The formatted command description. </returns>
         private string FormatCommandDescription(string description, int indent, int width)
         {
-            var textFormater = new TextFormater();
+            var textFormatter = new TextFormater();
             if (description.Length <= width)
             {
                 return JustifyText(description) + Environment.NewLine;
             }
-            var lines = textFormater.BreakIntoLines(description, width);
+            var lines = textFormatter.BreakIntoLines(description, width);
             var sb = new StringBuilder();
             sb.Append(JustifyText(lines[0]) + Environment.NewLine);
             for (var i = 1; i < lines.Count; i++)

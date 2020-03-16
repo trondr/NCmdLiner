@@ -20,17 +20,9 @@ namespace NCmdLiner
 
         public List<string> ValidValues
         {
-            get
-            {
-                if (_validValues == null)
-                {
-                    _validValues = new List<string>();
-                }
-                return _validValues;
-            }
-            set { _validValues = value; }
+            get => _validValues ??= new List<string>();
+            set => _validValues = value;
         }
-
         private List<string> _validValues;
 
         public string Description { get; set; }

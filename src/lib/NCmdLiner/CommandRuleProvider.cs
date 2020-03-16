@@ -30,8 +30,7 @@ namespace NCmdLiner
             CommandAttribute commandAttribute = null;
             foreach (var customAttribute in customAttributes)
             {
-                var attribute = customAttribute as CommandAttribute;
-                if (attribute != null)
+                if (customAttribute is CommandAttribute attribute)
                 {                    
                     commandAttribute = attribute;
                 }
@@ -61,8 +60,8 @@ namespace NCmdLiner
                 {
                     return new Result<CommandRule>(new DuplicateCommandParameterAttributeException($"More than one command parameter attribute decorates the parameter '{parameter.Name}' in the method '{methodInfo.Name}'."));
                 }
-                var attribute = attributes[0] as OptionalCommandParameterAttribute;
-                if (attribute != null)
+
+                if (attributes[0] is OptionalCommandParameterAttribute attribute)
                 {
                     var optionalCommandParameterResult = GetOptionalCommandParameterAttribute(parameter.Name,attribute);
                     if (optionalCommandParameterResult.IsFaulted)

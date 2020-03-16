@@ -28,7 +28,7 @@
 
         public void Show()
         {
-            //Do nothing since the Write and WriteLine methods allready have output the contents
+            //Do nothing since the Write and WriteLine methods already have output the contents
         }
     }
 }
