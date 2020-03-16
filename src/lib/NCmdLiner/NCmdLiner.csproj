@@ -111,7 +111,7 @@
     <Compile Include="ResultExtensions.cs" />
     <Compile Include="SerializerHelper.cs" />
     <Compile Include="StringToObject.cs" />
-    <Compile Include="TextFormater.cs" />
+    <Compile Include="TextFormatter.cs" />
     <Compile Include="TinyIoC.cs" />
     <Compile Include="TypeExtender.cs" />
     <Compile Include="ValueConverter.cs" />

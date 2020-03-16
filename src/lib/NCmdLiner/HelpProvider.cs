@@ -423,7 +423,7 @@ namespace NCmdLiner
         /// <returns>   The formatted command description. </returns>
         private string FormatCommandDescription(string description, int indent, int width)
         {
-            var textFormatter = new TextFormater();
+            var textFormatter = new TextFormatter();
             if (description.Length <= width)
             {
                 return JustifyText(description) + Environment.NewLine;

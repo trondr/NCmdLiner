@@ -32,37 +32,31 @@ namespace NCmdLiner
          Contract.Requires(value != null);
          Contract.Requires(argumentType != null);
 #endif
-            if (argumentType.IsArray)
+            if (!argumentType.IsArray) return ConvertSingleValue(value, argumentType);
+            var arrayItemType = argumentType.GetElementType();
+            var arrayParseResult = _arrayParser.Parse(value);
+            if (arrayParseResult.IsFaulted)
+                return new Result<Option<object>>(arrayParseResult.ToException());
+
+            var array = arrayParseResult.ToValue();
+            if (arrayItemType == null) return ConvertSingleValue(value, argumentType);
+            var valuesArray = Array.CreateInstance(arrayItemType, array.Length);
+            for (var i = 0; i < array.Length; i++)
             {
-                var arrayItemType = argumentType.GetElementType();
-                var arrayParseResult = _arrayParser.Parse(value);
-                if (arrayParseResult.IsFaulted)
-                    return new Result<Option<object>>(arrayParseResult.ToException());
+                var arrayItemResult = ConvertSingleValue(array[i], arrayItemType);
+                if (arrayItemResult.IsFaulted)
+                    return arrayItemResult;
 
-                var array = arrayParseResult.ToValue();
-                if (arrayItemType != null)
-                {
-                    var valuesArray = Array.CreateInstance(arrayItemType, array.Length);
-                    for (var i = 0; i < array.Length; i++)
-                    {
-                        var arrayItemResult = ConvertSingleValue(array[i], arrayItemType);
-                        if (arrayItemResult.IsFaulted)
-                            return arrayItemResult;
-
-                        var arrayItem = arrayItemResult.ToValue();
-                        var i1 = i;
-                        arrayItem.IfSome(o => valuesArray.SetValue(o, i1));
-                    }
-                    return new Result<Option<object>>(valuesArray);
-                }
+                var arrayItem = arrayItemResult.ToValue();
+                var i1 = i;
+                arrayItem.IfSome(o => valuesArray.SetValue(o, i1));
             }
-
-            return ConvertSingleValue(value, argumentType);
+            return new Result<Option<object>>(valuesArray);
         }
 
         private Result<Option<object>> ConvertSingleValue(string value, Type argumentType)
         {
-            if (value == String.Empty)
+            if (value == string.Empty)
             {
                return new Result<Option<object>>(GetDefault(argumentType));
             }

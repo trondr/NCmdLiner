@@ -19,8 +19,7 @@ namespace NCmdLiner
 
         public OptionalCommandParameter(object defaultValue)
         {
-            if(defaultValue == null) throw new ArgumentNullException(nameof(defaultValue),"Default value is null");
-            DefaultValue = defaultValue;
+            DefaultValue = defaultValue ?? throw new ArgumentNullException(nameof(defaultValue),"Default value is null");
         }
 
         public object DefaultValue { get; set; }
@@ -29,14 +28,12 @@ namespace NCmdLiner
         {
             get
             {
-                if (_value == null)
-                {
-                    var valueConverter = new ValueConverter();
-                    _value = valueConverter.ObjectValue2String(DefaultValue);                    
-                }
+                if (_value != null) return _value;
+                var valueConverter = new ValueConverter();
+                _value = valueConverter.ObjectValue2String(DefaultValue);
                 return _value;
             }
-            set { _value = value; }
+            set => _value = value;
         }
 
         private string _value;

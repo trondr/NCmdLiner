@@ -1,4 +1,4 @@
-﻿// File: TextFormater.cs
+﻿// File: TextFormatter.cs
 // Project Name: NCmdLiner
 // Project Home: https://github.com/trondr/NCmdLiner/blob/master/README.md
 // License: New BSD License (BSD) https://github.com/trondr/NCmdLiner/blob/master/License.md
@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 
 namespace NCmdLiner
 {
-    public class TextFormater
+    public class TextFormatter
     {
         public string Justify(string line, int width)
         {
@@ -64,18 +64,18 @@ namespace NCmdLiner
                 spaceArray[0].Spaces += " ";
                 return;
             }
-            //Find space with highest weight (i.e closer to the center and not allready expanded)
+            //Find space with highest weight (i.e closer to the center and not already expanded)
             double maxWeight = 0;
-            var maxWeigthIndex = spaceArray.Length - 1;
+            var maxWeightIndex = spaceArray.Length - 1;
             for (var i = spaceArray.Length - 1; i >= 0; i--)
             {
                 if (spaceArray[i].Weight > maxWeight)
                 {
                     maxWeight = spaceArray[i].Weight;
-                    maxWeigthIndex = i;
+                    maxWeightIndex = i;
                 }
             }
-            spaceArray[maxWeigthIndex].Spaces += " ";
+            spaceArray[maxWeightIndex].Spaces += " ";
         }
 
         private void InitSpaceArray(SpaceWeight[] spaceArray)
@@ -91,15 +91,12 @@ namespace NCmdLiner
             public string Spaces { get; set; }
             public int DistanceFromEnd { get; set; }
 
-            public double Weight
-            {
-                get { return DistanceFromEnd + 10/(double) Spaces.Length; }
-            }
+            public double Weight => DistanceFromEnd + 10/(double) Spaces.Length;
         }
 
         public string Straighten(string line)
         {
-            if (line == null) throw new ArgumentNullException("line");
+            if (line == null) throw new ArgumentNullException(nameof(line));
             return Regex.Replace(line.Trim(), @"\s+", " ", RegexOptions.Singleline);
             //Replace any double spaces, tabs, new line characters with a single space.
         }
@@ -109,8 +106,7 @@ namespace NCmdLiner
             var lines = new List<string>();
             description = Straighten(description);
             var wordArray = description.Split(' ');
-            var line = new StringBuilder();
-            line.Length = 0;
+            var line = new StringBuilder {Length = 0};
             for (var i = 0; i < wordArray.Length; i++)
             {
                 var word = wordArray[i];

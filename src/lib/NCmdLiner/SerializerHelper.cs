@@ -12,14 +12,10 @@ namespace NCmdLiner
         /// <param name="info">   Info object beeing serialized. </param>
         public static void Serialize(string fileName, T info)
         {
-            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-            {
-                using (var streamWriter = new StreamWriter(fs, Encoding.UTF8))
-                {
-                    var xmlSerializer = new XmlSerializer(typeof(T));
-                    xmlSerializer.Serialize(streamWriter, info);
-                }
-            }
+            using var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            using var streamWriter = new StreamWriter(fs, Encoding.UTF8);
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            xmlSerializer.Serialize(streamWriter, info);
         }
 
         /// <summary>
@@ -29,14 +25,10 @@ namespace NCmdLiner
         /// <returns></returns>
         public static T DeSerialize(string fileName)
         {
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                using (var streamReader = new StreamReader(fs, Encoding.UTF8))
-                {
-                    var xmlSerializer = new XmlSerializer(typeof(T));
-                    return (T)xmlSerializer.Deserialize(streamReader);
-                }
-            }
+            using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            using var streamReader = new StreamReader(fs, Encoding.UTF8);
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            return (T)xmlSerializer.Deserialize(streamReader);
         }
 
         /// <summary>

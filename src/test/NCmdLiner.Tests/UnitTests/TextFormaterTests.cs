@@ -29,7 +29,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void JustifyText1Success()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("This is a test of a line to be fitted to a 80 character line.", 80);
             const string expected = "This  is  a  test  of  a   line   to    be   fitted  to  a  80  character  line.";
             Assert.AreEqual(expected, actual);
@@ -38,7 +38,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void JustifyTextLessThanHalfOfWidthSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("This line will not be justified.", 80);
             const string expected = "This line will not be justified.";
             Assert.AreEqual(expected, actual);
@@ -47,7 +47,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void JustifyTextMoreThanHalfOfWidthSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("This line will be justified because it is 45.", 80);
             const string expected = "This   line    will     be         justified          because     it    is   45.";
             Assert.AreEqual(expected, actual);
@@ -56,7 +56,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void JustifyTextOneLongWordSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("Thislinewillnotbejustifiedbecauseitisonlyoneword.", 80);
             const string expected = "Thislinewillnotbejustifiedbecauseitisonlyoneword.";
             Assert.AreEqual(expected, actual);
@@ -65,7 +65,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void JustifyTextOneShortWordSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("Thislinewillnotbejustified.", 80);
             const string expected = "Thislinewillnotbejustified.";
             Assert.AreEqual(expected, actual);
@@ -74,7 +74,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void BreakIntoLines1ShortWord80Width1LineSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             List<string> actual = target.BreakIntoLines("This", 80);
             List<string> expected = new List<string>() { "This" };
             Assert.AreEqual(expected, actual);
@@ -83,7 +83,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void BreakIntoLines1LongWord80Width1LineSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             List<string> actual =
                 target.BreakIntoLines(
                     "Thisisaveryveryveryveryverylonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglongword",
@@ -98,7 +98,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void BreakIntoLines2Word80Width1LineSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             List<string> actual = target.BreakIntoLines("This is", 80);
             List<string> expected = new List<string>() { "This is" };
             Assert.AreEqual(expected, actual);
@@ -107,7 +107,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void BreakIntoLines10Words80Width3LinesSuccess()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             List<string> actual =
                 target.BreakIntoLines(
                     "This is text should give no meaning what so ever. We are in this moment changing to second line. We should now be on the second line and if we write som more we get to the third line.",
@@ -124,7 +124,7 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void Justify2Words19to19_Success()
         {
-            TextFormater target = new TextFormater();
+            TextFormatter target = new TextFormatter();
             string actual = target.Justify("[Required] Required", 29);
             const string expected = "[Required] Required";
             Assert.AreEqual(expected, actual);
