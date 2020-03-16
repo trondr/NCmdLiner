@@ -27,6 +27,19 @@ namespace NCmdLiner.Tests.Extensions
 #endif
         }
 
+        public static void ThrowsAggregateExceptionWith<T>(Action action)
+        {
+            try
+            {
+                action();
+                Assert.IsTrue(false, "AggregateException was not thrown.");
+            }
+            catch (AggregateException ae)
+            {
+                Assert.IsTrue(ae.InnerExceptions.Any(exception => exception is T),$"Expected {typeof(T)}.");
+            }
+        }
+
         public static void Throws<T>(Action action) where T : Exception 
         {
 #if XUNIT
