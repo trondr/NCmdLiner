@@ -403,7 +403,7 @@ namespace NCmdLiner.Tests.UnitTests
                                "Help"
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<CustomTestMessengerException>(() =>
+            Assert.ThrowsAggregateExceptionWith<CustomTestMessengerException>(() =>
             {
                 CmdLinery.RunEx(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new CustomTestMessenger(), new HelpProvider(() => new CustomTestMessenger())).Wait();
             });
@@ -421,7 +421,7 @@ namespace NCmdLiner.Tests.UnitTests
                                "Help"
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<CustomTestApplicationInfoException>(() =>
+            Assert.ThrowsAggregateExceptionWith<CustomTestApplicationInfoException>(() =>
             {
                 CmdLinery.RunEx(new object[] { nonStaticTestCommands }, commandString, new CustomTestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
             });
@@ -439,7 +439,7 @@ namespace NCmdLiner.Tests.UnitTests
                                "Help"
                               };
             testLoggerMoc.Setup(logger => logger.Write(logMessage));
-            Assert.Throws<CustomTestHelpProviderException>(() =>
+            Assert.ThrowsAggregateExceptionWith<CustomTestHelpProviderException>(() =>
             {
                 CmdLinery.RunEx(new object[] { nonStaticTestCommands }, commandString, new TestApplicationInfo(), new ConsoleMessenger(), new CustomTestHelpProvider()).Wait();
             });
