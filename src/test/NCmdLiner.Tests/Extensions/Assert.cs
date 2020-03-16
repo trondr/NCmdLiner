@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +8,6 @@ using Test = Xunit.FactAttribute;
 using XUnitAssert = Xunit.Assert;
 using System.Collections.Immutable;
 #else
-using NUnit.Framework;
 using NUnitAssert = NUnit.Framework.Assert;
 using NUnitCollectionAssert = NUnit.Framework.CollectionAssert;
 #endif
@@ -91,7 +89,7 @@ namespace NCmdLiner.Tests.Extensions
 #if XUNIT
             XUnitAssert.Contains(expectedSubstring,actualString);
 #else
-            var comparisonType = (StringComparison) StringComparison.CurrentCulture;
+            var comparisonType = StringComparison.CurrentCulture;
             var isNotContaining = (actualString == null) || (actualString.IndexOf(expectedSubstring, comparisonType) < 0);
             NUnitAssert.IsFalse(isNotContaining, message);
 #endif

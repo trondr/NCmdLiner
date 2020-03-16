@@ -112,7 +112,7 @@ namespace NCmdLiner.Tests.UnitTests
 
         [Test]
         public static void
-            ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndInvalidFormatedParameterThrowInvalidCommandParameterFormatExceptionTest
+            ValidateCommandHasTwoRequiredAndOneOtionalParameterArgsHasValidCommandAndInvalidformattedParameterThrowInvalidCommandParameterFormatExceptionTest
             ()
         {
             using (var testBootStrapper = new TestBootStrapper())
