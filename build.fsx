@@ -117,12 +117,15 @@ let getNugetPackageFile () =
     nugetPackageFile
 
 Target.create "LocalPublish" (fun _ -> 
-    let nugetPackageFile = getNugetPackageFile()
-    match nugetPackageFile with
-    |None ->
-        Fake.Runtime.Trace.traceError ("Failed to publish Nuget package to local NuGet repository.")
-    |Some f ->
-        System.IO.File.Copy(f.FullName, System.IO.Path.Combine(@"E:\NugetRepository",f.Name),true)
+    let localRepositoryFolder = @"E:\NugetRepository"
+    let nugetFiles =
+        !! "build\lib\*.nupkg"
+        ++ "build\lib\*.snupkg"
+        |>Seq.toArray
+    Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" localRepositoryFolder nugetFiles)
+    Fake.IO.Shell.copyFiles localRepositoryFolder nugetFiles
+    Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" artifactFolder nugetFiles)
+    Fake.IO.Shell.copyFiles artifactFolder nugetFiles
 )
 
 Target.create "Publish" (fun _ ->
