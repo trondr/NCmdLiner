@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NCmdLiner.Exceptions;
 using TinyIoC;
-using NCmdLiner;
-
 #if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
@@ -23,71 +20,62 @@ namespace NCmdLiner.Tests.UnitTests
         [Test]
         public void InvalidCommandLineParametersThrow()
         {
-            using (var testBootStrapper = new TestBootStrapper(GetType()))
-            {
-                string[] args = { "12;13;14;15", "12" };
-                var target = new ArgumentsParser();
+            string[] args = { "12;13;14;15", "12" };
+            var target = new ArgumentsParser();
 
-                var actual = target.GetCommandLineParameters(args);
-                Assert.IsFalse(actual.IsSuccess);
-                Assert.AreEqual(typeof(InvalidCommandParameterFormatException), actual.ToException().GetType());
-
-            }
+            var actual = target.GetCommandLineParameters(args);
+            Assert.IsFalse(actual.IsSuccess);
+            Assert.AreEqual(typeof(InvalidCommandParameterFormatException), actual.ToException().GetType());
         }
 
         [Test]
         public void ValidCommandLineParameters()
         {
-            using (var testBootStrapper = new TestBootStrapper(GetType()))
+            using var testBootStrapper = new TestBootStrapper(GetType());
+            string[] args = { "Command", "/name1=value1", "/name2=value2" };
+            var target = testBootStrapper.Container.Resolve<IArgumentsParser>();
+            var actual = target.GetCommandLineParameters(args);
+            var expected = new Dictionary<string, CommandLineParameter>
             {
-                string[] args = { "Command", "/name1=vaule1", "/name2=vaule2" };
-                var target = testBootStrapper.Container.Resolve<IArgumentsParser>();
-                var actual = target.GetCommandLineParameters(args);
-                Dictionary<string, CommandLineParameter> expected = new Dictionary<string, CommandLineParameter>
-                {
-                    {"name1", new CommandLineParameter() {Name = "name1", Value = "value1"}},
-                    {"name2", new CommandLineParameter() {Name = "name2", Value = "value2"}}
-                };
+                {"name1", new CommandLineParameter() {Name = "name1", Value = "value1"}},
+                {"name2", new CommandLineParameter() {Name = "name2", Value = "value2"}}
+            };
 
-                Assert.AreEquivalent(expected.Keys, actual.ToValue().Keys);
-                Assert.AreEquivalent(expected.Values, actual.ToValue().Values);
+            Assert.AreEquivalent(expected.Keys, actual.ToValue().Keys);
+            Assert.AreEquivalent(expected.Values, actual.ToValue().Values);
 
-                Assert.IsTrue(actual.ToValue().ContainsKey("name1"));
-                Assert.AreEqual("name1", expected["name1"].Name);
-                Assert.AreEqual("value1", expected["name1"].Value);
+            Assert.IsTrue(actual.ToValue().ContainsKey("name1"));
+            Assert.AreEqual("name1", expected["name1"].Name);
+            Assert.AreEqual("value1", expected["name1"].Value);
 
-                Assert.IsTrue(actual.ToValue().ContainsKey("name2"));
-                Assert.AreEqual("name2", expected["name2"].Name);
-                Assert.AreEqual("value2", expected["name2"].Value);
-
-            }
+            Assert.IsTrue(actual.ToValue().ContainsKey("name2"));
+            Assert.AreEqual("name2", expected["name2"].Name);
+            Assert.AreEqual("value2", expected["name2"].Value);
         }
 
         [Test]
         
-        public void CommandLineParametersWithMultipleEqualCharcters()
+        public void CommandLineParametersWithMultipleEqualCharacters()
         {
-            using (var testBootStrapper = new TestBootStrapper(GetType()))
+            using var testBootStrapper = new TestBootStrapper(GetType());
+            string[] args = { "Command", "/name1=value1=1=1", "/name2=value2=2=2" };
+            var target = testBootStrapper.Container.Resolve<IArgumentsParser>();
+            var actual = target.GetCommandLineParameters(args);
+            var expected = new Dictionary<string, CommandLineParameter>
             {
-                string[] args = { "Command", "/name1=vaule1=1=1", "/name2=vaule2=2=2" };
-                var target = testBootStrapper.Container.Resolve<IArgumentsParser>();
-                var actual = target.GetCommandLineParameters(args);
-                var expected = new Dictionary<string, CommandLineParameter>
-                        {
-                            {"name1", new CommandLineParameter() {Name = "name1", Value = "value1=1=1"}},
-                            {"name2", new CommandLineParameter() {Name = "name2", Value = "value2=2=2"}}
-                        };
+                {"name1", new CommandLineParameter() {Name = "name1", Value = "value1=1=1"}},
+                {"name2", new CommandLineParameter() {Name = "name2", Value = "value2=2=2"}}
+            };
 
-                Assert.AreEquivalent(expected,actual.ToValue());
+            Assert.AreEquivalent(expected,actual.ToValue());
 
-                Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
-                Assert.AreEqual("name1", expected["name1"].Name);
-                Assert.AreEqual("value1=1=1", expected["name1"].Value);
+            Assert.IsTrue(expected.ContainsKey("name1"), "name1 not found");
+            Assert.AreEqual("name1", expected["name1"].Name);
+            Assert.AreEqual("value1=1=1", expected["name1"].Value);
 
-                Assert.IsTrue(expected.ContainsKey("name2"), "name2 not found");
-                Assert.AreEqual("name2", expected["name2"].Name);
-                Assert.AreEqual("value2=2=2", expected["name2"].Value);
-            }
+            Assert.IsTrue(expected.ContainsKey("name2"), "name2 not found");
+            Assert.AreEqual("name2", expected["name2"].Name);
+            Assert.AreEqual("value2=2=2", expected["name2"].Value);
         }
 
         internal class TestBootStrapper : IDisposable

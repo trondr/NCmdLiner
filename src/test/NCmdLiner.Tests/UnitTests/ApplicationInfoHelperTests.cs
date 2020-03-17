@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-#if XUNIT
+﻿#if XUNIT
 using Xunit;
 using Test = Xunit.FactAttribute;
 using TestFixture = NCmdLiner.Tests.Extensions.TestFixtureAttribute;

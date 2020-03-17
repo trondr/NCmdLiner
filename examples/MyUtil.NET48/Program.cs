@@ -28,15 +28,15 @@ namespace MyUtil
             exampleApplicationInfo.Copyright = "Copyright © ExampleCompany 2013";
             
             //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-            //return CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
+            //return CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
 
             //Parse and run the command line using specified list of target types
-            //return CmdLinery.RunEx(new Type[] { typeof(ExampleCommands1), typeof(ExampleCommands2) }, args, exampleApplicationInfo);
+            //return CmdLinery.Run(new Type[] { typeof(ExampleCommands1), typeof(ExampleCommands2) }, args, exampleApplicationInfo);
 
             //By default the application info will be extracted from the executing assembly meta data (assembly info)
             //and the help text will be output using the default ConsoleMessenger. If the default behaviour
             //is ok, the call to CmdLinery.Run(...) can be simplified to the following:
-            return CmdLinery.RunEx(typeof(ExampleCommands1), args);
+            return CmdLinery.Run(typeof(ExampleCommands1), args);
         };
         
         private static async Task<int> Main(string[] args)
@@ -51,6 +51,7 @@ namespace MyUtil
                                         });
             Console.WriteLine(@"Press ENTER to terminate...");
             Console.ReadLine();
+            
             return exitCode;
         }
     }
