@@ -17,7 +17,7 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 namespace NCmdLiner.Tests.UnitTests
 {
 
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class LicenseProviderTests
     {
         [Test]
@@ -26,7 +26,7 @@ namespace NCmdLiner.Tests.UnitTests
             var target = new LicenseProvider();
             var actual = target.GetLicenses(typeof(LicenseProvider).GetAssembly());
             var expectedCount = 4;
-            Assert.AreEqual(expectedCount,actual.Count, "Number of embeded license xml is not " + expectedCount);
+            Assert.AreEqual(expectedCount,actual.Count, "Number of embedded license xml is not " + expectedCount);
         }
     }
 

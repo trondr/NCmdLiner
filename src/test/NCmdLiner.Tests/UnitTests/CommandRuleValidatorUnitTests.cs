@@ -23,7 +23,7 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 namespace NCmdLiner.Tests.UnitTests
 {
 
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class CommandRuleValidatorUnitTests
     {
         private static CommandRule GetTestCommandRule()

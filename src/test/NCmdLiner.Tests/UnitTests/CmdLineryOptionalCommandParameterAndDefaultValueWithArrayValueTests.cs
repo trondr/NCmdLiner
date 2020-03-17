@@ -15,7 +15,7 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class CmdLineryOptionalCommandParameterAndDefaultValueWithArrayValueTests
     {
         [Test]
@@ -24,11 +24,11 @@ namespace NCmdLiner.Tests.UnitTests
             var testCommand = new OptionalCommandParameterAndDefaultValueWithArrayTestCommand();
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "Help"                    
-                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger));
+                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger)).Wait();
             var helpMessage = stringMessenger.Message.ToString();
 
             Assert.IsTrue(helpMessage.Contains("['Default Value 1']"));
@@ -44,11 +44,11 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand(\"Default Value 1\")";
 
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "ExampleCommand"                    
-                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
 
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -61,11 +61,11 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand2(\"10\")";
 
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "ExampleCommand2"
-                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
 
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -78,12 +78,12 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand2(\"13\")";
 
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "ExampleCommand2",
                     "/parameter1=['13';'14']"
-                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
 
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -95,10 +95,10 @@ namespace NCmdLiner.Tests.UnitTests
 
             [Command(Description = "ExampleValueWithFormatCharacterTestCommand description")]
             public int ExampleCommand(
-                [OptionalCommandParameter(Description = "Optional parameter 1 description", ExampleValue = new string[] {"Example Value 1","Example Value 2"}, AlternativeName = "p1", DefaultValue = new string[] {"Default Value 1"})] string[] parameter1
+                [OptionalCommandParameter(Description = "Optional parameter 1 description", ExampleValue = new[] {"Example Value 1","Example Value 2"}, AlternativeName = "p1", DefaultValue = new[] {"Default Value 1"})] string[] parameter1
             )
             {
-                var msg = string.Format("Running ExampleCommand(\"{0}\")", parameter1[0]);
+                var msg = $"Running ExampleCommand(\"{parameter1[0]}\")";
                 Console.WriteLine(msg);
                 TestLogger.Write(msg);
                 return 10;
@@ -106,10 +106,10 @@ namespace NCmdLiner.Tests.UnitTests
 
             [Command(Description = "ExampleValueWithFormatCharacterTestCommand description")]
             public int ExampleCommand2(
-                [OptionalCommandParameter(Description = "Optional parameter 1 description", ExampleValue = new int[] { 10, 11 }, AlternativeName = "p1", DefaultValue = new int[] { 10 })] int[] parameter1
+                [OptionalCommandParameter(Description = "Optional parameter 1 description", ExampleValue = new[] { 10, 11 }, AlternativeName = "p1", DefaultValue = new[] { 10 })] int[] parameter1
             )
             {
-                var msg = string.Format("Running ExampleCommand2(\"{0}\")", parameter1[0]);
+                var msg = $"Running ExampleCommand2(\"{parameter1[0]}\")";
                 Console.WriteLine(msg);
                 TestLogger.Write(msg);
                 return 10;

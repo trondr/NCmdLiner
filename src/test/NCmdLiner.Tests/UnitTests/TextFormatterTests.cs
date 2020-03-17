@@ -22,8 +22,8 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 namespace NCmdLiner.Tests.UnitTests
 {
 
-    [TestFixture]
-    public class TextFormaterTests
+    [TestFixture(Category = "UnitTests")]
+    public class TextFormatterTests
     {
 
         [Test]

@@ -15,7 +15,7 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class CmdLineryRequiredCommandParameterAndExampleValueWithFormatCharactersTests
     {
         [Test]
@@ -26,12 +26,12 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
             const string logMessage = "Running ExampleCommand(\"{d}\")";
 
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "ExampleCommand",
                     "/parameter1={d}",
-                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
 
             testLoggerMoc.Verify(logger => logger.Write(logMessage), Times.Once);
         }
@@ -42,11 +42,11 @@ namespace NCmdLiner.Tests.UnitTests
             var testCommand = new RequiredCommandParameterAndExampleValueWithFormatCharacterTestCommand();
             var testLoggerMoc = new Mock<ITestLogger>();
             testCommand.TestLogger = testLoggerMoc.Object;
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "Help"                    
-                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger()));
+                }, new TestApplicationInfo(), new ConsoleMessenger(), new HelpProvider(() => new ConsoleMessenger())).Wait();
         }
 
         public class RequiredCommandParameterAndExampleValueWithFormatCharacterTestCommand
@@ -58,7 +58,7 @@ namespace NCmdLiner.Tests.UnitTests
                 [RequiredCommandParameter(Description = "Required parameter 1 description", ExampleValue = "{d}", AlternativeName = "p1")] string parameter1
             )
             {
-                var msg = string.Format("Running ExampleCommand(\"{0}\")", parameter1);
+                var msg = $"Running ExampleCommand(\"{parameter1}\")";
                 Console.WriteLine(msg);
                 TestLogger.Write(msg);
                 return 10;

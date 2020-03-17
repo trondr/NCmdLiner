@@ -17,7 +17,7 @@ using Assert = NCmdLiner.Tests.Extensions.Assert;
 
 namespace NCmdLiner.Tests.UnitTests
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class CmdLineryRequiredCommandParameterWithAndWithoutAlternativeNameTests
     {
         [Test]
@@ -28,11 +28,11 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "Help"
-                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger));
+                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger)).Wait();
 
             var helpMessage = stringMessenger.Message.ToString();
 
@@ -48,7 +48,7 @@ namespace NCmdLiner.Tests.UnitTests
                 [RequiredCommandParameter(Description = "Required parameter 1 description", ExampleValue = "{d}")] string parameter1
             )
             {
-                var msg = string.Format("Running ExampleCommand(\"{0}\")", parameter1);
+                var msg = $"Running ExampleCommand(\"{parameter1}\")";
                 Console.WriteLine(msg);
                 TestLogger.Write(msg);
                 return 10;
@@ -64,11 +64,11 @@ namespace NCmdLiner.Tests.UnitTests
             testCommand.TestLogger = testLoggerMoc.Object;
 
             var stringMessenger = new StringMessenger();
-            CmdLinery.RunEx(new object[] { testCommand },
-                new string[]
+            CmdLinery.Run(new object[] { testCommand },
+                new[]
                 {
                     "Help"
-                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger));
+                }, new TestApplicationInfo(), stringMessenger, new HelpProvider(() => stringMessenger)).Wait();
 
             var helpMessage = stringMessenger.Message.ToString();
 
@@ -86,7 +86,7 @@ namespace NCmdLiner.Tests.UnitTests
                 [RequiredCommandParameter(Description = "Required parameter 1 description", ExampleValue = "{d}", AlternativeName = "p1")] string parameter1
             )
             {
-                var msg = string.Format("Running ExampleCommand(\"{0}\")", parameter1);
+                var msg = $"Running ExampleCommand(\"{parameter1}\")";
                 Console.WriteLine(msg);
                 TestLogger.Write(msg);
                 return 10;
