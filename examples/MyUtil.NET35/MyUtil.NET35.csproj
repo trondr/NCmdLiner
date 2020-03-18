@@ -11,16 +11,15 @@
     <TargetFrameworkCode>NET35</TargetFrameworkCode>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFrameworkCode)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,14 +28,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCmdLiner, Version=2.0.18043.330, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.2.0.18043.330\lib\net35\NCmdLiner.dll</HintPath>
+    <Reference Include="NCmdLiner, Version=2.0.18110.340, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NCmdLiner.2.0.18110.340\lib\net35\NCmdLiner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

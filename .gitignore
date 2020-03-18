@@ -56,3 +56,13 @@ examples/.vs/
 _NCrunch_NCmdLiner.*/
 .vs/
 
+.fake/
+build/
+examples/MyUtil.NET35/packages/
+examples/MyUtil.NET452/packages/
+examples/MyUtil.NET45MONO/packages/
+examples/MyUtil.NET461/packages/
+examples/MyUtil.NET462/packages/
+packages/
+build.fsx.lock
+artifact/

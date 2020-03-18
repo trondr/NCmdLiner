@@ -8,7 +8,9 @@
 
 using System;
 using System.Reflection;
-using MyUtil.Extensions;
+using System.Threading.Tasks;
+using LanguageExt;
+using MyUtil.Commands;
 using NCmdLiner;
 
 
@@ -16,46 +18,39 @@ namespace MyUtil
 {
     internal class Program
     {
-        private static int Main(string[] args)
+        private static TryAsync<int> TryRun(string[] args) => () =>
         {
-            var exitCode = 0;
-            try
-            {
-                //Optional: Override some application info to modify the header of the auto documentation
-                IApplicationInfo exampleApplicationInfo = new ApplicationInfo();
-                //Set the optional authors property
-                exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
-                //Override the assembly info copyright property
-                exampleApplicationInfo.Copyright = "Copyright © examplecompany 2013";
+            //Optional: Override some application info to modify the header of the auto documentation
+            IApplicationInfo exampleApplicationInfo = new ApplicationInfo();
+            //Set the optional authors property
+            exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
+            //Override the assembly info copyright property
+            exampleApplicationInfo.Copyright = "Copyright © ExampleCompany 2013";
+            
+            //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
+            //return CmdLinery.Run(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
 
-                //Parse and run the command line using specified target types
-                //Type[] targetTypes = new Type[] { typeof(ExampleCommands1), typeof(ExampleCommands2) };
-                //CmdLinery.Run(targetTypes, args, exampleApplicationInfo, messenger);
+            //Parse and run the command line using specified list of target types
+            //return CmdLinery.Run(new Type[] { typeof(ExampleCommands1), typeof(ExampleCommands2) }, args, exampleApplicationInfo);
 
-                //Parse and run the command line using specified assembly, CommandLinery will find all commands using reflection.
-                
-                var result = CmdLinery.RunEx(Assembly.GetEntryAssembly(), args, exampleApplicationInfo);
-                result.OnFailure(exception =>
-                {
-                    Console.WriteLine($"ERROR: {exception.Message}");
-                    exitCode = 1;
-                }).OnSuccess(i => exitCode = i);
-                
-                //By default he application info will be exctracted from the executing assembly meta data (assembly info)
-                //and the help text will be output using the default ConsoleMessenger. If the default behaviour
-                //is ok, the call to CmdLinery.Run(...) can be simplified to the following:
-                //CmdLinery.Run(typeof(ExampleCommands1), args);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(@"Error: " + ex.Message);
-                exitCode = 0x000002C9; // Fatal application exit.
-            }
-            finally
-            {
-                Console.WriteLine(@"Press ENTER to terminate...");
-                Console.ReadLine();                
-            }
+            //By default the application info will be extracted from the executing assembly meta data (assembly info)
+            //and the help text will be output using the default ConsoleMessenger. If the default behaviour
+            //is ok, the call to CmdLinery.Run(...) can be simplified to the following:
+            return CmdLinery.Run(typeof(ExampleCommands1), args);
+        };
+        
+        private static async Task<int> Main(string[] args)
+        {
+            var exitCode = 
+                await TryRun(args).Match(
+                                    i => i, 
+                                    exception =>
+                                        {
+                                            Console.WriteLine(@"ERROR: " + exception.Message);
+                                            return 1;
+                                        });
+            Console.WriteLine(@"Press ENTER to terminate...");
+            Console.ReadLine();
             return exitCode;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NCmdLiner.Attributes;
 
 namespace MyUtil.Commands
@@ -6,26 +7,26 @@ namespace MyUtil.Commands
     [Commands]
     public class ExampleCommands1
     {
-        [Command(Description = "ExampleCommand1 will only echo value of the input parameteres.")]
-        public static void ExampleCommand1_1(
+        [Command(Description = "ExampleCommand1 will only echo value of the input parameters.")]
+        public static async Task<int> ExampleCommand1_1(
             [RequiredCommandParameter(
-                Description = "parameter1 is a required string paramter and must be specified.",
+                Description = "parameter1 is a required string parameter and must be specified.",
                 ExampleValue = "Some example parameter1 value",
                 AlternativeName = "p1"
                 )] string parameter1,
             [RequiredCommandParameter(
-                Description = "parameter2 is required string paramter and must be specified.",
+                Description = "parameter2 is required string parameter and must be specified.",
                 ExampleValue = "Some example parameter2 value",
                 AlternativeName = "p2"
                 )] string parameter2,
             [RequiredCommandParameter(
-                Description = "Parameter3 is required integer paramter and must be specified.",
+                Description = "Parameter3 is required integer parameter and must be specified.",
                 ExampleValue = 10,
                 AlternativeName = "p3"
                 )] int parameter3,
             [OptionalCommandParameter(
                 Description =
-                    "Parameter4 is an optional string paramter and will have the default value set if not specified.",
+                    "Parameter4 is an optional string parameter and will have the default value set if not specified.",
                 ExampleValue = "Some example value for parameter4",
                 DefaultValue = "Some default value for parameter4",
                 AlternativeName = "p4"
@@ -46,30 +47,31 @@ namespace MyUtil.Commands
             Console.WriteLine("parameter4={0}", parameter4);
             Console.WriteLine("parameter5={0}", parameter5);
             Console.WriteLine("Finished echoing the input parameters.");
+            return await Task.FromResult(3010);
         }
 
         [Command(
             Description =
-                "ExampleCommand2 will do the same as ExampleCommand1 only echo value of the input parameteres.")]
-        public static void ExampleCommand1_2(
+                "ExampleCommand2 will do the same as ExampleCommand1 only echo value of the input parameters.")]
+        public static async Task<int> ExampleCommand1_2(
             [RequiredCommandParameter(
-                Description = "parameter1 is a required string paramter and must be specified.",
+                Description = "parameter1 is a required string parameter and must be specified.",
                 ExampleValue = "Some example parameter1 value",
                 AlternativeName = "p1"
                 )] string parameter1,
             [RequiredCommandParameter(
-                Description = "parameter2 is required string paramter and must be specified.",
+                Description = "parameter2 is required string parameter and must be specified.",
                 ExampleValue = "Some example parameter2 value",
                 AlternativeName = "p2"
                 )] string parameter2,
             [RequiredCommandParameter(
-                Description = "Parameter3 is required integer paramter and must be specified.",
+                Description = "Parameter3 is required integer parameter and must be specified.",
                 ExampleValue = 10,
                 AlternativeName = "p3"
                 )] int parameter3,
             [OptionalCommandParameter(
                 Description =
-                    "Parameter4 is an optional string paramter and will have the default value set if not specified.",
+                    "Parameter4 is an optional string parameter and will have the default value set if not specified.",
                 ExampleValue = "Some example value for parameter4",
                 DefaultValue = "Some default value for parameter4",
                 AlternativeName = "p4"
@@ -80,7 +82,7 @@ namespace MyUtil.Commands
                 ExampleValue = true,
                 DefaultValue = false,
                 AlternativeName = "p5"
-                )] bool parameter5            
+                )] bool parameter5
             )
         {
             Console.WriteLine("ExampleCommand2 just echoing the input parameters...");
@@ -90,15 +92,16 @@ namespace MyUtil.Commands
             Console.WriteLine("parameter4={0}", parameter4);
             Console.WriteLine("parameter5={0}", parameter5);
             Console.WriteLine("Finished echoing the input parameters.");
+            return await Task.FromResult(10);
         }
 
 
         [Command(
             Description =
-                "ExampleCommand2 will do the same as ExampleCommand1 only echo value of the input parameteres.")]
+                "ExampleCommand2 will do the same as ExampleCommand1 only echo value of the input parameters.")]
         public static void ExampleCommand1_3(
             [RequiredCommandParameter(
-                Description = "parameter1 is a required string paramter and must be specified.",
+                Description = "parameter1 is a required string parameter and must be specified.",
                 ExampleValue = "Some example parameter1 value",
                 AlternativeName = "p1"
                 )] string parameter1,
@@ -108,7 +111,7 @@ namespace MyUtil.Commands
                 AlternativeName = "ap2"
                 )] string[] stringArrayParameter2,
             [RequiredCommandParameter(
-                Description = "booleanArrayParameter3 is a required bolean array and must be specified.",
+                Description = "booleanArrayParameter3 is a required boolean array and must be specified.",
                 ExampleValue = new[] { true, false, true },
                 AlternativeName = "ap3"
                 )] bool[] booleanArrayParameter3,

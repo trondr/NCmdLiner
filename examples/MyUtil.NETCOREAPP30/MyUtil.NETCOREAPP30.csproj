@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>    
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Credit\0.NCmdLiner-Credit.xml" />
+    <None Remove="License\0.MyUtil-License.xml" />
+    <None Remove="License\1.NCmdLiner-License.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Credit\0.NCmdLiner-Credit.xml" />
+    <EmbeddedResource Include="License\0.MyUtil-License.xml" />
+    <EmbeddedResource Include="License\1.NCmdLiner-License.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NCmdLiner" Version="3.0.9-alpha" />
+  </ItemGroup>
+
+</Project>

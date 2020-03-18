@@ -2,14 +2,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFramework)\</BaseIntermediateOutputPath>
+	<BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP11\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\bin\examples\MyUtil.NETCOREAPP11\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

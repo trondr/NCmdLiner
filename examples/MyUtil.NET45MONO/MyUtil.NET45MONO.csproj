@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C68DCE03-3FC3-4714-AE59-A7AD3F41B462}</ProjectGuid>
+    <ProjectGuid>{23B97917-E0D3-4F5D-A61D-ED9C3160CF2D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MyUtil.NET45MONO</RootNamespace>
     <AssemblyName>MyUtil.NET45MONO</AssemblyName>
@@ -12,16 +12,16 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Mono</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">..\..\bin</BuildOutputDirectory>
+    <BuildOutputDirectory Condition=" '$(BuildOutputDirectory)' == ''">bin\bin.$(TargetFramework)\$(Configuration)\</BuildOutputDirectory>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <BaseIntermediateOutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\obj.$(TargetFrameworkCode)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,14 +30,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(BuildOutputDirectory)\examples\$(AssemblyName)\bin.$(TargetFrameworkCode)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\bin.$(TargetFramework)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;NET45MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NCmdLiner, Version=2.0.18043.330, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\tools\NuGetPackages\NCmdLiner.2.0.18043.330\lib\net45-mono\NCmdLiner.dll</HintPath>
+    <Reference Include="NCmdLiner, Version=2.0.18110.340, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NCmdLiner.2.0.18110.340\lib\net45-mono\NCmdLiner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
