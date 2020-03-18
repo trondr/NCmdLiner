@@ -261,83 +261,83 @@ namespace NCmdLiner.Example
 ## Example help output
 
 ```
-NCmdLiner Example 1.0.0.0 for .NET - Example of how to use NCmdLiner
-Copyright © examplecompany 2013
+MyUtil NET48 1.0.0.0 for .NET - Example of how to use NCmdLiner
+Copyright © ExampleCompany 2013
 Authors: example@example.com, example2@example.com
-Usage: NCmdLiner.Example.exe <command> [parameters]
+Usage: MyUtil.NET48.exe <command> [parameters]
 
 Commands:
 ---------
 Help                     Display this help text
 License                  Display license
 Credits                  Display credits
-ExampleCommand1          ExampleCommand1 will only echo value of the input
-                         parameteres.
-ExampleCommand2          ExampleCommand2 will do the same as ExampleCommand1
-                         only echo value of the input parameteres.
-ExampleCommand3          ExampleCommand2 will do the same as ExampleCommand1
-                         only echo value of the input parameteres.
+ExampleCommand1_1        ExampleCommand1 will only echo value of the input
+                         parameters.
+ExampleCommand1_2        ExampleCommand2 will do the same as ExampleCommand1
+                         only echo value of the input parameters.
+ExampleCommand1_3        ExampleCommand2 will do the same as ExampleCommand1
+                         only echo value of the input parameters.
 
 Commands and parameters:
 ------------------------
-ExampleCommand1          ExampleCommand1 will only echo value of the input
-                         parameteres.
-   /parameter1           [Required] parameter1 is a required string paramter
+ExampleCommand1_1        ExampleCommand1 will only echo value of the input
+                         parameters.
+   /parameter1           [Required] parameter1 is a required string parameter
                          and must be specified. Alternative parameter name:
                          /p1
-   /parameter2           [Required] parameter2 is required string paramter
+   /parameter2           [Required] parameter2 is required string parameter
                          and must be specified. Alternative parameter name:
                          /p2
-   /parameter3           [Required] Parameter3 is required integer paramter
+   /parameter3           [Required] Parameter3 is required integer parameter
                          and must be specified. Alternative parameter name:
                          /p3
-   /parameter4           [Optional] Parameter4 is an optional string paramter
-                         and will have the default value set if not
+   /parameter4           [Optional] Parameter4 is an optional string
+                         parameter and will have the default value set if not
                          specified. Alternative parameter name: /p4. Default
                          value: Some default value for parameter4
    /parameter5           [Optional] Parameter5 is an optional boolean
                          parameter and will have the default value set if not
                          specified. Alternative parameter name: /p5. Default
-                         value:
+                         value: False
 
-   Example: NCmdLiner.Example.exe ExampleCommand1 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="" /parameter4="Some example value for parameter4" /parameter5="" 
-   Example (alternative): NCmdLiner.Example.exe ExampleCommand1 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="" /p4="Some example value for parameter4" /p5="" 
+   Example: MyUtil.NET48.exe ExampleCommand1_1 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="10" /parameter4="Some example value for parameter4" /parameter5="True" 
+   Example (alternative): MyUtil.NET48.exe ExampleCommand1_1 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="10" /p4="Some example value for parameter4" /p5="True" 
 
 
-ExampleCommand2          ExampleCommand2 will do the same as ExampleCommand1
-                         only echo value of the input parameteres.
-   /parameter1           [Required] parameter1 is a required string paramter
+ExampleCommand1_2        ExampleCommand2 will do the same as ExampleCommand1
+                         only echo value of the input parameters.
+   /parameter1           [Required] parameter1 is a required string parameter
                          and must be specified. Alternative parameter name:
                          /p1
-   /parameter2           [Required] parameter2 is required string paramter
+   /parameter2           [Required] parameter2 is required string parameter
                          and must be specified. Alternative parameter name:
                          /p2
-   /parameter3           [Required] Parameter3 is required integer paramter
+   /parameter3           [Required] Parameter3 is required integer parameter
                          and must be specified. Alternative parameter name:
                          /p3
-   /parameter4           [Optional] Parameter4 is an optional string paramter
-                         and will have the default value set if not
+   /parameter4           [Optional] Parameter4 is an optional string
+                         parameter and will have the default value set if not
                          specified. Alternative parameter name: /p4. Default
                          value: Some default value for parameter4
    /parameter5           [Optional] Parameter5 is an optional boolean
                          parameter and will have the default value set if not
                          specified. Alternative parameter name: /p5. Default
-                         value:
+                         value: False
 
-   Example: NCmdLiner.Example.exe ExampleCommand2 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="" /parameter4="Some example value for parameter4" /parameter5="" 
-   Example (alternative): NCmdLiner.Example.exe ExampleCommand2 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="" /p4="Some example value for parameter4" /p5="" 
+   Example: MyUtil.NET48.exe ExampleCommand1_2 /parameter1="Some example parameter1 value" /parameter2="Some example parameter2 value" /parameter3="10" /parameter4="Some example value for parameter4" /parameter5="True" 
+   Example (alternative): MyUtil.NET48.exe ExampleCommand1_2 /p1="Some example parameter1 value" /p2="Some example parameter2 value" /p3="10" /p4="Some example value for parameter4" /p5="True" 
 
 
-ExampleCommand3          ExampleCommand2 will do the same as ExampleCommand1
-                         only echo value of the input parameteres.
-   /parameter1           [Required] parameter1 is a required string paramter
+ExampleCommand1_3        ExampleCommand2 will do the same as ExampleCommand1
+                         only echo value of the input parameters.
+   /parameter1           [Required] parameter1 is a required string parameter
                          and must be specified. Alternative parameter name:
                          /p1
    /stringArrayParameter2[Required] stringArrayParameter2 is a required
                          string array and must be specified. Alternative
                          parameter name: /ap2
    /booleanArrayParameter3[Required] booleanArrayParameter3 is a required
-                         bolean array and must be specified. Alternative
+                         boolean array and must be specified. Alternative
                          parameter name: /ap3
    /integerArrayParameter4[Optional] integerArrayParameter4 is a optional
                          integer array. Alternative parameter name: /ap4.
@@ -346,8 +346,8 @@ ExampleCommand3          ExampleCommand2 will do the same as ExampleCommand1
                          integer array. Alternative parameter name: /ap5.
                          Default value: [1,1;2,2;3,3]
 
-   Example: NCmdLiner.Example.exe ExampleCommand3 /parameter1="Some example parameter1 value" /stringArrayParameter2="['string1';'string2';'string3']" /booleanArrayParameter3="[True;False;True]" /integerArrayParameter4="[11;21;32]" /doubleArrayParameter5="[1,5678;23,425336;126,105]" 
-   Example (alternative): NCmdLiner.Example.exe ExampleCommand3 /p1="Some example parameter1 value" /ap2="['string1';'string2';'string3']" /ap3="[True;False;True]" /ap4="[11;21;32]" /ap5="[1,5678;23,425336;126,105]"
+   Example: MyUtil.NET48.exe ExampleCommand1_3 /parameter1="Some example parameter1 value" /stringArrayParameter2="['string1';'string2';'string3']" /booleanArrayParameter3="[True;False;True]" /integerArrayParameter4="[11;21;32]" /doubleArrayParameter5="[1,5678;23,425336;126,105]" 
+   Example (alternative): MyUtil.NET48.exe ExampleCommand1_3 /p1="Some example parameter1 value" /ap2="['string1';'string2';'string3']" /ap3="[True;False;True]" /ap4="[11;21;32]" /ap5="[1,5678;23,425336;126,105]" 
 ```
 
 ## Building NCmdLiner 2.0.*
