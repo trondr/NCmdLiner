@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LanguageExt;
 using MyUtil.Commands;
+using MyUtil.Extensions;
 using NCmdLiner;
 
 
@@ -36,23 +37,18 @@ namespace MyUtil
             //By default the application info will be extracted from the executing assembly meta data (assembly info)
             //and the help text will be output using the default ConsoleMessenger. If the default behaviour
             //is ok, the call to CmdLinery.Run(...) can be simplified to the following:
-            return CmdLinery.Run(typeof(ExampleCommands1), args);
+            return CmdLinery.Run(typeof(ExampleCommands1), args,exampleApplicationInfo,new MyDialogMessenger(new ConsoleMessenger()));
         };
-        
+
+        private static int ErrorHandler(Exception ex, int exitCode)
+        {
+            Console.WriteLine(@"ERROR: " + ex.Message);
+            return exitCode;
+        }
+
         private static async Task<int> Main(string[] args)
         {
-            var exitCode = 
-                await TryRun(args).Match(
-                                    i => i, 
-                                    exception =>
-                                        {
-                                            Console.WriteLine(@"ERROR: " + exception.Message);
-                                            return 1;
-                                        });
-            Console.WriteLine(@"Press ENTER to terminate...");
-            Console.ReadLine();
-            
-            return exitCode;
+            return await TryRun(args).Match(ec => ec, exception => ErrorHandler(exception, 1));
         }
     }
 }

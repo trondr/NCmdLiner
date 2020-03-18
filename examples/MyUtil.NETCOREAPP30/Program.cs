@@ -38,20 +38,16 @@ namespace MyUtil
             //is ok, the call to CmdLinery.Run(...) can be simplified to the following:
             return CmdLinery.Run(typeof(ExampleCommands1), args);
         };
+
+        private static int ErrorHandler(Exception ex, int exitCode)
+        {
+            Console.WriteLine(@"ERROR: " + ex.Message);
+            return exitCode;
+        }
         
         private static async Task<int> Main(string[] args)
         {
-            var exitCode = 
-                await TryRun(args).Match(
-                                    i => i, 
-                                    exception =>
-                                        {
-                                            Console.WriteLine(@"ERROR: " + exception.Message);
-                                            return 1;
-                                        });
-            Console.WriteLine(@"Press ENTER to terminate...");
-            Console.ReadLine();
-            return exitCode;
+            return await TryRun(args).Match(ec => ec,exception => ErrorHandler(exception,1));
         }
     }
 }

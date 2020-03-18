@@ -2,7 +2,7 @@
   "profiles": {
     "MyUtil.NETCOREAPP20": {
       "commandName": "Project",
-      "commandLineArgs": "ExampleCommand1_2 /parameter1=\"Some example parameter1 value\" /parameter2=\"Some example parameter2 value\" /parameter3=\"10\" /parameter4=\"Some example value for parameter4\" /parameter5=\"True\""
+      "commandLineArgs": "Help"
     }
   }
 }
