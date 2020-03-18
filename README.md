@@ -359,3 +359,29 @@ ExampleCommand1_3        ExampleCommand2 will do the same as ExampleCommand1
 * Install Visual Studio 2017
 * Install Mono 4.5 (http://www.mono-project.com/download/) + Run ..\tools\Mono Target\Mono Target.cmd
 * Run .\Build.cmd
+
+## Build Environment Setup 3.0.*
+
+Run from an admin command prompt:
+
+```batch
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+choco feature enable -n allowGlobalConfirmation
+choco install fake
+choco upgrade fake	
+choco install visualstudio2019buildtools
+choco install git
+choco feature disable -n allowGlobalConfirmation
+```
+
+## Build 3.0.*
+
+Run from an standard command prompt.
+
+```batch
+mkdir c:\dev\github.trondr
+cd c:\dev\github.trondr
+git clone https://github.com/trondr/NCmdLiner.git ./NCmdLiner
+cd c:\dev\github.trondr\NCmdLiner
+Build.cmd
+```
