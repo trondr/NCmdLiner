@@ -92,21 +92,23 @@ namespace NCmdLiner.Example
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static TryAsync<int> TryRun(string[] args) => () =>
         {
-            try
-            {
-                CmdLinery.Run(typeof(ExampleCommands), args);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
-            finally
-            {
-                Console.WriteLine("Press ENTER to terminate...");
-                Console.ReadLine();
-            }
+            IApplicationInfo exampleApplicationInfo = new ApplicationInfo();
+            exampleApplicationInfo.Authors = "example@example.com, example2@example.com";
+            exampleApplicationInfo.Copyright = "Copyright © ExampleCompany 2013";
+            return CmdLinery.Run(typeof(ExampleCommands), args, exampleApplicationInfo);
+        };
+        
+        private static int ErrorHandler(Exception ex, int exitCode)
+        {
+            Console.WriteLine(@"ERROR: " + ex.Message);
+            return exitCode;
+        }
+        
+        private static async Task<int> Main(string[] args)
+        {
+            return await TryRun(args).Match(ec => ec, exception => ErrorHandler(exception, 1));
         }
     }
 
