@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C68DCE03-3FC3-4714-AE59-A7AD3F41B462}</ProjectGuid>
+    <ProjectGuid>{23B97917-E0D3-4F5D-A61D-ED9C3160CF2D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MyUtil.NET45MONO</RootNamespace>
     <AssemblyName>MyUtil.NET45MONO</AssemblyName>
@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NCmdLiner, Version=2.0.18110.340, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\NCmdLiner.2.0.18110.340\lib\net45-mono\NCmdLiner.dll</HintPath>
+      <HintPath>..\..\packages\NCmdLiner.2.0.18110.340\lib\net45-mono\NCmdLiner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C68DCE03-3FC3-4714-AE59-A7AD3F41B462}</ProjectGuid>
+    <ProjectGuid>{A8451D10-637E-4760-8EAD-DE43363E7386}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MyUtil.NET48</RootNamespace>
     <AssemblyName>MyUtil.NET48</AssemblyName>
@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NCmdLiner">
-      <Version>3.0.8-alpha</Version>
+      <Version>3.0.9-alpha</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

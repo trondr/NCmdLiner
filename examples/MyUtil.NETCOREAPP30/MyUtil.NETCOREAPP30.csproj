@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NCmdLiner" Version="3.0.8-alpha" />
+    <PackageReference Include="NCmdLiner" Version="3.0.9-alpha" />
   </ItemGroup>
 
 </Project>
