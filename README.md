@@ -14,7 +14,7 @@ The automatic documentation outputs ready-to-use examples of each command and it
 
 NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 
-## Supported runtimes NCmdLiner 1.0.*
+## Supported target frameworks NCmdLiner 1.0.*
 
 * Mono 4
 * .NET 2.0
@@ -26,7 +26,7 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET 4.0.3 Client
 * .NET 4.5
 
-## Supported runtimes NCmdLiner 1.1.*
+## Supported target frameworks NCmdLiner 1.1.*
 
 * Mono 4
 * .NET 3.5
@@ -37,7 +37,7 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET 4.0.3 Client
 * .NET 4.5
 
-## Supported runtimes NCmdLiner 1.2.*
+## Supported target frameworks NCmdLiner 1.2.*
 
 * Mono 4
 * .NET 3.5
@@ -45,7 +45,7 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET 4.6.1
 * .NET Core 1.0
 
-## Supported runtimes NCmdLiner 1.3.*
+## Supported target frameworks NCmdLiner 1.3.*
 
 * Mono 4.5
 * .NET 3.5
@@ -57,7 +57,7 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET Core 1.1
 * .NET Core 2.0
 
-## Supported runtimes NCmdLiner 2.0.*
+## Supported target frameworks NCmdLiner 2.0.*
 
 * Mono 4.5
 * .NET 3.5
@@ -69,7 +69,7 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 * .NET Core 1.1
 * .NET Core 2.0
 
-## Supported runtimes NCmdLiner 3.0.*
+## Supported target frameworks NCmdLiner 3.0.*
 
 * .NET 4.6.1
 * .NETStandard 2.0
@@ -79,7 +79,11 @@ NCmdLiner is a rewrite of the NConsoler project http://nconsoler.csharpus.com
 
 ## Installation
 
-NCmdLiner is installed into your project by Nuget Package Manager
+NCmdLiner is installed into your project by Nuget Package Manager. 
+
+```PowerShell
+Install-Package NCmdLiner
+```
 
 ## Example
 
