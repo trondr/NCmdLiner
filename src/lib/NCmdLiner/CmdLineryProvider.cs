@@ -67,37 +67,26 @@ namespace NCmdLiner
             try
             {
                 var returnValue = commandRule.Method.Invoke(commandRule.Instance, parameterArrayResult.ToValue());
-                if (returnValue is Task<int> task)
+                return returnValue switch
                 {
-                    return await task;
-                }
-                if (returnValue is Task<Result<int>> taskResult)
-                {
-                    return await taskResult;
-                }
-                if (returnValue is Result<int> result)
-                {
-                    return result;
-                }
-                if (returnValue is int i)
-                {
-                    return new Result<int>(i);
-                }
-                return new Result<int>(0);
+                    Task<int> task => await task,
+                    Task<Result<int>> taskResult => await taskResult,
+                    Result<int> result => result,
+                    int i => new Result<int>(i),
+                    _ => new Result<int>(0)
+                };
             }
             catch (TargetInvocationException ex)
             {
-                if (ex.InnerException != null)
+                if (ex.InnerException == null) return new Result<int>(ex);
+                var innerException = ex.InnerException;
+                try
                 {
-                    var innerException = ex.InnerException;
-                    try
-                    {
-                        innerException.PrepForRemotingAndThrow();
-                    }
-                    catch (Exception e)
-                    {
-                        return new Result<int>(e);
-                    }
+                    innerException.PrepForRemotingAndThrow();
+                }
+                catch (Exception e)
+                {
+                    return new Result<int>(e);
                 }
                 return new Result<int>(ex);
             }
