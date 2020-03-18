@@ -101,20 +101,14 @@ let toProjectAndVersion appName nupkgFileName =
     let version = fileNameWithOutExtension.Replace(appName,"").Trim([|'.'|])
     (appName, version)
 
-let getNugetPackageFile () =
-    let nugetPackageFilePath = Fake.IO.Directory.tryFindFirstMatchingFile "*.nupkg" buildLibFolder
+let getNugetPackageFile() =
+    Trace.trace "Getting Nuget package..." 
     let nugetPackageFile =
-        match nugetPackageFilePath with
-        | None ->
-            Fake.Runtime.Trace.traceError ("Nuget package file not found in: " + buildLibFolder)
-            None 
-        | Some f ->
-            let nugetPackageFile = Fake.IO.FileInfo.ofPath f
-            let artifactNugetPackageFilePath = System.IO.Path.Combine(artifactFolder,nugetPackageFile.Name)
-            let artifactNugetPackageFile = nugetPackageFile.CopyTo(artifactNugetPackageFilePath)
-            Trace.trace ("Nuget package to publish: " + artifactNugetPackageFile.FullName)
-            Some artifactNugetPackageFile        
-    nugetPackageFile
+        !! (sprintf "%s\*.nupkg" artifactFolder)
+        |> Seq.toArray
+        |> Array.head
+    Trace.trace (sprintf "Nuget package: %s" nugetPackageFile)
+    new System.IO.FileInfo(nugetPackageFile)
 
 Target.create "LocalPublish" (fun _ -> 
     let localRepositoryFolder = @"E:\NugetRepository"
@@ -130,28 +124,26 @@ Target.create "LocalPublish" (fun _ ->
 
 Target.create "Publish" (fun _ ->
     Trace.trace "Publishing library to Nuget repository..."    
-    let nugetPackageFile = getNugetPackageFile()
-    match nugetPackageFile with
+    let nugetPackageFile = getNugetPackageFile()    
+    let (project,version) = toProjectAndVersion libName nugetPackageFile.Name    
+    match NugetApiKey with
     |None ->
-        Fake.Runtime.Trace.traceError ("Failed to publish Nuget package to remote NuGet repository.")
-    |Some f ->
-        let (project,version) = toProjectAndVersion libName f.Name    
-        match NugetApiKey with
-        |None ->
-            Fake.Runtime.Trace.traceError ("Nuget ApiKey not set in environment variable 'NuGet.ApiKey'.")        
-        |Some apikey ->
-            Trace.trace("Calling NuGetPublish...")
-            Fake.DotNet.NuGet.NuGet.NuGetPublish (fun o -> 
-                {o with 
-                    AccessKey = apikey
-                    ToolPath = nugetExeFilePath                    
-                    Project = project
-                    Version = version          
-                    WorkingDir = artifactFolder
-                    OutputPath = artifactFolder
-                    Publish = false
-                }
-            )
+        Fake.Runtime.Trace.traceError ("Nuget ApiKey not set in environment variable 'NuGet.ApiKey'.")        
+    |Some apikey ->
+        Trace.trace("Calling NuGetPublish package...")
+        Fake.DotNet.NuGet.NuGet.NuGetPublish (fun o -> 
+            {o with 
+                AccessKey = apikey
+                ToolPath = nugetExeFilePath                    
+                Project = project
+                Version = version          
+                WorkingDir = artifactFolder
+                OutputPath = artifactFolder
+                Publish = false
+                PublishUrl="https://www.nuget.org"                
+                PublishTrials = 1                
+            }
+        )        
     ()
 )
 

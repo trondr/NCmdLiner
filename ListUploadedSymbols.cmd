@@ -1,0 +1,1 @@
+.\tools\nuget\nuget.exe list NCmdLiner -AllVersion -Prerelease -source https://api.nuget.org/v3/index.json -IncludeDelisted

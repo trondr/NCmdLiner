@@ -9,7 +9,11 @@
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageVersion>3.0.5-alpha</PackageVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageVersion>3.0.8-alpha</PackageVersion>
     <PackageId>NCmdLiner</PackageId>
     <Title>NCmdLiner</Title>
     <Authors>github.com/trondr</Authors>
