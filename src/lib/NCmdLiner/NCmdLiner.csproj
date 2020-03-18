@@ -9,6 +9,8 @@
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -138,6 +140,9 @@
     <EmbeddedResource Include="License\1.NConsoler-License.xml" />
     <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
     <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LanguageExt.Core" Version="3.4.12" />
