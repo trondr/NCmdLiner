@@ -369,9 +369,9 @@ Run from an admin command prompt:
 choco feature enable -n allowGlobalConfirmation
 choco install fake
 choco upgrade fake
-REM choco install visualstudio2019community
+choco install visualstudio2019community
 REM choco install visualstudio2019professional
-choco install visualstudio2019enterprise
+REM choco install visualstudio2019enterprise
 choco install visualstudio2019-workload-netcoretools
 choco install git
 choco feature disable -n allowGlobalConfirmation
