@@ -117,6 +117,7 @@ Target.create "LocalPublish" (fun _ ->
         Fake.Runtime.Trace.traceError ("Nuget local repository folder path not set in environment variable 'NuGet.LocalRepository'.")
         Fake.Runtime.Trace.traceError ("Publish of nuget package to Nuget local respository folder will be skipped.")
     |Some localRepositoryFolder->
+        Fake.IO.Shell.mkdir localRepositoryFolder
         let nugetFiles =
             !! "build\lib\*.nupkg"
             ++ "build\lib\*.snupkg"
