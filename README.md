@@ -368,8 +368,11 @@ Run from an admin command prompt:
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 choco feature enable -n allowGlobalConfirmation
 choco install fake
-choco upgrade fake	
-choco install visualstudio2019buildtools
+choco upgrade fake
+REM choco install visualstudio2019community
+REM choco install visualstudio2019professional
+choco install visualstudio2019enterprise
+choco install visualstudio2019-workload-netcoretools
 choco install git
 choco feature disable -n allowGlobalConfirmation
 ```
