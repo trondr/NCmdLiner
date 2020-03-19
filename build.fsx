@@ -30,6 +30,7 @@ let buildTestFolder = buildFolder + "test"
 let artifactFolder = System.IO.Path.GetFullPath("./artifact/")
 let artifactLibFolder = artifactFolder + "lib"
 let NugetApiKey = Fake.Core.Environment.environVarOrNone "NuGet.ApiKey"
+let NugetLocalRepository = Fake.Core.Environment.environVarOrNone "NuGet.LocalRepository"
 
 let assemblyVersion =
     let majorVersion = "3"
@@ -110,16 +111,20 @@ let getNugetPackageFile() =
     Trace.trace (sprintf "Nuget package: %s" nugetPackageFile)
     new System.IO.FileInfo(nugetPackageFile)
 
-Target.create "LocalPublish" (fun _ -> 
-    let localRepositoryFolder = @"E:\NugetRepository"
-    let nugetFiles =
-        !! "build\lib\*.nupkg"
-        ++ "build\lib\*.snupkg"
-        |>Seq.toArray
-    Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" localRepositoryFolder nugetFiles)
-    Fake.IO.Shell.copyFiles localRepositoryFolder nugetFiles
-    Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" artifactFolder nugetFiles)
-    Fake.IO.Shell.copyFiles artifactFolder nugetFiles
+Target.create "LocalPublish" (fun _ ->    
+    match NugetLocalRepository with
+    |None ->
+        Fake.Runtime.Trace.traceError ("Nuget local repository folder path not set in environment variable 'NuGet.LocalRepository'.")
+        Fake.Runtime.Trace.traceError ("Publish of nuget package to Nuget local respository folder will be skipped.")
+    |Some localRepositoryFolder->
+        let nugetFiles =
+            !! "build\lib\*.nupkg"
+            ++ "build\lib\*.snupkg"
+            |>Seq.toArray
+        Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" localRepositoryFolder nugetFiles)
+        Fake.IO.Shell.copyFiles localRepositoryFolder nugetFiles
+        Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" artifactFolder nugetFiles)
+        Fake.IO.Shell.copyFiles artifactFolder nugetFiles
 )
 
 Target.create "Publish" (fun _ ->
