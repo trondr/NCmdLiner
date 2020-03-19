@@ -31,12 +31,14 @@ let artifactFolder = System.IO.Path.GetFullPath("./artifact/")
 let artifactLibFolder = artifactFolder + "lib"
 let NugetApiKey = Fake.Core.Environment.environVarOrNone "NuGet.ApiKey"
 let NugetLocalRepository = Fake.Core.Environment.environVarOrNone "NuGet.LocalRepository"
+#nowarn "52"
+let year = (System.DateTime.Now.Year - 2000)
+let dayOfYear = (System.DateTime.Now.DayOfYear)
+let buildVersion = (sprintf "%02d%03d" year dayOfYear) //Example: 19063
 
 let assemblyVersion =
     let majorVersion = "3"
-    let minorVersion = "0"
-    let now = System.DateTime.Now    
-    let buildVersion = sprintf "%02d%03d" (now.Year - 2000) (now.DayOfYear) //Example: 19063
+    let minorVersion = "0"    
     let revisionVersion = "0"
     sprintf "%s.%s.%s.%s" majorVersion minorVersion buildVersion revisionVersion //Example: 1.0.19063.1
 
@@ -126,6 +128,7 @@ Target.create "LocalPublish" (fun _ ->
         Fake.IO.Shell.copyFiles localRepositoryFolder nugetFiles
         Fake.Runtime.Trace.trace (sprintf "Publishing nuget package and nuget symbol package to folder %s: %A" artifactFolder nugetFiles)
         Fake.IO.Shell.copyFiles artifactFolder nugetFiles
+    Trace.trace( sprintf "Build version: %s" buildVersion)
 )
 
 Target.create "Publish" (fun _ ->
@@ -150,11 +153,13 @@ Target.create "Publish" (fun _ ->
                 PublishTrials = 1                
             }
         )        
+    Trace.trace( sprintf "Build version: %s" buildVersion)
     ()
 )
 
 Target.create "Default" (fun _ ->
-    Trace.trace (libName + "." + assemblyVersion)
+    Trace.trace (libName + "." + assemblyVersion)    
+    Trace.trace( sprintf "Build version: %s" buildVersion)
 )
 
 //Dependencies
