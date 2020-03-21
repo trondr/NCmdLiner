@@ -20,6 +20,6 @@ namespace NCmdLiner.License
         /// Get licenses
         /// </summary>
         /// <returns></returns>
-        List<ILicenseInfo> GetLicenses(Assembly assembly = null);
+        List<LicenseInfo> GetLicenses(Assembly assembly = null);
     }
 }

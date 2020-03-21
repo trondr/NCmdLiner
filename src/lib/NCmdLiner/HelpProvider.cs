@@ -247,7 +247,7 @@ namespace NCmdLiner
             var referencedAssemblies = typeof(HelpProvider).GetAssembly().GetReferencedAssemblies();
             foreach (var referencedAssembly in referencedAssemblies)
             {
-                IList<ILicenseInfo> referencedLicenseInfos =
+                IList<LicenseInfo> referencedLicenseInfos =
                     licenseProvider.GetLicenses(Assembly.Load(referencedAssembly));
                 foreach (var licenseInfo in referencedLicenseInfos)
                 {
@@ -257,7 +257,7 @@ namespace NCmdLiner
                     }
                 }
             }
-            foreach (ILicenseInfo licenseInfo in uniqueLicenseInfos.Values)
+            foreach (LicenseInfo licenseInfo in uniqueLicenseInfos.Values)
             {
                 licenseText.Append($"  (*) {licenseInfo.ProductName}, {licenseInfo.ProductHome}, {licenseInfo.License}" + Environment.NewLine);
             }
@@ -269,7 +269,7 @@ namespace NCmdLiner
                 "-------------------------------------------------------------------------------" +
                 Environment.NewLine);
             var count = 0;
-            foreach (ILicenseInfo licenseInfo in uniqueLicenseInfos.Values)
+            foreach (LicenseInfo licenseInfo in uniqueLicenseInfos.Values)
             {
                 count++;
                 licenseText.Append($"Product: {licenseInfo.ProductName}" + Environment.NewLine);

@@ -35,7 +35,7 @@ namespace NCmdLiner.License
 #if !NETSTANDARD1_6 && !NETCOREAPP1_0 && !NETCOREAPP1_1 && !NETCOREAPP2_0
     [Serializable]
 #endif
-    public class LicenseInfo : ILicenseInfo
+    public class LicenseInfo
     {
         public string ProductName
         {

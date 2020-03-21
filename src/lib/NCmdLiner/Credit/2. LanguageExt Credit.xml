@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CreditInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProductName>LanguageExt</ProductName>
+  <ProductHome>https://github.com/louthy/language-ext</ProductHome>
+  <CreditText>NCmdLiner uses LanguageExt to provide functional extensions to the C# language. The purpose is making the code base more readable and easier to maintain.</CreditText>
+</CreditInfo>

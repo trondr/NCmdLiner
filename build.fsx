@@ -39,7 +39,7 @@ let buildVersion = (sprintf "%02d%03d" year dayOfYear) //Example: 19063
 let assemblyVersion =
     let majorVersion = "3"
     let minorVersion = "0"    
-    let revisionVersion = "342"
+    let revisionVersion = "344"
     sprintf "%s.%s.%s.%s" majorVersion minorVersion buildVersion revisionVersion //Example: 1.0.19063.1
 
 let getVersion file = 

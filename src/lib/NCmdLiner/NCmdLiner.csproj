@@ -15,7 +15,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageVersion>3.0.20080</PackageVersion>
+    <PackageVersion>3.0.20081-alpha1</PackageVersion>
     <PackageId>NCmdLiner</PackageId>
     <Title>NCmdLiner</Title>
     <Authors>github.com/trondr</Authors>
@@ -31,7 +31,7 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <OutputType>library</OutputType>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.20080.342</FileVersion>
+    <FileVersion>3.0.20080.344</FileVersion>
     <LangVersion>8.0</LangVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
@@ -39,11 +39,11 @@
   <ItemGroup>
     <None Remove="Credit\0.NConsoler-Credit.xml" />
     <None Remove="Credit\1.TinyIoC-Credit.xml" />
-    <None Remove="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
+    <None Remove="Credit\2. LanguageExt Credit.xml" />
     <None Remove="License\0.NCmdLiner-License.xml" />
     <None Remove="License\1.NConsoler-License.xml" />
     <None Remove="License\2.TinyIoC-License.xml" />
-    <None Remove="License\3.CSharpFunctionalExtensions-License.xml" />
+    <None Remove="License\3.LanguageExt-License.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationInfo.cs" />
@@ -67,7 +67,6 @@
     <Compile Include="ConsoleMessenger.cs" />
     <Compile Include="Credit\CreditInfo.cs" />
     <Compile Include="Credit\CreditProvider.cs" />
-    <Compile Include="Credit\ICreditInfo.cs" />
     <Compile Include="Credit\ICreditProvider.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="Exceptions\AggregateException.cs" />
@@ -103,9 +102,9 @@
     <Compile Include="IHelpProvider.cs" />
     <Compile Include="IMessenger.cs" />
     <Compile Include="IMethodParameterBuilder.cs" />
+    <Compile Include="InfoProvider.cs" />
     <Compile Include="IStringToObject.cs" />
     <Compile Include="IValueConverter.cs" />
-    <Compile Include="License\ILicenseInfo.cs" />
     <Compile Include="License\ILicenseProvider.cs" />
     <Compile Include="License\LicenseInfo.cs" />
     <Compile Include="License\LicenseProvider.cs" />
@@ -135,14 +134,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Credit\0.NConsoler-Credit.xml" />
     <EmbeddedResource Include="Credit\1.TinyIoC-Credit.xml" />
-    <EmbeddedResource Include="Credit\2.CSharpFunctionalExtensions-Credit.xml" />
+    <EmbeddedResource Include="Credit\2. LanguageExt Credit.xml" />
     <EmbeddedResource Include="License\0.NCmdLiner-License.xml" />
     <EmbeddedResource Include="License\1.NConsoler-License.xml" />
     <EmbeddedResource Include="License\2.TinyIoC-License.xml" />
-    <EmbeddedResource Include="License\3.CSharpFunctionalExtensions-License.xml" />
+    <EmbeddedResource Include="License\3.LanguageExt-License.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="LanguageExt.Core" Version="3.4.12" />

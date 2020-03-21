@@ -20,6 +20,6 @@ namespace NCmdLiner.Credit
         /// Get licenses
         /// </summary>
         /// <returns></returns>
-        List<ICreditInfo> GetCredits(Assembly assembly = null);
+        List<CreditInfo> GetCredits(Assembly assembly = null);
     }
 }
